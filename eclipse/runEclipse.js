@@ -44,7 +44,7 @@ runBtn.addEventListener("click", () => {
 
     const tokens = tokenize(code, errorToThisWindow);
     const ast = parse(tokens, errorToThisWindow);
-    evaluate(ast, printToThisWindow, errorToThisWindow);
+    evaluate(ast, printToThisWindow, errorToThisWindow, prompt);
 
   } catch (error) {
     console.error(error);
