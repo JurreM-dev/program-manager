@@ -269,3 +269,4 @@ export function evaluate(ast, output, errorLogging) {
         errorLogging(`Unknown node type: ${node.type}`);
     }
   }
+}
