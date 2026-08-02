@@ -1,0 +1,55 @@
+/* Shared Window Styles */
+.mac-window {
+  background: #1e1e1e;
+  border-radius: 8px;
+  border: 1px solid #333;
+  overflow: hidden;
+  font-family: system-ui, sans-serif;
+  min-width: 550px;
+  min-height: 400px;
+  z-index: 10000;
+}
+
+.window-bar {
+  background: #2a2a2a;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+}
+
+/* Dots Container */
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+/* Base Dot (Needs display: inline-block!) */
+.dot { 
+  display: inline-block;
+  width: 12px; 
+  height: 12px; 
+  border-radius: 50%; 
+  cursor: pointer;
+}
+
+.red { background: #ff5f56; }
+.yellow { background: #ffbd2e; }
+.green { background: #27c93f; }
+
+.title { 
+  color: #888; 
+  font-size: 12px; 
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+/* Output Area */
+.window-body {
+  padding: 12px;
+  height: 350px;
+  overflow-y: auto;
+  font-family: monospace;
+  color: #00ff66;
+}
+
+.log-err { color: #ff5f56; }
