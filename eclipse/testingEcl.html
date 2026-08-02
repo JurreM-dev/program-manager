@@ -311,4 +311,6 @@ async function evaluate(ast, output, errorLogging, askFunction) {
     }
   }
 }
+
+evaluate(parse(tokenize('learn("what is your name?") into name', console.log), console.log), console.log, console.log, prompt)
 </script>
