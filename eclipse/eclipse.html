@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>eclipse workspaces</title>
+    <link rel="stylesheet" href="../styles/windowStyle.css">
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        padding: 0;
+        margin: 0;
+        display: flex;
+      }
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+      .logoContainer {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        overflow: hidden;
+        padding: 10px;
+        z-index: 9999;
+      }
+      #mainBtns {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        Z-index: 9999;
+      }
+      .basicBtn {
+        background-color: #73050e;
+        padding: 10px;
+        border-radius: 20px;
+      }
+      #main {
+        padding: 20px;
+      }
+      #terminal {
+        display: none;
+      }
+    </style>
+    <style>
+    .editor-container {
+      display: flex;
+      width: 700px;
+      height: 400px;
+      background-color: #1e1e1e;
+      border: 2px solid #333;
+      border-radius: 5px;
+      overflow: auto;
+      position: absolute;
+      width: 90%;
+      height: 80%;
+    }
+
+    .line-numbers {
+      background-color: #181818;
+      color: #555;
+      text-align: right;
+      padding: 15px 10px;
+      font-size: 14px;
+      line-height: 22px;
+      user-select: none;
+      border-right: 1px solid #282828;
+      white-space: pre;
+      min-width: 35px;
+      align-self: flex-start;
+    }
+
+    .code-editor {
+      flex-grow: 1;
+      padding: 15px;
+      color: #bbbbbb;
+      font-size: 14px;
+      line-height: 22px;
+      outline: none;
+      white-space: pre;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: visible;
+      min-height: 100%;
+      color: #8f010d;
+    }
+
+    /* Syntax Kleuren */
+    .keyword { color: #eb8890; font-weight: bold; }
+    .string { color: #000000; }
+    .number { color: #a10654; }
+  </style>
+  </head>
+  <body>
+  <aside>
+    <div class="logoContainer">
+      <img class="logo" src="https://uploads.onecompiler.io/44pg2mbej/1785433996971/a4ab6e33-8112-4a91-a579-99fe4b3453bb.jpg" />
+    </div>
+  </aside>
+  <div id="main">
+    <div id="mainBtns">
+      <button class="basicBtn">>_</button>
+      <button id="runner" class="basicBtn">▶</button>
+    </div>
+
+    <div id="terminal">
+        <h1>eclipse terminal state: active</h1>
+        <hr>
+    </div>
+
+    <div class="editor-container">
+      <div class="line-numbers" id="lineNumbers">1</div>
+      <div class="code-editor" id="editor" contenteditable="plaintext-only" spellcheck="false">say("welcome")</div>
+    </div>
+  </div>
+
+    <!-- WINDOWS -->
+    <script src="../styles/window.js"></script>
+    <!-- SYNTAX HIGHLIGHTING -->
+    <script src="eclHighlight.js"></script>
+    <!--- RUNNING -->
+    <script type="module" src="runEclipse.js"></script>
+  </body>
+</html><!DOCTYPE html>
+<html>
+  <head>
+    <title>eclipse workspaces</title>
+    <link rel="stylesheet" href="../styles/windowStyle.css">
+    <style>
+      body {
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        padding: 0;
+        margin: 0;
+        display: flex;
+      }
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+      .logoContainer {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        overflow: hidden;
+        padding: 10px;
+        z-index: 9999;
+      }
+      #mainBtns {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        Z-index: 9999;
+      }
+      .basicBtn {
+        background-color: #73050e;
+        padding: 10px;
+        border-radius: 20px;
+      }
+      #main {
+        padding: 20px;
+      }
+      #terminal {
+        display: none;
+      }
+    </style>
+    <style>
+    .editor-container {
+      display: flex;
+      width: 700px;
+      height: 400px;
+      background-color: #1e1e1e;
+      border: 2px solid #333;
+      border-radius: 5px;
+      overflow: auto;
+      position: absolute;
+      width: 90%;
+      height: 80%;
+    }
+
+    .line-numbers {
+      background-color: #181818;
+      color: #555;
+      text-align: right;
+      padding: 15px 10px;
+      font-size: 14px;
+      line-height: 22px;
+      user-select: none;
+      border-right: 1px solid #282828;
+      white-space: pre;
+      min-width: 35px;
+      align-self: flex-start;
+    }
+
+    .code-editor {
+      flex-grow: 1;
+      padding: 15px;
+      color: #bbbbbb;
+      font-size: 14px;
+      line-height: 22px;
+      outline: none;
+      white-space: pre;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: visible;
+      min-height: 100%;
+      color: #8f010d;
+    }
+
+    /* Syntax Kleuren */
+    .keyword { color: #eb8890; font-weight: bold; }
+    .string { color: #000000; }
+    .number { color: #a10654; }
+  </style>
+  </head>
+  <body>
+  <aside>
+    <div class="logoContainer">
+      <img class="logo" src="https://uploads.onecompiler.io/44pg2mbej/1785433996971/a4ab6e33-8112-4a91-a579-99fe4b3453bb.jpg" />
+    </div>
+  </aside>
+  <div id="main">
+    <div id="mainBtns">
+      <button class="basicBtn">>_</button>
+      <button id="runner" class="basicBtn">▶</button>
+    </div>
+
+    <div id="terminal">
+        <h1>eclipse terminal state: active</h1>
+        <hr>
+    </div>
+
+    <div class="editor-container">
+      <div class="line-numbers" id="lineNumbers">1</div>
+      <div class="code-editor" id="editor" contenteditable="plaintext-only" spellcheck="false">say("welcome")</div>
+    </div>
+  </div>
+
+    <!-- WINDOWS -->
+    <script src="../styles/window.js"></script>
+    <!-- SYNTAX HIGHLIGHTING -->
+    <script src="eclHighlight.js"></script>
+    <!--- RUNNING -->
+    <script type="module" src="runEclipse.js"></script>
+  </body>
+</html>
