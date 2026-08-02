@@ -1,4 +1,5 @@
-// ==========================================
+
+  // ==========================================
 // 1. THE LEXER (Scans characters -> Tokens)
 // ==========================================
 export function tokenize(input, errorLogging) {
@@ -52,6 +53,7 @@ export function tokenize(input, errorLogging) {
     if (char === "/") { tokens.push({ type: "DIVIDE", value: "/"}); cursor++; continue;}
 
     errorLogging(`Unexpected character: ${char} at index ${cursor}`);
+    cursor++;
   }
 
   return tokens;
@@ -69,7 +71,9 @@ export function parse(tokens, errorLogging) {
   const token = tokens[index];
   if (!token || token.type !== expectedType) {
     const errorMsg = `Expected ${expectedType} but got ${token ? token.type : 'EOF'} at index ${index}`;
+    
     errorLogging(errorMsg); 
+    
     throw new Error(errorMsg); 
   }
 
@@ -81,7 +85,9 @@ export function parse(tokens, errorLogging) {
   while (index < tokens.length) {
     let token = tokens[index];
 
+    // =======================================================
     // Catch 'sky' variable declarations
+    // =======================================================
     if (token.type === "IDENTIFIER" && token.value === "sky") {
       eat("IDENTIFIER");
       const nameToken = eat("IDENTIFIER");
@@ -152,7 +158,9 @@ export function parse(tokens, errorLogging) {
       continue;
     }
 
+    //===================================================================
     // Catch 'say()' print statements
+    //===================================================================
     if (token.type === "IDENTIFIER" && token.value === "say") {
       eat("IDENTIFIER");
       eat("LPARA");
@@ -196,6 +204,34 @@ export function parse(tokens, errorLogging) {
       eat("RPARA");
       continue;
     }
+
+    //=================================================================
+    // asking stuff from the user 
+    //=================================================================
+    if(token.type === "IDENTIFIER" && (token.value === "addKnowledge" || token.value === "learn")) {
+      eat("IDENTIFIER");
+      eat("LPARA");
+      const promptToken = eat("STRING");
+      eat("RPARA"); 
+      const intoToken = eat("IDENTIFIER");
+      if(intoToken.value !== "into") {
+        errorLogging(`okay so... MOST PEOPLE, when they ${token.value} they don't ${intoToken.value} the new info, just saying. (hint: try into instead of ${intoToken.value})`);
+        throw new Error("you did it wrong");
+      }
+      const variableToken = eat("IDENTIFIER");
+      ast.push({
+        type: "AskStatement",
+        prompt: promptToken.value,
+        varName: variableToken.value
+      })
+      continue;
+    }
+
+
+
+
+
+
     const unhandledMsg = `Unexpected token '${token.value}' at index ${index}`;
     errorLogging(unhandledMsg);
     index++;
@@ -208,7 +244,7 @@ export function parse(tokens, errorLogging) {
 // ==========================================
 // 3. THE INTERPRETER (Executes the AST)
 // ==========================================
-export function evaluate(ast, output, errorLogging) {
+export async function evaluate(ast, output, errorLogging, askFunction) {
   const memory = {};
 
   for (const node of ast) {
@@ -222,12 +258,12 @@ export function evaluate(ast, output, errorLogging) {
           if(typeof node.left === "number") {
             usedLeft = node.left;
           } else if(typeof node.left === "string") {
-            usedLeft = memory[node.left]
+            usedLeft = Number(memory[node.left])
           }
           if(typeof node.right === "number") {
             usedRight = node.right;
           } else if(typeof node.right === "string") {
-            usedRight = memory[node.right]
+            usedRight = Number(memory[node.right])
           }
           if(node.operator === "+") memory[node.name] = usedLeft + usedRight;
           if(node.operator === "-") memory[node.name] = usedLeft - usedRight;
@@ -265,8 +301,13 @@ export function evaluate(ast, output, errorLogging) {
         }
         break;
 
+      case "AskStatement":
+        memory[node.varName] = await askFunction(node.prompt);
+        break;
+
       default:
         errorLogging(`Unknown node type: ${node.type}`);
     }
   }
 }
+
