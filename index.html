@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>head terminal</title>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-color: black;
+                overflow: hidden;
+            }
+            textarea {
+                caret-shape: block;
+                background-color: black;
+                color: lime;
+                width: 100vw;
+                height: 100vh;
+                position: fixed;
+                top: 0;
+                left: 0;
+                border: none;
+                outline: none;
+                resize: none;
+                font-family: monospace;
+                font-size: 18px;
+                padding: 15px;
+                box-sizing: border-box;
+            }
+        </style>
+    </head>
+    <body>
+        <textarea spellcheck="false" id="terminal">></textarea>
+        <script>
+            let line = 1;
+            let installed = [];
+
+            document.addEventListener("keydown", (e) => {
+                if(e.key === "Backspace") {
+                    let content = document.getElementById("terminal").value;
+                    const lines = content.split("\n");
+                    let curLine = lines[lines.length - 1];
+                    if(curLine === ">") {
+                        e.preventDefault(); 
+                    }
+                } else if(e.key === "Enter") {
+                    let content = document.getElementById("terminal").value;
+                    const lines = content.split("\n");
+                    let curLine = lines[lines.length - 1];
+                    const command = curLine.slice(1); 
+                    Logs("")
+                    runProgram(command)
+                    e.preventDefault(); 
+                    document.getElementById("terminal").value += "\n>";
+                    line += 1;
+                }
+            })
+
+            function Logs(added) {
+                document.getElementById("terminal").value += added + "\n"
+                line += 1;
+            }
+
+            function newLine() {
+                line += 1;
+                document.getElementById("terminal").value += "\n>"
+            }
+
+            function progressBar(time, name) {
+                Logs("installing " + name + "...")
+                let bar = ""
+                let num = 0
+                let partTime = time / 100;
+                const looper = setInterval(() => {
+                    bar += "|";
+                    num += 1;
+                    let total = document.getElementById("terminal").value;
+                    let lines = total.split("\n");
+                    lines.splice(-1, 1);
+                    lines.push(bar + " " + num + "%");
+                    let newText = lines.join("\n")
+                    document.getElementById("terminal").value = newText
+                    if(num === 100) {
+                        clearInterval(looper);
+                        Logs("")
+                        Logs("successfully installed " + name);
+                        newLine();
+                    }
+                }, partTime)
+            }
+
+
+            function runProgram(command) {
+                if(command.startsWith("program")) {
+                    Programs(command)
+                }
+            }
+
+            function Programs(command) {
+                let parts = command.split(" ")
+                if(parts[1] === "install") {
+                    let programName = parts[2];
+                    switch(programName) {
+                        case "eclipse":
+                           progressBar(3000, "eclipse"); 
+                           installed.push("eclipse")
+                           break;
+
+                        case "aether":
+                            Logs("aether is still under development");
+                            break;
+
+                        default: 
+                            Logs("unknown program")
+                    }
+                } else if(parts[1] === "open") {
+                    let programName = parts[2];
+                    switch(programName) {
+                        case "eclipse":
+                            if(installed.includes("eclipse")) {
+                                window.location.href = "./eclipse/eclipse.html";
+                            } else {
+                                Logs("eclipse not installed");
+                            }
+                            break;
+
+                        default: 
+                            Logs("unknown program")
+                    }
+                }
+            }
+        </script>
+    </body>
+</html>
