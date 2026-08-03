@@ -53,3 +53,28 @@
 }
 
 .log-err { color: #ff5f56; }
+
+.terminal-input-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0;
+}
+
+.terminal-input-label {
+  color: #00ffcc;
+}
+
+.terminal-input-field {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #00ffcc;
+  color: #fff;
+  outline: none;
+  font-family: inherit;
+  flex: 1;
+}
+
+.terminal-input-submitted {
+  color: #48bb78;
+}

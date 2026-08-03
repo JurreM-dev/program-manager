@@ -17,11 +17,15 @@ const HIGHLIGHT_RULES = [
   },
   {
     className: "keyword",
-    pattern: "\\b(?:sky|str|num|boolean|bool|say)\\b"
+    pattern: "\\b(?:sky|str|num|boolean|bool|say|learn|addKnowledge)\\b"
   },
   {
     className: "number",
     pattern: "\\b\\d+(?:\\.\\d+)?\\b"
+  },
+  {
+    className: "specialWords",
+    pattern: "\\b(?:into)\\b"
   }
 ];
 

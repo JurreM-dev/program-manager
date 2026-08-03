@@ -1,0 +1,85 @@
+body {
+        width: 100vw;
+        height: 100vh;
+        background-color: black;
+        padding: 0;
+        margin: 0;
+        display: flex;
+      }
+      .logo {
+        width: 50px;
+        height: 50px;
+      }
+      .logoContainer {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        overflow: hidden;
+        padding: 10px;
+        z-index: 9999;
+      }
+      #mainBtns {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        Z-index: 9999;
+      }
+      .basicBtn {
+        background-color: #73050e;
+        padding: 10px;
+        border-radius: 20px;
+      }
+      #main {
+        padding: 20px;
+      }
+      #terminal {
+        display: none;
+      }
+
+    /* EDITOR CSS */
+    .editor-container {
+      display: flex;
+      width: 700px;
+      height: 400px;
+      background-color: #1e1e1e;
+      border: 2px solid #333;
+      border-radius: 5px;
+      overflow: auto;
+      position: absolute;
+      width: 90%;
+      height: 80%;
+    }
+
+    .line-numbers {
+      background-color: #181818;
+      color: #555;
+      text-align: right;
+      padding: 15px 10px;
+      font-size: 14px;
+      line-height: 22px;
+      user-select: none;
+      border-right: 1px solid #282828;
+      white-space: pre;
+      min-width: 35px;
+      align-self: flex-start;
+    }
+
+    .code-editor {
+      flex-grow: 1;
+      padding: 15px;
+      color: #bbbbbb;
+      font-size: 14px;
+      line-height: 22px;
+      outline: none;
+      white-space: pre;
+      font-family: 'Courier New', Courier, monospace;
+      overflow: visible;
+      min-height: 100%;
+      color: #8f010d;
+    }
+
+    /* Syntax Kleuren */
+    .keyword { color: #eb8890; font-weight: bold; }
+    .string { color: #000000; }
+    .number { color: #a10654; }
+    .specialWords { color: #dba504; font-weight: bold; }

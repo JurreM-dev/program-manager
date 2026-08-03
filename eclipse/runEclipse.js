@@ -42,9 +42,38 @@ runBtn.addEventListener("click", () => {
       windowBody.appendChild(outputLine);
     };
 
+    const askInThisWindow = (promptText) => {
+      return new Promise((resolve) => {
+        const inputContainer = document.createElement("div");
+        inputContainer.classList.add("terminal-input-row");
+
+        const label = document.createElement("span");
+        label.classList.add("terminal-input-label");
+        label.innerText = promptText;
+
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.classList.add("terminal-input-field");
+
+        inputContainer.appendChild(label);
+        inputContainer.appendChild(inputField);
+        windowBody.appendChild(inputContainer);
+
+        inputField.focus();
+
+        inputField.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") {
+            const val = inputField.value;
+            inputContainer.innerHTML = `<span class="terminal-input-label">${promptText}</span> <span class="terminal-input-submitted">${val}</span>`;
+            resolve(val);
+          }
+        });
+      });
+    };
+
     const tokens = tokenize(code, errorToThisWindow);
     const ast = parse(tokens, errorToThisWindow);
-    evaluate(ast, printToThisWindow, errorToThisWindow, prompt);
+    evaluate(ast, printToThisWindow, errorToThisWindow, askInThisWindow);
 
   } catch (error) {
     console.error(error);
