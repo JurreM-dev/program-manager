@@ -33,8 +33,9 @@
         <script>
             let line = 1;
             let installed = [];
+            let data = {};
 
-            document.addEventListener("keydown", (e) => {
+            document.addEventListener("keydown", async (e) => {
                 if(e.key === "Backspace") {
                     let content = document.getElementById("terminal").value;
                     const lines = content.split("\n");
@@ -48,7 +49,7 @@
                     let curLine = lines[lines.length - 1];
                     const command = curLine.slice(1); 
                     Logs("")
-                    runProgram(command)
+                    await runProgram(command)
                     e.preventDefault(); 
                     document.getElementById("terminal").value += "\n>";
                     line += 1;
@@ -63,6 +64,10 @@
             function newLine() {
                 line += 1;
                 document.getElementById("terminal").value += "\n>"
+            }
+
+            async function getPrograms() {
+              data = await (await fetch('programs.json')).json();
             }
 
             function progressBar(time, name) {
@@ -89,45 +94,28 @@
             }
 
 
-            function runProgram(command) {
+            async function runProgram(command) {
                 if(command.startsWith("program")) {
-                    Programs(command)
+                    await Programs(command)
                 }
             }
 
-            function Programs(command) {
+             async function Programs(command) {
                 let parts = command.split(" ")
                 if(parts[1] === "install") {
                     let programName = parts[2];
-                    switch(programName) {
-                        case "eclipse":
-                           progressBar(3000, "eclipse"); 
-                           installed.push("eclipse")
-                           break;
-
-                        case "aether":
-                            Logs("aether is still under development");
-                            break;
-
-                        default: 
-                            Logs("unknown program")
+                    await getPrograms();
+                    if(data.programs.[programName]) {
+                      
+                    } else {
+                      Logs("program " + programName + " does not exist sorry")
                     }
                 } else if(parts[1] === "open") {
                     let programName = parts[2];
-                    switch(programName) {
-                        case "eclipse":
-                            if(installed.includes("eclipse")) {
-                                window.location.href = "./eclipse/eclipse.html";
-                            } else {
-                                Logs("eclipse not installed");
-                            }
-                            break;
-
-                        default: 
-                            Logs("unknown program")
-                    }
+                    
                 }
             }
+
         </script>
     </body>
 </html>
