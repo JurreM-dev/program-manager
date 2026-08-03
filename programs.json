@@ -1,0 +1,16 @@
+{
+  "programs": {
+    "eclipse": {
+      "name": "eclipse",
+      "path": "./eclipse/eclipse.html",
+      "message": "eclipse is under maintainance right now",
+      "installTime": 3000,
+      "version": "v0.1.2"
+    },
+    "aether": {
+      "name": "aether",
+      "message": "aether is still under development",
+      "version": "v0.0.0"
+    }
+  }
+}
