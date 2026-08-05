@@ -54,13 +54,33 @@ function tokenize(input, errorLogging) {
       }
       continue;
     }
+    if (char === "<") {
+      if(input[cursor + 1] === "=") {
+        tokens.push({ type: "COMPLITTLEEQUAL", value: "<="});
+        cursor+= 2;
+      } else {
+        tokens.push({ type: "COMPLITTLE", value: "<"});
+        cursor++;
+      }
+      continue;
+    }
+      
+    if (char === "=") {
+      if(input[cursor + 1] === "=") {
+        tokens.push({ type: "CHECKEQUAL", value: "=="});
+        cursor+= 2;
+      } else {
+        tokens.push({ type: "EQUALS", value: "="});
+        cursor++;
+      }
+      continue;
+    }
 
     if (char === "(") { tokens.push({ type: "LPARA", value: "(" }); cursor++; continue; }
     if (char === ")") { tokens.push({ type: "RPARA", value: ")" }); cursor++; continue; }
     if (char === "{") { tokens.push({ type: "LBRACE", value: "{" }); cursor++; continue; }
     if (char === "}") { tokens.push({ type: "RBRACE", value: "}" }); cursor++; continue; }
     if (char === ":") { tokens.push({ type: "COLON", value: ":" }); cursor++; continue; }
-    if (char === "=") { tokens.push({ type: "EQUALS", value: "=" }); cursor++; continue; }
     if (char === "+") { tokens.push({ type: "PLUS", value: "+"}); cursor++; continue; }
     if (char === "-") { tokens.push({ type: "MINUS", value: "-"}); cursor++; continue; }
     if (char === "*") { tokens.push({ type: "TIMES", value: "*" }); cursor++; continue;}
@@ -264,10 +284,11 @@ function parse(tokens, errorLogging) {
       }
       
       let op;
-      if(tokens[index].value === ">=") {
+      if(tokens[index].value === ">=" || tokens[index].value === ">" || tokens[index].value === "==" || tokens[index].value === "<" || tokens[index].value === "<=") {
         op = tokens[index].value;
-      } else if(tokens[index].value === ">") {
-        op = tokens[index].value;
+      } else {
+        errorLogging(`you cannot compare ${tokens[index].value} at ${index}`)
+        throw new Error("syntax error")
       }
       index++;
 
@@ -418,7 +439,22 @@ async function evaluate(ast, output, errorLogging, askFunction) {
             const bodyAst = parse(node.body, errorLogging);
             await evaluate(bodyAst, output, errorLogging, askFunction);
           }
-        }
+        } else if(node.operator === "==") {
+          if(leftValue == rightValue) {
+            const bodyAst = parse(node.body, errorLogging);
+            await evaluate(bodyAst, output, errorLogging, askFunction); 
+            }
+          } else if(node.operator === "<") {
+            if(leftValue < rightValue) {
+              const bodyAst = parse(node.body, errorLogging);
+              await evaluate(bodyAst, output, errorLogging, askFunction);
+            }
+          } else if(node.operator === "<=") {
+            if(leftValue <= rightValue) {
+              const bodyAst = parse(node.body, errorLogging);
+              await evaluate(bodyAst, output, errorLogging, askFunction);
+            }
+          }
         break;
 
       default:
@@ -426,11 +462,3 @@ async function evaluate(ast, output, errorLogging, askFunction) {
     }
   }
 }
-
-evaluate(parse(tokenize('sky var1: num = 5 sky var2: num = 5 experiment (var1 > var2): {say("Hello, World!")}', console.log), console.log), console.log, console.error, async (prompt) => {
-  return new Promise((resolve) => {
-    const value = prompt;
-    resolve(value);
-  });
-});
-</script>
