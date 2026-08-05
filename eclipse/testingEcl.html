@@ -241,16 +241,23 @@ function parse(tokens, errorLogging) {
       continue;
     }
 
+    //=================================================================
+    // Catch 'experiment()' statements
+    //=================================================================
     if (token.type === "IDENTIFIER" && token.value === "experiment") {
       eat("IDENTIFIER");
       eat("LPARA");
       let leftSide;
+      let leftKind;
       if(tokens[index].type === "NUM") {
         leftSide = eat("NUM")
+        leftKind = "number"
       } else if(tokens[index].type === "IDENTIFIER") {
         leftSide = eat("IDENTIFIER")
+        leftKind = "variable"
       } else if(tokens[index].type === "STRING") {
         leftSide = eat("STRING")
+        leftKind = "string"
       }  else {
         errorLogging(`you cannot compare ${tokens[index].value} at ${index}`)
         throw new Error("syntax error")
@@ -265,12 +272,16 @@ function parse(tokens, errorLogging) {
       index++;
 
       let rightSide;
+      let rightKind;
       if(tokens[index].type === "NUM") {
         rightSide = eat("NUM")
+        rightKind = "number";
       } else if(tokens[index].type === "IDENTIFIER") {
         rightSide = eat("IDENTIFIER")
+        rightKind = "variable";
       } else if(tokens[index].type === "STRING") {
         rightSide = eat("STRING")
+        rightKind = "string";
       }  else {
         errorLogging(`you cannot compare ${tokens[index].value} at ${index}`)
         throw new Error("syntax error")
@@ -293,9 +304,15 @@ function parse(tokens, errorLogging) {
       }
       ast.push({
         type: "ExperimentStatement",
-        left: leftSide.value,
+        left: {
+          kind: leftKind,
+          value: leftSide.value
+        },
         operator: op,
-        right: rightSide.value,
+        right: {
+          kind: rightKind,
+          value: rightSide.value
+        },
         body: bodyTokens
       });
       continue;
@@ -374,11 +391,46 @@ async function evaluate(ast, output, errorLogging, askFunction) {
         memory[node.varName] = await askFunction(node.prompt);
         break;
 
+      case "ExperimentStatement":
+        let leftValue;
+        if(node.left.kind === "number") {
+          leftValue = node.left.value;
+        } else if(node.left.kind === "variable") {
+          leftValue = memory[node.left.value];
+        } else if(node.left.kind === "string") {
+          leftValue = node.left.value;
+        }
+        let rightValue;
+        if(node.right.kind === "number") {
+          rightValue = node.right.value;
+        } else if(node.right.kind === "variable") {
+          rightValue = memory[node.right.value];
+        } else if(node.right.kind === "string") {
+          rightValue = node.right.value;
+        }
+        if(node.operator === ">=") {
+          if(leftValue >= rightValue) {
+            const bodyAst = parse(node.body, errorLogging);
+            await evaluate(bodyAst, output, errorLogging, askFunction);
+          }
+        } else if(node.operator === ">") {
+          if(leftValue > rightValue) {
+            const bodyAst = parse(node.body, errorLogging);
+            await evaluate(bodyAst, output, errorLogging, askFunction);
+          }
+        }
+        break;
+
       default:
         errorLogging(`Unknown node type: ${node.type}`);
     }
   }
 }
 
-console.log(parse(tokenize('experiment (var1 >= var2): {say("Hello, World!")}', console.log), console.log));
+evaluate(parse(tokenize('sky var1: num = 5 sky var2: num = 5 experiment (var1 > var2): {say("Hello, World!")}', console.log), console.log), console.log, console.error, async (prompt) => {
+  return new Promise((resolve) => {
+    const value = prompt;
+    resolve(value);
+  });
+});
 </script>
