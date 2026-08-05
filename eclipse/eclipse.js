@@ -43,10 +43,43 @@ export function tokenize(input, errorLogging) {
       continue;
     }
 
+    if (char === ">") {
+      if(input[cursor + 1] === "=") {
+        tokens.push({ type: "COMPBIGGEREQUAL", value: ">="});
+        cursor+= 2;
+      } else {
+        tokens.push({ type: "COMPBIGGER", value: ">"});
+        cursor++;
+      }
+      continue;
+    }
+    if (char === "<") {
+      if(input[cursor + 1] === "=") {
+        tokens.push({ type: "COMPLITTLEEQUAL", value: "<="});
+        cursor+= 2;
+      } else {
+        tokens.push({ type: "COMPLITTLE", value: "<"});
+        cursor++;
+      }
+      continue;
+    }
+      
+    if (char === "=") {
+      if(input[cursor + 1] === "=") {
+        tokens.push({ type: "CHECKEQUAL", value: "=="});
+        cursor+= 2;
+      } else {
+        tokens.push({ type: "EQUALS", value: "="});
+        cursor++;
+      }
+      continue;
+    }
+
     if (char === "(") { tokens.push({ type: "LPARA", value: "(" }); cursor++; continue; }
     if (char === ")") { tokens.push({ type: "RPARA", value: ")" }); cursor++; continue; }
+    if (char === "{") { tokens.push({ type: "LBRACE", value: "{" }); cursor++; continue; }
+    if (char === "}") { tokens.push({ type: "RBRACE", value: "}" }); cursor++; continue; }
     if (char === ":") { tokens.push({ type: "COLON", value: ":" }); cursor++; continue; }
-    if (char === "=") { tokens.push({ type: "EQUALS", value: "=" }); cursor++; continue; }
     if (char === "+") { tokens.push({ type: "PLUS", value: "+"}); cursor++; continue; }
     if (char === "-") { tokens.push({ type: "MINUS", value: "-"}); cursor++; continue; }
     if (char === "*") { tokens.push({ type: "TIMES", value: "*" }); cursor++; continue;}
@@ -227,10 +260,83 @@ export function parse(tokens, errorLogging) {
       continue;
     }
 
+    //=================================================================
+    // Catch 'experiment()' statements
+    //=================================================================
+    if (token.type === "IDENTIFIER" && token.value === "experiment") {
+      eat("IDENTIFIER");
+      eat("LPARA");
+      let leftSide;
+      let leftKind;
+      if(tokens[index].type === "NUM") {
+        leftSide = eat("NUM")
+        leftKind = "number"
+      } else if(tokens[index].type === "IDENTIFIER") {
+        leftSide = eat("IDENTIFIER")
+        leftKind = "variable"
+      } else if(tokens[index].type === "STRING") {
+        leftSide = eat("STRING")
+        leftKind = "string"
+      }  else {
+        errorLogging(`you cannot compare ${tokens[index].value} at ${index}`)
+        throw new Error("syntax error")
+      }
+      
+      let op;
+      if(tokens[index].value === ">=" || tokens[index].value === ">" || tokens[index].value === "==" || tokens[index].value === "<" || tokens[index].value === "<=") {
+        op = tokens[index].value;
+      } else {
+        errorLogging(`you cannot compare ${tokens[index].value} at ${index}`)
+        throw new Error("syntax error")
+      }
+      index++;
 
+      let rightSide;
+      let rightKind;
+      if(tokens[index].type === "NUM") {
+        rightSide = eat("NUM")
+        rightKind = "number";
+      } else if(tokens[index].type === "IDENTIFIER") {
+        rightSide = eat("IDENTIFIER")
+        rightKind = "variable";
+      } else if(tokens[index].type === "STRING") {
+        rightSide = eat("STRING")
+        rightKind = "string";
+      }  else {
+        errorLogging(`you cannot compare ${tokens[index].value} at ${index}`)
+        throw new Error("syntax error")
+      }
 
-
-
+      eat("RPARA");
+      eat("COLON");
+      eat("LBRACE");
+      let braceCount = 1;
+      let bodyTokens = [];
+      while(braceCount > 0) {
+        if(tokens[index].type === "LBRACE") {
+          braceCount++;
+        } else if(tokens[index].type === "RBRACE") {
+          braceCount--;
+        } else {
+          bodyTokens.push(tokens[index]);
+        }
+        index++;
+      }
+      ast.push({
+        type: "ExperimentStatement",
+        left: {
+          kind: leftKind,
+          value: leftSide.value
+        },
+        operator: op,
+        right: {
+          kind: rightKind,
+          value: rightSide.value
+        },
+        body: bodyTokens
+      });
+      continue;
+    }
 
     const unhandledMsg = `Unexpected token '${token.value}' at index ${index}`;
     errorLogging(unhandledMsg);
@@ -305,9 +411,53 @@ export async function evaluate(ast, output, errorLogging, askFunction) {
         memory[node.varName] = await askFunction(node.prompt);
         break;
 
+      case "ExperimentStatement":
+        let leftValue;
+        if(node.left.kind === "number") {
+          leftValue = node.left.value;
+        } else if(node.left.kind === "variable") {
+          leftValue = memory[node.left.value];
+        } else if(node.left.kind === "string") {
+          leftValue = node.left.value;
+        }
+        let rightValue;
+        if(node.right.kind === "number") {
+          rightValue = node.right.value;
+        } else if(node.right.kind === "variable") {
+          rightValue = memory[node.right.value];
+        } else if(node.right.kind === "string") {
+          rightValue = node.right.value;
+        }
+        if(node.operator === ">=") {
+          if(leftValue >= rightValue) {
+            const bodyAst = parse(node.body, errorLogging);
+            await evaluate(bodyAst, output, errorLogging, askFunction);
+          }
+        } else if(node.operator === ">") {
+          if(leftValue > rightValue) {
+            const bodyAst = parse(node.body, errorLogging);
+            await evaluate(bodyAst, output, errorLogging, askFunction);
+          }
+        } else if(node.operator === "==") {
+          if(leftValue == rightValue) {
+            const bodyAst = parse(node.body, errorLogging);
+            await evaluate(bodyAst, output, errorLogging, askFunction); 
+            }
+          } else if(node.operator === "<") {
+            if(leftValue < rightValue) {
+              const bodyAst = parse(node.body, errorLogging);
+              await evaluate(bodyAst, output, errorLogging, askFunction);
+            }
+          } else if(node.operator === "<=") {
+            if(leftValue <= rightValue) {
+              const bodyAst = parse(node.body, errorLogging);
+              await evaluate(bodyAst, output, errorLogging, askFunction);
+            }
+          }
+        break;
+
       default:
         errorLogging(`Unknown node type: ${node.type}`);
     }
   }
 }
-
