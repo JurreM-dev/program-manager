@@ -1,5 +1,5 @@
 
-  // ==========================================
+// ==========================================
 // 1. THE LEXER (Scans characters -> Tokens)
 // ==========================================
 export function tokenize(input, errorLogging) {
@@ -84,6 +84,7 @@ export function tokenize(input, errorLogging) {
     if (char === "-") { tokens.push({ type: "MINUS", value: "-"}); cursor++; continue; }
     if (char === "*") { tokens.push({ type: "TIMES", value: "*" }); cursor++; continue;}
     if (char === "/") { tokens.push({ type: "DIVIDE", value: "/"}); cursor++; continue;}
+    if (char === ",") { tokens.push({ type: "COMMA", value: ","}); cursor++; continue;}
 
     errorLogging(`Unexpected character: ${char} at index ${cursor}`);
     cursor++;
@@ -338,6 +339,81 @@ export function parse(tokens, errorLogging) {
       continue;
     }
 
+  // ==========================================
+  // rituals
+  // ==========================================
+  if(token.type === "IDENTIFIER" && token.value === "ritual") {
+    eat("IDENTIFIER");
+    const ritualNameToken = eat("IDENTIFIER");
+    eat("LPARA");
+    const parameterList = [];
+    while (tokens[index].type !== "RPARA") {
+      if (tokens[index].type === "IDENTIFIER") {
+        const paramToken = eat("IDENTIFIER");
+        parameterList.push(paramToken.value);
+      } else if (tokens[index].type === "COMMA") {
+        eat("COMMA");
+      } else {
+        errorLogging(`Unexpected token '${tokens[index].value}' in parameter list at index ${index}`);
+        throw new Error(`Unexpected token '${tokens[index].value}' in parameter list at index ${index}`);
+      }
+    }
+    eat("RPARA");
+    eat("COLON");
+    eat("LBRACE");
+    let braceCount = 1;
+    let bodyTokens = [];
+    while(braceCount > 0) {
+      if(tokens[index].type === "LBRACE") {
+        braceCount++;
+        bodyTokens.push(tokens[index]);
+      } else if(tokens[index].type === "RBRACE") {
+        braceCount--;
+        if (braceCount > 0) {
+          bodyTokens.push(tokens[index]);
+        } 
+      } else {
+        bodyTokens.push(tokens[index]);
+      }
+      index++;
+    }
+    ast.push({
+      type: "RitualDeclaration",
+      name: ritualNameToken.value,
+      parameters: parameterList,
+      body: bodyTokens
+    })
+    continue;
+  }
+
+  // ==========================================
+  // ritual invocation
+  // ==========================================
+  if(token.type === "IDENTIFIER" && token.value === "summon") {
+    eat("IDENTIFIER");
+    const ritualNameToken = eat("IDENTIFIER");
+    eat("LPARA");
+    const args = [];
+    while (tokens[index].type !== "RPARA") {
+      if (tokens[index].type === "IDENTIFIER") {
+        const argToken = eat("IDENTIFIER");
+        args.push(argToken.value);
+      } else if (tokens[index].type === "COMMA") {
+        eat("COMMA");
+      } else {
+        errorLogging(`Unexpected token '${tokens[index].value}' in argument list at index ${index}`);
+        throw new Error(`Unexpected token '${tokens[index].value}' in argument list at index ${index}`);
+      }
+    }
+    eat("RPARA");
+    ast.push({
+      type: "RitualInvocation",
+      ritualName: ritualNameToken.value,
+      arguments: args
+    });
+    continue;
+  }
+
     const unhandledMsg = `Unexpected token '${token.value}' at index ${index}`;
     errorLogging(unhandledMsg);
     index++;
@@ -350,8 +426,7 @@ export function parse(tokens, errorLogging) {
 // ==========================================
 // 3. THE INTERPRETER (Executes the AST)
 // ==========================================
-export async function evaluate(ast, output, errorLogging, askFunction) {
-  const memory = {};
+export async function evaluate(ast, output, errorLogging, askFunction, memory = {}) {
 
   for (const node of ast) {
     switch (node.type) {
@@ -431,29 +506,56 @@ export async function evaluate(ast, output, errorLogging, askFunction) {
         if(node.operator === ">=") {
           if(leftValue >= rightValue) {
             const bodyAst = parse(node.body, errorLogging);
-            await evaluate(bodyAst, output, errorLogging, askFunction);
+            await evaluate(bodyAst, output, errorLogging, askFunction, memory);;
           }
         } else if(node.operator === ">") {
           if(leftValue > rightValue) {
             const bodyAst = parse(node.body, errorLogging);
-            await evaluate(bodyAst, output, errorLogging, askFunction);
+            await evaluate(bodyAst, output, errorLogging, askFunction, memory);
           }
         } else if(node.operator === "==") {
-          if(leftValue == rightValue) {
+          if(leftValue === rightValue) {
             const bodyAst = parse(node.body, errorLogging);
-            await evaluate(bodyAst, output, errorLogging, askFunction); 
+            await evaluate(bodyAst, output, errorLogging, askFunction, memory); 
             }
           } else if(node.operator === "<") {
             if(leftValue < rightValue) {
               const bodyAst = parse(node.body, errorLogging);
-              await evaluate(bodyAst, output, errorLogging, askFunction);
+              await evaluate(bodyAst, output, errorLogging, askFunction, memory);
             }
           } else if(node.operator === "<=") {
             if(leftValue <= rightValue) {
               const bodyAst = parse(node.body, errorLogging);
-              await evaluate(bodyAst, output, errorLogging, askFunction);
+              await evaluate(bodyAst, output, errorLogging, askFunction, memory);
             }
           }
+        break;
+
+      case "RitualDeclaration":
+        // Store the ritual in memory
+        memory[node.name] = {
+          parameters: node.parameters,
+          body: node.body
+        };
+        break;
+
+      case "RitualInvocation":
+        if (node.ritualName in memory) {
+          const ritual = memory[node.ritualName];
+          if (ritual.parameters.length !== node.arguments.length) {
+            errorLogging(`Ritual '${node.ritualName}' expects ${ritual.parameters.length} arguments, but got ${node.arguments.length}`);
+            break;
+          }
+          // Create a new scope for the ritual invocation
+          const ritualScope = { ...memory };
+          for (let i = 0; i < ritual.parameters.length; i++) {
+            ritualScope[ritual.parameters[i]] = node.arguments[i];
+          }
+          const bodyAst = parse(ritual.body, errorLogging);
+          await evaluate(bodyAst, output, errorLogging, askFunction, ritualScope);
+        } else {
+          errorLogging(`Ritual '${node.ritualName}' is not defined!`);
+        }
         break;
 
       default:

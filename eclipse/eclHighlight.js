@@ -17,7 +17,7 @@ const HIGHLIGHT_RULES = [
   },
   {
     className: "keyword",
-    pattern: "\\b(?:sky|experiment|say|learn|addKnowledge)\\b"
+    pattern: "\\b(?:sky|experiment|say|learn|addKnowledge|ritual|summon)\\b"
   },
   {
     className: "number",
