@@ -17,7 +17,7 @@ const HIGHLIGHT_RULES = [
   },
   {
     className: "keyword",
-    pattern: "\\b(?:sky|str|num|boolean|bool|say|learn|addKnowledge)\\b"
+    pattern: "\\b(?:sky|experiment|say|learn|addKnowledge)\\b"
   },
   {
     className: "number",
@@ -25,7 +25,7 @@ const HIGHLIGHT_RULES = [
   },
   {
     className: "specialWords",
-    pattern: "\\b(?:into)\\b"
+    pattern: "\\b(?:into|str|num|boolean|bool)\\b"
   }
 ];
 
