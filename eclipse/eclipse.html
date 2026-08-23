@@ -4,6 +4,7 @@
     <title>eclipse workspaces</title>
     <link rel="stylesheet" href="../styles/windowStyle.css">
     <link rel="stylesheet" href="./eclipse.css">
+    <script src="../libraries/localforage.min.js"></script>
   </head>
   <body>
   <aside>
@@ -13,19 +14,18 @@
   </aside>
   <div id="main">
     <div id="mainBtns">
-      <button class="basicBtn">>_</button>
+      <button onclick="toggleTerminal()" class="basicBtn">>_</button>
       <button id="runner" class="basicBtn">▶</button>
-    </div>
-
-    <div id="terminal">
-        <h1>eclipse terminal state: active</h1>
-        <hr>
     </div>
 
     <div class="editor-container">
       <div class="line-numbers" id="lineNumbers">1</div>
      <div class="code-editor" id="editor" contenteditable="true" spellcheck="false">say("welcome")</div>
     </div>
+  </div>
+
+  <div id="terminal">
+    <textarea spellcheck="false" id="terminalInput">@stellarOS/root: / $ </textarea>
   </div>
 
     <!-- WINDOWS -->

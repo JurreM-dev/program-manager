@@ -9,7 +9,7 @@ let currentDirectory = root;
 let currentPath = "/";
 
 document.addEventListener("DOMContentLoaded", async () => {
-    const potential = await localForage.getItem("rootSave");
+    const potential = await localforage.getItem("rootSave");
     if (potential) {
         root = potential;
         currentDirectory = root;
@@ -18,5 +18,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function saveRoot() {
-    localForage.setItem("rootSave", root);
+    localforage.setItem("rootSave", root);
 }
