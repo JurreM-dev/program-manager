@@ -2,6 +2,8 @@
 <html>
     <head>
         <title>head terminal</title>
+        <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+
         <style>
             body {
                 margin: 0;
@@ -117,6 +119,7 @@
                         files: []
                     }
                     currentDirectory.files.push(newDir);
+                    saveRoot();
                     Logs("created directory " + dirName);
                 } else if(parts[0] === "ls") {
                     let files = currentDirectory.files;
@@ -172,12 +175,14 @@
                         typeFile: fileParts[fileParts.length - 1]
                     }
                     currentDirectory.files.push(newFile);
+                    saveRoot();
                     Logs("file created: " + fileName);
                 } else if(parts[0] === "rm") {
                     let fileName = parts[1];
                     let fileIndex = currentDirectory.files.findIndex(f => f.name === fileName);
                     if(fileIndex !== -1) {
                         currentDirectory.files.splice(fileIndex, 1);
+                        saveRoot();
                         Logs("file removed: " + fileName);
                     } else {
                         Logs("file not found");
