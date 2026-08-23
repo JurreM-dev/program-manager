@@ -1,220 +1,242 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>head terminal</title>
-        <style>
-            body {
-                margin: 0;
-                padding: 0;
-                background-color: black;
-                overflow: hidden;
-            }
-            textarea {
-                caret-shape: block;
-                background-color: black;
-                color: lime;
-                width: 100vw;
-                height: 100vh;
-                position: fixed;
-                top: 0;
-                left: 0;
-                border: none;
-                outline: none;
-                resize: none;
-                font-family: monospace;
-                font-size: 18px;
-                padding: 15px;
-                box-sizing: border-box;
-            }
-        </style>
-    </head>
-    <body>
-        <textarea spellcheck="false" id="terminal">@stellarOS/root: / $ </textarea>
-        <script src="fileManager.js"></script>
-        <script>
-            let line = 1;
-            let data = {};
+  <head>
+    <title>head terminal</title>
+    <script src="libraries/localforage.min.js"></script>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background-color: black;
+        overflow: hidden;
+      }
+      textarea {
+        caret-shape: block;
+        background-color: black;
+        color: lime;
+        width: 100vw;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        border: none;
+        outline: none;
+        resize: none;
+        font-family: monospace;
+        font-size: 18px;
+        padding: 15px;
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+  <body>
+    <textarea spellcheck="false" id="terminal">@stellarOS/root: / $ </textarea>
 
-            document.addEventListener("keydown", async (e) => {
-                if(e.key === "Backspace") {
-                    let content = document.getElementById("terminal").value;
-                    const lines = content.split("\n");
-                    let curLine = lines[lines.length - 1];
-                    let curChars = curLine.slice(-2);
-                    if(curChars === "$ ") {
-                        e.preventDefault(); 
-                    }
-                } else if(e.key === "Enter") {
-                    let content = document.getElementById("terminal").value;
-                    const lines = content.split("\n");
-                    let curLine = lines[lines.length - 1];
-                    curLineWords = curLine.split(" ");
-                    const command = curLineWords.slice(3).join(" ");
-                    Logs("")
-                    await runProgram(command)
-                    e.preventDefault(); 
-                    document.getElementById("terminal").value += `\n@stellarOS/root: ${currentPath} $ `;
-                    line += 1;
+    <script src="fileManager.js"></script>
+    <script>
+      let line = 1;
+      let data = {};
+
+      document.addEventListener("keydown", async (e) => {
+        if (e.key === "Backspace") {
+          let content = document.getElementById("terminal").value;
+          const lines = content.split("\n");
+          let curLine = lines[lines.length - 1];
+          let curChars = curLine.slice(-2);
+          if (curChars === "$ ") {
+            e.preventDefault();
+          }
+        } else if (e.key === "Enter") {
+          let content = document.getElementById("terminal").value;
+          const lines = content.split("\n");
+          let curLine = lines[lines.length - 1];
+          curLineWords = curLine.split(" ");
+          const command = curLineWords.slice(3).join(" ");
+          Logs("");
+          await runProgram(command);
+          e.preventDefault();
+          document.getElementById("terminal").value +=
+            `\n@stellarOS/root: ${currentPath} $ `;
+          line += 1;
+        }
+      });
+
+      function Logs(added) {
+        document.getElementById("terminal").value += added + "\n";
+        line += 1;
+      }
+
+      function newLine() {
+        line += 1;
+        document.getElementById("terminal").value +=
+          `\n@stellarOS/root: ${currentPath} $ `;
+      }
+
+      async function getPrograms() {
+        data = await (await fetch("programs.json")).json();
+      }
+
+      function progressBar(time, name) {
+        Logs("installing " + name + "...");
+        let bar = "";
+        let num = 0;
+        let partTime = time / 100;
+        const looper = setInterval(() => {
+          bar += "|";
+          num += 1;
+          let total = document.getElementById("terminal").value;
+          let lines = total.split("\n");
+          lines.splice(-1, 1);
+          lines.push(bar + " " + num + "%");
+          let newText = lines.join("\n");
+          document.getElementById("terminal").value = newText;
+          if (num === 100) {
+            clearInterval(looper);
+            Logs("");
+            Logs("successfully installed " + name);
+            newLine();
+          }
+        }, partTime);
+      }
+
+      async function runProgram(command) {
+        if (command.startsWith("program")) {
+          await Programs(command);
+        } else if (
+          command.startsWith("mkdir") ||
+          command.startsWith("ls") ||
+          command.startsWith("cd") ||
+          command.startsWith("rm") ||
+          command.startsWith("touch")
+        ) {
+          await files(command);
+        } else {
+          Logs("command not found");
+        }
+      }
+
+      async function files(command) {
+        let parts = command.split(" ");
+        if (parts[0] === "mkdir") {
+          let dirName = parts[1];
+          let newDir = {
+            type: "directory",
+            name: dirName,
+            directory: currentPath + dirName + "/",
+            files: [],
+          };
+          currentDirectory.files.push(newDir);
+          saveRoot();
+          Logs("created directory " + dirName);
+        } else if (parts[0] === "ls") {
+          let files = currentDirectory.files;
+          if (files.length === 0) {
+            Logs("no files found");
+          } else {
+            let fileNames = files.map((f) => f.name);
+            Logs("files in current directory:");
+            fileNames.forEach((name) => {
+              if (!name.startsWith(".")) {
+                Logs("- " + name);
+              } else if (name.startsWith(".") && parts.includes("-all")) {
+                Logs("- " + name);
+              }
+            });
+          }
+        } else if (parts[0] === "cd") {
+          let dirName = parts[1];
+          if (dirName === "..") {
+            if (currentDirectory.name !== "root") {
+              let parentDirPath =
+                currentDirectory.directory.split("/").slice(0, -2).join("/") +
+                "/";
+              let parentDir = root;
+              if (parentDirPath !== "/") {
+                let pathParts = parentDirPath
+                  .split("/")
+                  .filter((p) => p !== "");
+                for (let part of pathParts) {
+                  parentDir = parentDir.files.find(
+                    (f) => f.type === "directory" && f.name === part,
+                  );
                 }
-            })
-
-            function Logs(added) {
-                document.getElementById("terminal").value += added + "\n"
-                line += 1;
+              }
+              currentDirectory = parentDir;
+              currentPath = currentDirectory.directory;
+              Logs("changed directory to " + currentPath);
+            } else {
+              Logs("directory not found");
             }
-
-            function newLine() {
-                line += 1;
-                document.getElementById("terminal").value += `\n@stellarOS/root: ${currentPath} $ `;
+          } else {
+            let newDir = currentDirectory.files.find(
+              (f) => f.type === "directory" && f.name === dirName,
+            );
+            if (newDir) {
+              currentDirectory = newDir;
+              currentPath = currentDirectory.directory;
+              Logs("changed directory to " + currentPath);
+            } else {
+              Logs("directory not found");
             }
+          }
+        } else if (parts[0] === "touch") {
+          let fileName = parts[1];
+          let fileParts = fileName.split(".");
+          let newFile = {
+            type: "file",
+            name: fileName,
+            directory: currentPath + fileName,
+            content: "",
+            typeFile: fileParts[fileParts.length - 1],
+          };
+          currentDirectory.files.push(newFile);
+          saveRoot();
+          Logs("file created: " + fileName);
+        } else if (parts[0] === "rm") {
+          let fileName = parts[1];
+          let fileIndex = currentDirectory.files.findIndex(
+            (f) => f.name === fileName,
+          );
+          if (fileIndex !== -1) {
+            currentDirectory.files.splice(fileIndex, 1);
+            saveRoot();
+            Logs("file removed: " + fileName);
+          } else {
+            Logs("file not found");
+          }
+        }
+      }
 
-            async function getPrograms() {
-              data = await (await fetch('programs.json')).json();
+      async function Programs(command) {
+        let parts = command.split(" ");
+        if (parts[1] === "install") {
+          let programName = parts[2];
+          await getPrograms();
+          if (data.programs[programName]) {
+            let cur = data.programs[programName];
+            if (cur.version !== "v0.0.0" || cur.version.startsWith("x")) {
+              const downloadTime = cur.installTime ?? 3000;
+              progressBar(downloadTime, cur.name);
+              root.programs.push(cur);
+              saveRoot();
+            } else {
+              Logs(cur.message);
             }
-
-            function progressBar(time, name) {
-                Logs("installing " + name + "...")
-                let bar = ""
-                let num = 0
-                let partTime = time / 100;
-                const looper = setInterval(() => {
-                    bar += "|";
-                    num += 1;
-                    let total = document.getElementById("terminal").value;
-                    let lines = total.split("\n");
-                    lines.splice(-1, 1);
-                    lines.push(bar + " " + num + "%");
-                    let newText = lines.join("\n")
-                    document.getElementById("terminal").value = newText
-                    if(num === 100) {
-                        clearInterval(looper);
-                        Logs("")
-                        Logs("successfully installed " + name);
-                        newLine();
-                    }
-                }, partTime)
+          } else {
+            Logs("program " + programName + " does not exist sorry");
+          }
+        } else if (parts[1] === "open") {
+          let programName = parts[2];
+          if (root.programs.some((p) => p.name === programName)) {
+            let cur = root.programs.find((p) => p.name === programName);
+            if (cur.path) {
+              window.location.href = cur.path;
+            } else {
+              Logs("program is broken, cannot open");
             }
-
-
-            async function runProgram(command) {
-                if(command.startsWith("program")) {
-                    await Programs(command)
-                } else if(command.startsWith("mkdir") || command.startsWith("ls") || command.startsWith("cd") || command.startsWith("rm") || command.startsWith("touch")) {
-                    await files(command)
-                } else {
-                    Logs("command not found");
-                }
-            }
-
-             async function files(command) {
-                let parts = command.split(" ")
-                if(parts[0] === "mkdir") {
-                    let dirName = parts[1];
-                    let newDir = {
-                        type: "directory",
-                        name: dirName,
-                        directory: currentPath + dirName + "/",
-                        files: []
-                    }
-                    currentDirectory.files.push(newDir);
-                    Logs("created directory " + dirName);
-                } else if(parts[0] === "ls") {
-                    let files = currentDirectory.files;
-                    if(files.length === 0) {
-                        Logs("no files found");
-                    } else {
-                        let fileNames = files.map(f => f.name);
-                        Logs("files in current directory:");
-                        fileNames.forEach((name) => {
-                            if(!name.startsWith(".")) {
-                                Logs("- " + name);
-                            } else if(name.startsWith(".") && parts.includes("-all")) {
-                                Logs("- " + name);
-                            }
-                        });
-                    }
-                } else if(parts[0] === "cd") {
-                    let dirName = parts[1];
-                    if(dirName === "..") {
-                        if(currentDirectory.name !== "root") {
-                            let parentDirPath = currentDirectory.directory.split("/").slice(0, -2).join("/") + "/";
-                            let parentDir = root;
-                            if(parentDirPath !== "/") {
-                                let pathParts = parentDirPath.split("/").filter(p => p !== "");
-                                for(let part of pathParts) {
-                                    parentDir = parentDir.files.find(f => f.type === "directory" && f.name === part);
-                                }
-                            }
-                            currentDirectory = parentDir;
-                            currentPath = currentDirectory.directory;
-                            Logs("changed directory to " + currentPath);
-                        } else {
-                            Logs("directory not found");
-                        }
-                    } else {
-                        let newDir = currentDirectory.files.find(f => f.type === "directory" && f.name === dirName);
-                        if(newDir) {
-                            currentDirectory = newDir;
-                            currentPath = currentDirectory.directory;
-                            Logs("changed directory to " + currentPath);
-                        } else {
-                            Logs("directory not found");
-                        }
-                    }
-                } else if(parts[0] === "touch") {
-                    let fileName = parts[1];
-                    let fileParts = fileName.split(".");
-                    let newFile = {
-                        type: "file",
-                        name: fileName,
-                        directory: currentPath + fileName,
-                        content: "",
-                        typeFile: fileParts[fileParts.length - 1]
-                    }
-                    currentDirectory.files.push(newFile);
-                    Logs("file created: " + fileName);
-                } else if(parts[0] === "rm") {
-                    let fileName = parts[1];
-                    let fileIndex = currentDirectory.files.findIndex(f => f.name === fileName);
-                    if(fileIndex !== -1) {
-                        currentDirectory.files.splice(fileIndex, 1);
-                        Logs("file removed: " + fileName);
-                    } else {
-                        Logs("file not found");
-                    }
-                }
-            }
-
-             async function Programs(command) {
-                let parts = command.split(" ")
-                if(parts[1] === "install") {
-                    let programName = parts[2];
-                    await getPrograms();
-                    if(data.programs[programName]) {
-                      let cur = data.programs[programName];
-                      if(cur.version !== "v0.0.0" || cur.version.startsWith("x")) {
-                        const downloadTime = cur.installTime ?? 3000
-                        progressBar(downloadTime, cur.name)
-                        root.programs.push(cur)
-                      } else {
-                        Logs(cur.message)
-                      }
-                    } else {
-                      Logs("program " + programName + " does not exist sorry")
-                    }
-                } else if(parts[1] === "open") {
-                    let programName = parts[2];
-                    if(root.programs.some(p => p.name === programName)) {
-                      let cur = root.programs.find(p => p.name === programName);
-                      if(cur.path) {
-                        window.location.href = cur.path
-                      } else {
-                        Logs("program is broken, cannot open")
-                      }
-                    }
-                }
-            }
-
-        </script>
-    </body>
+          }
+        }
+      }
+    </script>
+  </body>
 </html>
