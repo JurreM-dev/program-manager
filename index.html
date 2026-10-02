@@ -119,14 +119,7 @@
         let parts = command.split(" ");
         if (parts[0] === "mkdir") {
           let dirName = parts[1];
-          let newDir = {
-            type: "directory",
-            name: dirName,
-            directory: currentPath + dirName + "/",
-            files: [],
-          };
-          currentDirectory.files.push(newDir);
-          saveRoot();
+          mkdir(dirName);
           Logs("created directory " + dirName);
         } else if (parts[0] === "ls") {
           let files = currentDirectory.files;

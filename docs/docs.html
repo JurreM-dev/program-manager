@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>docs app</title>
+        <style>
+            #page {
+                width: 60vw;
+                height: 80vh;
+                padding: 6px;
+            }
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+            }
+        </style>
+    </head>
+    <body>
+        <h1>documents</h1>
+        <textarea id="page"></textarea>
+
+        <script src="../fileManager.js"></script>
+        <script>
+            function initialize() {
+                if(!root.files.includes(".drive")) {
+                    mkdir(".drive")
+                }
+                currentPath = "/.drive/";
+                currentDirectory = getDirectory(currentPath);
+                if(!currentDirectory.files.includes("docs.txt")) {
+                    writeFile("docs.txt", "Welcome to the docs app!");
+                }
+                const content = readFile(".drive/docs.txt");
+                document.getElementById("page").value = content;
+            }
+            function save() {
+                const content = document.getElementById("page").value;
+                writeFile(".drive/docs.txt", content);
+            }
+            
+            initialize();
+        </script>
+    </body>
+</html>

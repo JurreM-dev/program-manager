@@ -7,6 +7,14 @@
       "installTime": 3000,
       "version": "v0.1.2"
     },
+    "docs": {
+      "name": "docs",
+      "path": "./docs/docs.html",
+      "message": "docs is not responding",
+      "installTime": 1500,
+      "version": "v0.0.1"
+    },
+
     "aether": {
       "name": "aether",
       "message": "aether is still under development",
