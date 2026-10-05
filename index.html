@@ -129,9 +129,10 @@
             let fileNames = files.map((f) => f.name);
             Logs("files in current directory:");
             fileNames.forEach((name) => {
-              if (!name.startsWith(".")) {
+              if (!name.startsWith(".") && parts.includes("--all")) {
                 Logs("- " + name);
-              } else if (name.startsWith(".") && parts.includes("-all")) {
+              } else if (name.startsWith(".")) {
+              } else {
                 Logs("- " + name);
               }
             });

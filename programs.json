@@ -9,16 +9,20 @@
     },
     "docs": {
       "name": "docs",
-      "path": "./docs/docs.html",
-      "message": "docs is not responding",
-      "installTime": 1500,
-      "version": "v0.0.1"
+      "message": "docs is not discontinued, use skyDocs instead",
+      "version": "v0.0.0"
     },
-
     "aether": {
       "name": "aether",
       "message": "aether is still under development",
       "version": "v0.0.0"
+    }, 
+    "skyDocs": {
+      "name": "skyDocs",
+      "path": "./apps/skyDocs.html",
+      "message": "skyDocs is a new program that is still under development",
+      "installTime": 2000,
+      "version": "v0.0.1"
     }
   }
 }
