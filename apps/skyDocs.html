@@ -166,10 +166,12 @@
         alert("error, make a file name first");
         return
       }
+      loadDocs();
       docs[fileName] = {
-        name: fileName,
+        name: fileName.split(" ").join("_"),
         content: quill.getContents()
       }
+      alert("succesfully saved content (all white space replaced with underscores)")
       localforage.setItem("skyDocuments", docs);
     }
 
@@ -179,12 +181,7 @@
         alert("input a valid name");
         return
       }
-      let potential = await localforage.getItem("skyDocuments");
-      if(!potential) {
-        alert("error loading");
-        return
-      }
-      docs = potential;
+      loadDocs();
       if(!docs[name]) {
         alert("file not found");
         return
@@ -193,6 +190,14 @@
        document.getElementById("nameInput").value = docs[name].name;
        alert("succesfully loaded content")
     }
+    async function loadDocs() {
+      let potential = await localforage.getItem("skyDocuments");
+      if(!potential) {
+        return
+      }
+      docs = potential;
+    }
+    loadDocs();
     quill.root.setAttribute('spellcheck', false);
   </script>
 </body>
