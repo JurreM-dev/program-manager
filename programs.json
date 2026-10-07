@@ -22,7 +22,7 @@
       "path": "./apps/skyDocs.html",
       "message": "skyDocs is a new program that is still under development",
       "installTime": 2000,
-      "version": "v0.0.1"
+      "version": "v0.1.0"
     }
   }
 }

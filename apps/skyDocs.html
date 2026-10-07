@@ -54,36 +54,79 @@
     }
 
     .editor-card {
-      overflow: hidden;
+      overflow: visible;
       border: 1px solid #e1e6ef;
       border-radius: 14px;
       background: #fff;
       box-shadow: 0 18px 50px rgba(35, 53, 91, .10), 0 2px 8px rgba(35, 53, 91, .04);
     }
 
-    #text-editor { background: #fff; }
+    #text-editor {
+      max-height: calc(100vh - 180px);
+      overflow-y: auto;
+      background: #fff;
+    }
     
     #nameInput {
-      border-radius: 20px;
-      padding: 4px;
-      border: 1px solid #e1e6ef;
-      font-size: 20px;
-      font-weight: bold;
+      min-width: 0;
+      flex: 1;
+      border: 1px solid #d8deea;
+      border-radius: 10px;
+      padding: 10px 13px;
+      color: #202938;
+      background: #fff;
+      font: inherit;
+      font-size: 15px;
+      outline: 0;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    #nameInput:focus {
+      border-color: #536de4;
+      box-shadow: 0 0 0 3px rgba(83, 109, 228, .14);
+    }
+
+    .file-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
     }
 
     .controlBtn {
-      border: 1px solid #e1e6ef;
-      background-color: white;
-      font-size: 20px;
-      border-radius: 20px;
-      padding: 4px;
+      width: 42px;
+      height: 42px;
+      flex: 0 0 42px;
+      border: 1px solid #d8deea;
+      border-radius: 10px;
+      color: #43516a;
+      background: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform .2s, border-color .2s, background-color .2s, box-shadow .2s;
+    }
+
+    .controlBtn:hover {
+      border-color: #536de4;
+      background: #f5f7ff;
+      box-shadow: 0 5px 14px rgba(35, 53, 91, .10);
+      transform: translateY(-1px);
+    }
+
+    .controlBtn:focus-visible {
+      outline: 3px solid rgba(83, 109, 228, .22);
+      outline-offset: 2px;
     }
 
     .ql-toolbar.ql-snow {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
       padding: 12px 14px;
       border: 0;
       border-bottom: 1px solid #e8ebf1;
       background: #fbfcfe;
+      box-shadow: 0 3px 10px rgba(35, 53, 91, .06);
     }
 
     .ql-snow .ql-stroke { stroke: #596579; }
@@ -115,6 +158,7 @@
     @media (max-width: 600px) {
       body { padding: 32px 14px; }
       .page-heading { margin-bottom: 18px; }
+      .file-actions { margin-bottom: 10px; }
       .ql-toolbar.ql-snow { padding: 9px 7px; }
       .ql-container.ql-snow, .ql-editor { min-height: 55vh; }
       .ql-editor { padding: 22px 18px; }
@@ -128,9 +172,11 @@
       <p class="eyebrow">Your workspace</p>
       <h1>Sky editor</h1>
     </header>
-    <input placeholder="file name" id="nameInput">
-    <button class="controlBtn" onclick="saveFile()">💾</button>
-    <button class="controlBtn" onclick="loadFile()">📤</button>
+    <div class="file-actions" aria-label="File actions">
+      <input placeholder="File name" id="nameInput" aria-label="File name">
+      <button class="controlBtn" onclick="saveFile()" title="Save file" aria-label="Save file">💾</button>
+      <button class="controlBtn" onclick="loadFile()" title="Load file" aria-label="Load file">📤</button>
+    </div>
     <section class="editor-card" aria-label="Rich text editor">
       <div id="text-editor"></div>
     </section>
