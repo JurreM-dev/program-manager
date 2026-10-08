@@ -11,3 +11,10 @@ function openSkyDocs() {
   frame.src = "../../apps/skyDocs.html"
   windowBody.appendChild(frame);
 }
+
+function updateTime() {
+  const now = new Date();
+  const time = now.toLocaleTimeString();
+
+  document.getElementById("currentTime").innerText = time;
+}

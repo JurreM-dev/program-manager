@@ -24,13 +24,6 @@
       "installTime": 2000,
       "version": "v0.1.0"
     },
-    "autumnOS": {
-      "name": "autumnOS",
-      "path": "./OS/autumnOS/autumn.html",
-      "message": "autumnOS is a new OS that is still under development",
-      "installTime": 10000,
-      "version": "v0.1.0"
-    },
     "calculator": {
       "name": "calculator",
       "path": "./apps/calculator.html",

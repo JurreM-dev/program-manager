@@ -11,7 +11,7 @@ function installOs(os) {
 function loadOs() {
     potential = localStorage.getItem("OS");
     if(potential) {
-        osSave = JSON.stringify(potential);
+        osSave = JSON.parse(potential);
         if(osSave.instaOS) {
             window.location.href = osSave.instaOs.path;
         }
@@ -21,6 +21,7 @@ function loadOs() {
 function bootOs(osName) {
     if(osSave.downloadedOs && osSave.downloadedOs.name === osName) {
         window.location.href = osSave.downloadedOs.path;
+        return true;
     } else {
         return false;
     }
