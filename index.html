@@ -79,7 +79,7 @@
       }
 
       async function getOS() {
-        osData = await(await fetch("os.json")).json(); 
+        osData = await (await fetch("os.json")).json();
       }
 
       function progressBar(time, name) {
@@ -108,7 +108,7 @@
       async function runProgram(command) {
         if (command.startsWith("program")) {
           await Programs(command);
-        } else if(command.startsWith("os")) {
+        } else if (command.startsWith("os")) {
           await Os(command);
         } else if (
           command.startsWith("mkdir") ||
@@ -239,37 +239,39 @@
           }
         }
       }
-    
+
       async function Os(command) {
         let parts = command.split(" ");
         let osName = parts[2];
-        if(parts[1] === "download") {
+        if (parts[1] === "download") {
           await getOS();
-          if(!osData) {
-            Logs("error in fetching OS files")
-            return
+          if (!osData) {
+            Logs("error in fetching OS files");
+            return;
           }
-          if(!osData.os) {
-            Logs("error in fetching OS files")
-            return
+          if (!osData.os) {
+            Logs("error in fetching OS files");
+            return;
           }
-          if(!osData.os[osName]) {
+          if (!osData.os[osName]) {
             Logs("OS you are trying to find doesn't exist");
             return;
           }
           let cur = osData.os[osName];
-            if (cur.version !== "v0.0.0" || cur.version.startsWith("x")) {
-              const downloadTime = cur.downloadTime ?? 3000;
-              progressBar(downloadTime, cur.name);
-              installOs(cur)
-            } else {
-              Logs(cur.message);
-            }
-        } else if(parts[1] === "boot") {
-          let attempt = bootOs(osName);
-          if(!attempt) {
-            Logs("failed to boot OS")
+          if (cur.version !== "v0.0.0" || cur.version.startsWith("x")) {
+            const downloadTime = cur.downloadTime ?? 3000;
+            progressBar(downloadTime, cur.name);
+            installOs(cur);
+          } else {
+            Logs(cur.message);
           }
+        } else if (parts[1] === "boot") {
+          let attempt = bootOs(osName);
+          if (!attempt) {
+            Logs("failed to boot OS");
+          }
+        } else if("standardize" === parts[1]) {
+          standardizeOs(osName);
         } else {
           Logs(parts[1]);
           Logs("invalid command");

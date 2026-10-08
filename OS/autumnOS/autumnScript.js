@@ -18,3 +18,7 @@ function updateTime() {
 
   document.getElementById("currentTime").innerText = time;
 }
+
+setInterval(() => {
+  updateTime();
+}, 1000)
