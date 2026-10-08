@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100vh;
+        height: 100dvh;
+        margin: 0;
+      }
+      #btnContainer {
+        display: grid;
+        flex: 1;
+        min-height: 0;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        grid-template-rows: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        width: 100%;
+        padding: 8px;
+      }
+      .button {
+        width: 100%;
+        height: 100%;
+        font-size: clamp(1.25rem, 5vw, 2.5rem);
+        border-radius: 20px;
+        background-color: var(--main-color, grey)
+      }
+      #show {
+        width: 100%;
+        height: 20vh;
+        height: 20dvh;
+        flex-shrink: 0;
+        padding: 0 16px;
+        font-size: clamp(2rem, 8vw, 4rem);
+        text-align: right;
+      }
+    </style>
+  </head>
+  <body>
+    <input readonly id="show">
+    <div id="btnContainer">
+      <button class="button" onclick="adder('1')">1</button>
+      <button class="button" onclick="adder('2')">2</button>
+      <button class="button" onclick="adder('3')">3</button>
+      <button class="button" onclick="clearDisplay()">C</button>
+
+      <button class="button" onclick="adder('4')">4</button>
+      <button class="button" onclick="adder('5')">5</button>
+      <button class="button" onclick="adder('6')">6</button>
+      <button class="button" onclick="adder('+')">+</button>
+
+      <button class="button" onclick="adder('7')">7</button>
+      <button class="button" onclick="adder('8')">8</button>
+      <button class="button" onclick="adder('9')">9</button>
+      <button class="button" onclick="adder('-')">-</button>
+
+      <button class="button" onclick="adder('0')">0</button>
+      <button class="button" onclick="adder('/')">/</button>
+      <button class="button" onclick="adder('*')">*</button>
+      <button class="button" onclick="calculate()">=</button>
+    </div>
+    <script>
+        let input = "";
+        let field = document.getElementById("show");
+        function adder(inputted) {
+          input += inputted;
+          field.value = input;
+        } 
+        function clearDisplay() {
+          input = "";
+          field.value = input;
+        }
+        function calculate() {
+          input = eval(input);
+          field.value = input;
+        }
+    </script>
+  </body>
+</html>
