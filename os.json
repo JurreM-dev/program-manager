@@ -1,0 +1,11 @@
+{
+    "os": {
+        "autumnOS": {
+            "name": "autumnOS",
+            "path": "./OS/autumnOS/autumn.html",
+            "downloadTime": 10000,
+            "message": "autumnOS is the first official OS inside of stellarOS!",
+            "version": "v0.1.0"
+        }
+    }
+}

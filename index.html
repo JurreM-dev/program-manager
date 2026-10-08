@@ -33,9 +33,11 @@
     <textarea spellcheck="false" id="terminal">@stellarOS/root: / $ </textarea>
 
     <script src="fileManager.js"></script>
+    <script src="mainOs.js"></script>
     <script>
       let line = 1;
       let data = {};
+      let osData = {};
 
       document.addEventListener("keydown", async (e) => {
         if (e.key === "Backspace") {
@@ -76,6 +78,10 @@
         data = await (await fetch("programs.json")).json();
       }
 
+      async function getOS() {
+        osData = await(await fetch("os.json")).json(); 
+      }
+
       function progressBar(time, name) {
         Logs("installing " + name + "...");
         let bar = "";
@@ -102,6 +108,8 @@
       async function runProgram(command) {
         if (command.startsWith("program")) {
           await Programs(command);
+        } else if(command.startsWith("os")) {
+          await Os(command);
         } else if (
           command.startsWith("mkdir") ||
           command.startsWith("ls") ||
@@ -229,6 +237,42 @@
               Logs("program is broken, cannot open");
             }
           }
+        }
+      }
+    
+      async function Os(command) {
+        let parts = command.split(" ");
+        let osName = parts[2];
+        if(parts[1] === "download") {
+          await getOS();
+          if(!osData) {
+            Logs("error in fetching OS files")
+            return
+          }
+          if(!osData.os) {
+            Logs("error in fetching OS files")
+            return
+          }
+          if(!osData.os[osName]) {
+            Logs("OS you are trying to find doesn't exist");
+            return;
+          }
+          let cur = osData.os[osName];
+            if (cur.version !== "v0.0.0" || cur.version.startsWith("x")) {
+              const downloadTime = cur.downloadTime ?? 3000;
+              progressBar(downloadTime, cur.name);
+              installOs(cur)
+            } else {
+              Logs(cur.message);
+            }
+        } else if(parts[1] === "boot") {
+          let attempt = bootOs(osName);
+          if(!attempt) {
+            Logs("failed to boot OS")
+          }
+        } else {
+          Logs(parts[1]);
+          Logs("invalid command");
         }
       }
     </script>
