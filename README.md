@@ -26,12 +26,22 @@ with ls you can also use the --all to show hidden files.
 ## OS
 **os** is the inner OS system, that brings extra functionality and a dashboard to stellarOS, this is still very experimental and also one of the things I am currently working on! As of right now there is only one OS: autumnOS
 >how to download and boot an OS?
+
 download:
+
 `os download <os name>`
+
 booting:
+
 `os boot <os name>`
 
 you can only have one os installed at a time and can only boot what is currently installed.
+>how to set a default OS?
+
+you can actually make an OS your standard! If you do so when you open stellarOS it will ask if you want to open your default OS, and if you confirm it will automatically open!
+for this use:
+
+`os standardize <os name>`
 
 ## other projects within stellarOS
 these are some other projects in stellarOS I have or am working on, note that some of these are not well polished or just not finished at all, since some of them are paused and not focused on.
