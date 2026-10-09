@@ -1,3 +1,17 @@
+:root {
+  --leaf-pointer: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='34' height='34' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='24' transform='rotate(-32, 17, 17)'%3E%26%23x1F341%3B%3C/text%3E%3C/svg%3E"), auto;
+}
+
+html, body {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='24' transform='rotate(-32, 16, 16)'%3E%26%23x1F341%3B%3C/text%3E%3C/svg%3E"), auto;
+}
+html:active, body:active {
+  cursor: url("data:image/svg+xml;utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 32 32'%3E%3Ctext y='26' font-size='24' transform='rotate(-32, 15, 15)'%3E%26%23x1F341%3B%3C/text%3E%3C/svg%3E"), auto;
+}
+a:hover, button:hover, input[type="submit"]:hover {
+  cursor: var(--leaf-pointer)
+}
+
 body {
   background: linear-gradient(to bottom, yellow, orange, red);
   width: 100vw;
@@ -77,7 +91,6 @@ iframe {
   background-color: darkslategrey;
   margin: 0;
   justify-content: space-between;
-  cursor: pointer;
 }
 #currentTime {
   margin: 5px;

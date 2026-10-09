@@ -39,6 +39,7 @@
       let data = {};
       let osData = {};
 
+      // KEYDOWN EVENT
       document.addEventListener("keydown", async (e) => {
         if (e.key === "Backspace") {
           let content = document.getElementById("terminal").value;
@@ -63,6 +64,7 @@
         }
       });
 
+      // HELPER FUNCTIONS
       function Logs(added) {
         document.getElementById("terminal").value += added + "\n";
         line += 1;
@@ -72,14 +74,6 @@
         line += 1;
         document.getElementById("terminal").value +=
           `\n@stellarOS/root: ${currentPath} $ `;
-      }
-
-      async function getPrograms() {
-        data = await (await fetch("programs.json")).json();
-      }
-
-      async function getOS() {
-        osData = await (await fetch("os.json")).json();
       }
 
       function progressBar(time, name) {
@@ -103,6 +97,15 @@
             newLine();
           }
         }, partTime);
+      }
+
+      // FETCHING JSON FILES
+      async function getPrograms() {
+        data = await (await fetch("programs.json")).json();
+      }
+
+      async function getOS() {
+        osData = await (await fetch("os.json")).json();
       }
 
       async function runProgram(command) {
