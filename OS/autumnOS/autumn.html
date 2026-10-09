@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="autumnStyles.css" />
     <script src="helpers.js"></script>
-      <script src="https://cdn.jsdelivr.net/npm/localforage@1.10.0/dist/localforage.min.js"></script>
+    <script src="./../../libraries/localforage.min.js"></script>
     <style>
       :root {
         --main-color: orange;
@@ -21,10 +21,15 @@
 
     <div id="lowBar">
       <p id="currentTime">00:00</p>
+      <div id="profileDisplay" onclick="openProfileChanger()">
+        <p id="nameDisplay">guest user</p>
+        <img id="pfpDisplay">
+      </div>
     </div>
 
       <!-- SCRIPTS -->
-      <script src="autumnScript.js"></script>
-      <script src="windows.js"></script>
+       <script src="autumnUser.js"></script>
+       <script src="windows.js"></script>
+       <script src="autumnScript.js"></script>
   </body>
 </html>
