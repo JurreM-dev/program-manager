@@ -94,6 +94,8 @@ iframe {
   height: 30px;
   width: 30px;
   border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
   margin: 0;
 }
 #profileChangerMenu {
@@ -104,4 +106,17 @@ iframe {
   flex-direction: column;
   align-items: center;
   padding: 20px;
+  gap: 20px
+}
+#nameInput {
+  padding: 4px;
+  border-radius: 16px;
+  font-size: 19px;
+}
+#menuProfilePicture {
+  height: 50%;
+  min-width: 20%;
+  width: auto;
+  border: 2px solid black;
+  border-radius: 30px;
 }
