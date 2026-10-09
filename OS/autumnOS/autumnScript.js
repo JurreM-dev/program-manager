@@ -1,16 +1,17 @@
 function openCalc() {
-  const windowBody = addWindow("calculator");
-  let frame = document.createElement("iframe");
-  frame.src = "../../apps/calculator.html"
-  windowBody.appendChild(frame);
+  openApp("calculator", "apps/calculator.html");
 }
 
 function openSkyDocs() {
-  const windowBody = addWindow("sky docs");
-  let frame = document.createElement("iframe");
-  frame.src = "../../apps/skyDocs.html"
-  windowBody.appendChild(frame);
+  openApp("skyDocs", "apps/skyDocs.html");
 }
+
+function openApp(appName, appPath) {
+  const windowBody = addWindow(appName);
+  let frame = document.createElement("iframe");
+  frame.src = `./../../${appPath}`;
+  windowBody.appendChild(frame);
+} 
 
 function updateTime() {
   const now = new Date();

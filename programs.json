@@ -2,10 +2,11 @@
   "programs": {
     "eclipse": {
       "name": "eclipse",
-      "path": "./eclipse/eclipse.html",
+      "path": "eclipse/eclipse.html",
       "message": "eclipse is under maintainance right now",
       "installTime": 3000,
-      "version": "v0.1.2"
+      "version": "v0.1.2",
+      "iconEmoji": "🌑"
     },
     "docs": {
       "name": "docs",
@@ -19,17 +20,19 @@
     }, 
     "skyDocs": {
       "name": "skyDocs",
-      "path": "./apps/skyDocs.html",
+      "path": "apps/skyDocs.html",
       "message": "skyDocs is a new program that is still under development",
       "installTime": 2000,
-      "version": "v0.1.0"
+      "version": "v0.1.0",
+      "iconEmoji": "🪶"
     },
     "calculator": {
       "name": "calculator",
-      "path": "./apps/calculator.html",
+      "path": "apps/calculator.html",
       "message": "a simple calculator",
       "installTime": 500,
-      "version": "v0.1.0"
+      "version": "v0.1.0",
+      "iconEmoji": "🧮"
     }
   }
 }
