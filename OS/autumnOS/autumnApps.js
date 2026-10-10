@@ -29,7 +29,5 @@ async function installApp(appName) {
 
 async function startRun() {
     await fetchApps();
-    installApp("calculator");
-    installApp("skyDocs");
 }
 startRun();
