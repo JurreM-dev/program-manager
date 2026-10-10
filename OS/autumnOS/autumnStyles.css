@@ -33,7 +33,7 @@ body {
   min-height: 140px;
   overflow: hidden;
   resize: both;
-  background-color: black;
+  background-color: rgb(255, 253, 253);
   padding: 0;
   position: fixed;
   top: 20px;
