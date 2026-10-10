@@ -78,10 +78,8 @@ function openProfileChanger() {
 
 function openAppStore() {
   const windowBody = addWindow("app store");
-  console.log(appList);
   Object.keys(appList).forEach((appKey) => {
     let app = appList[appKey];
-    console.log(app);
     if (!app.version.startsWith("x") && app.version !== "v0.0.0") {
       let downloadCard = document.createElement("div");
       let downloadBtn = document.createElement("button")

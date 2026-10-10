@@ -33,6 +33,14 @@
       "installTime": 500,
       "version": "v0.1.0",
       "iconEmoji": "🧮"
+    },
+    "timer": {
+      "name": "timer",
+      "path": "apps/timer.html",
+      "message": "a simple timer",
+      "installTime": 1000,
+      "version": "v0.0.1",
+      "iconEmoji": "⏳"
     }
   }
 }

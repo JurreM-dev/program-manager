@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Timer</title>
+    </head>
+    <body>
+        <div id="timerDiv">
+            <h1>timer</h1>
+            <p id="display">10:00</p>
+            <button onclick="startTimer()" id="startBtn">start</button>
+            <button onclick="pauseTimer()">pause</button>
+            <button onclick="resetTimer()">reset</button>
+        </div>
+
+        <script>
+            const display = document.getElementById("display")
+            const startBtn = document.getElementById("startBtn");
+
+            let startMinutes = 10;
+            let totalTimeSeconds = startMinutes * 60;
+            let timeLeft = totalTimeSeconds;
+
+            let endTime = null;
+            let timerInterval = null;
+
+            function formatTime(totalSeconds) {
+                const minutes = Math.floor(totalSeconds / 60);
+                const seconds = totalSeconds % 60;
+
+                return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
+            }
+
+            function updateDisplay() {
+                display.innerText = formatTime(timeLeft);
+            }
+
+            function tick() {
+                const now = Date.now();
+                timeLeft = Math.max(0, Math.round((endTime - now) / 1000));
+
+                updateDisplay();
+
+                if(timeLeft === 0) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    alert("timer is up!")
+                }
+            }
+
+            function startTimer() {
+                if(timerInterval) {
+                    return;
+                }
+
+                endTime = Date.now() + (timeLeft * 1000);
+                timerInterval = setInterval(tick, 500);
+                tick();
+            }
+            function pauseTimer() {
+                if(!timerInterval) {
+                    return;
+                }
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            function resetTimer() {
+                pauseTimer();
+                timeLeft = totalTimeSeconds();
+                updateDisplay();
+            }
+        </script>
+    </body>
+</html>
