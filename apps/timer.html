@@ -2,14 +2,35 @@
 <html>
     <head>
         <title>Timer</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            h1 {
+                margin: 0;
+            }
+            .pageDiv {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            } 
+        </style>
     </head>
     <body>
-        <div id="timerDiv">
+        <div class="pageDiv" id="timerDiv">
             <h1>timer</h1>
             <p id="display">10:00</p>
             <button onclick="startTimer()" id="startBtn">start</button>
             <button onclick="pauseTimer()">pause</button>
             <button onclick="resetTimer()">reset</button>
+            <details>
+                <summary>edit time</summary>
+                <input id="newTimeIn" type="number">
+                <button onclick="confirmTime()">confirm</button>
+            </details>
         </div>
 
         <script>
@@ -17,11 +38,15 @@
             const startBtn = document.getElementById("startBtn");
 
             let startMinutes = 10;
-            let totalTimeSeconds = startMinutes * 60;
+            let totalTimeSeconds = calcSeconds();
             let timeLeft = totalTimeSeconds;
 
             let endTime = null;
             let timerInterval = null;
+
+            function calcSeconds() {
+                return startMinutes * 60;
+            }
 
             function formatTime(totalSeconds) {
                 const minutes = Math.floor(totalSeconds / 60);
@@ -65,8 +90,18 @@
             }
             function resetTimer() {
                 pauseTimer();
-                timeLeft = totalTimeSeconds();
+                timeLeft = totalTimeSeconds;
                 updateDisplay();
+            }
+            function confirmTime() {
+                let newTime = document.getElementById("newTimeIn").value;
+                if(newTime) {
+                    newTime = Number(newTime);
+                    resetTimer();
+                    startMinutes = newTime;
+                    totalTimeSeconds = calcSeconds();
+                    resetTimer();
+                }
             }
         </script>
     </body>
