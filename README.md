@@ -8,6 +8,7 @@ programs were the very first core of stellarOS, these are basically just apps, t
 
 - calculator
 - skyDocs
+- timer
 
 these are very simple apps. to install a program just run:
 `program install <program name>`
@@ -50,6 +51,10 @@ a custom IDE and coding language that was heavily inspired off of the concept of
 
 - constellation
 my own version of git. This is still far from done and is also part of the eclipse ecosystem which is not my focus as of right now.
+
+## more docs:
+
+* [autumnOS docs](OS/autumnOS/autumnOS.md);
 
 ## current focus
 
