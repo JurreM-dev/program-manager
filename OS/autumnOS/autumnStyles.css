@@ -133,3 +133,11 @@ iframe {
   border: 2px solid black;
   border-radius: 30px;
 }
+.downloadCard {
+  margin: 6px;
+  display: flex;
+  gap: 10px;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+}

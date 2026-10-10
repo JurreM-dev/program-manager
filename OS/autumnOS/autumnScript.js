@@ -83,8 +83,10 @@ function openAppStore() {
     let app = appList[appKey];
     console.log(app);
     if (!app.version.startsWith("x") && app.version !== "v0.0.0") {
-      let downloadBtn = document.createElement("button");
-      downloadBtn.innerText = app.name;
+      let downloadCard = document.createElement("div");
+      let downloadBtn = document.createElement("button")
+      downloadCard.classList.add("downloadCard");
+      downloadBtn.innerText = "install";
       downloadBtn.onclick = () => {
         if (apps[app.name] && apps[app.name].version === app.version) {
           alert("you already have this app and version installed!");
@@ -99,7 +101,17 @@ function openAppStore() {
           installApp(app.name);
         }
       };
-      windowBody.appendChild(downloadBtn);
+      let innerIcon = document.createElement("p");
+      innerIcon.classList.add("innerStoreIcon");
+      innerIcon.innerText = app.iconEmoji;
+      let appNameDisplay = document.createElement("p");
+      appNameDisplay.classList.add("appNameDisplay");
+      appNameDisplay.innerText = app.name;
+
+      windowBody.appendChild(downloadCard);
+      downloadCard.appendChild(innerIcon);
+      downloadCard.appendChild(appNameDisplay);
+      downloadCard.appendChild(downloadBtn);
     }
   });
 }
