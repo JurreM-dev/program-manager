@@ -60,7 +60,12 @@ function pfpLinkMaker() {
 }
 
 function openProfileChanger() {
+  let testSearch = document.querySelector(".profileMenu");
+  if(testSearch) {
+    testSearch.parentElement.remove();
+  }
   const windowBody = addWindow("profile manager");
+  windowBody.classList.add("profileMenu");
   windowBody.innerHTML = `
   <div id="profileChangerMenu">
     <img id="menuProfilePicture">
