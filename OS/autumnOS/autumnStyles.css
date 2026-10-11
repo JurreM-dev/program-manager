@@ -160,3 +160,21 @@ iframe {
   font-size: 40px;
   margin: 0;
 }
+#popUpMenu {
+  position: absolute;
+  border: none;
+  border-radius: 20px;
+  z-index: 9999;
+  padding: 4px;
+  background-color: white;
+}
+.popupBtn {
+  border: none;
+  background: none;
+  width: 100%;
+  margin: 0;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
