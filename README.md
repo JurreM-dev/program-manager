@@ -54,7 +54,8 @@ my own version of git. This is still far from done and is also part of the eclip
 
 ## more docs:
 
-* [autumnOS docs](OS/autumnOS/autumnOS.md);
+* [autumnOS docs](OS/autumnOS/autumnOS.md)
+* [eclipse docs](eclipse/eclipse.md)
 
 ## current focus
 
