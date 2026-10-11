@@ -9,9 +9,9 @@ autumnOS is the first ever inner OS in stellarOS.
 
 ## apps
 
-as of right now we don't save downloaded apps. To install anything, open the app store, all the downloads are also the teriminal programs.
+To install anything, open the app store, all the downloads are also the terminal programs. Apps are stored in the browser. 
 
-After you just click the icon to open it!
+To update an app you can just install it again from the app store and it'll update the app automatically!
 
 ## profile
 

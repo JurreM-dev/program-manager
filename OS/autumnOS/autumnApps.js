@@ -7,6 +7,20 @@ async function fetchApps() {
     appList = raw.programs;
 }
 
+function saveApps() {
+    if(Object.keys(apps).length === 0) {
+        return;
+    }
+    localforage.setItem("autumnApps", apps);
+}
+
+async function loadApps() {
+    let potential = await localforage.getItem("autumnApps");
+    if(potential) {
+        apps = potential;
+    }
+}
+
 function renderApps() {
     const appContainer = document.getElementById("appDiv");
     appContainer.replaceChildren();
@@ -24,10 +38,13 @@ function renderApps() {
 
 async function installApp(appName) {
     apps[appName] = appList[appName];
+    saveApps();
     renderApps();
 }
 
 async function startRun() {
     await fetchApps();
+    await loadApps();
+    renderApps();
 }
 startRun();
