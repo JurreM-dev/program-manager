@@ -1,0 +1,28 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+#editor {
+    width: 50vw;
+    background-color: black;
+    height: 100vh;
+}
+#previews {
+    display: flex;
+    flex-direction: column;
+    width: 50vw;
+}
+#toolsBar {
+    display: none;
+}
+
+#preview-screen {
+    height: 50%;
+    width: 100%;
+}
