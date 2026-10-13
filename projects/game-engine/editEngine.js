@@ -1,5 +1,5 @@
 function renderEntities(entities) {
-    const output = document.getElementById("entityTab");
+    const output = document.getElementById("items");
 
     output.replaceChildren();
 
@@ -18,5 +18,15 @@ function addEntity(entityType, entitySample) {
     renderEntities(entities[entityType]);
     restartScene();
 }
-let sample = {x: 120, y: 70, width: 40, height: 40, color: 0x0317fc, name: "Jeff"}
-addEntity("cubes", sample)
+
+function addCube() {
+    let x = Number(prompt("x")) ?? 120;
+    let y = Number(prompt("y")) ?? 70;
+    let width = Number(prompt("width")) ?? 40;
+    let height = Number(prompt("height")) ?? 40;
+    let color = prompt("color in the format 0x...");
+    let name = prompt("name");
+
+    let sample = {x: x, y: y, width: width, height: height, color: color, name: name}
+    addEntity("cubes", sample)
+}
