@@ -27,6 +27,14 @@ function create() {
 
         this.physics.add.existing(cubeObject);
      })
+
+     entities.circles.forEach((circle) => {
+        let circleObject = this.add.circle(circle.x, circle.y, circle.radius, circle.color);
+
+        this.physics.add.existing(circleObject);
+
+        circleObject.body.setCircle(circle.radius);
+     });
 }
 
 const game = new Phaser.Game(config);
