@@ -4,6 +4,7 @@
         <title>moon game engine</title>
         <link rel="stylesheet" href="engineStyle.css">
         <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
     </head>
     <body>
         <div id="logoBox">
@@ -13,16 +14,22 @@
 /  /  /  /___/ /___/  /   /
             </pre>
         </div>
+
+        <!-- EDITOR -->
         <div id="editor">
+            <div id="entityTab">
+
+            </div>
         </div>
         <div id="previews">
             <div id="preview-screen"></div>
         </div>
         <aside id="toolsBar">
-            
+
         </aside>
         <script src="objects.js"></script>
         <script src="gameEngine.js"></script>
         <script src="controls.js"></script>
+        <script src="editEngine.js"></script>
     </body>
 </html>

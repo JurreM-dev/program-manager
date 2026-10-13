@@ -22,8 +22,8 @@ const config = {
 function create() {
      this.cameras.main.setBackgroundColor("#87CEEB");
 
-     cubes.forEach((cube) => {
-        let cubeObject = this.add.rectangle(cube.x, cube.y, cube.width, cube.height, 0x4d01af)
+     entities.cubes.forEach((cube) => {
+        let cubeObject = this.add.rectangle(cube.x, cube.y, cube.width, cube.height, cube.color)
 
         this.physics.add.existing(cubeObject);
      })
