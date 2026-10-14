@@ -44,7 +44,8 @@ function addCube() {
     let name = prompt("name");
 
     let sample = {x: x, y: y, width: width, height: height, color: color, name: name}
-    addEntity("cubes", sample)
+    addEntity("cubes", sample);
+    renderAllEntities();
 }
 
 function addCircle() {
@@ -55,5 +56,18 @@ function addCircle() {
     let name = prompt("name");
 
     addEntity("circles", {x: x, y: y, radius: radius, color: color, name: name})
+    renderAllEntities();
+}
+
+function addPlatform() {
+    let x = Number(prompt("x")) ?? 120;
+    let y = Number(prompt("y")) ?? 70;
+    let width = Number(prompt("width")) ?? 40;
+    let height = Number(prompt("height")) ?? 40;
+    let color = prompt("color in the format 0x...");
+    let name = prompt("name");
+
+    let sample = {x: x, y: y, width: width, height: height, color: color, name: name}
+    addEntity("platforms", sample)
     renderAllEntities();
 }

@@ -17,20 +17,30 @@
 
         <!-- EDITOR -->
         <div id="editor">
-            <div id="entityTab">
-                <div id=""functionBar>
+            <div id="entityTab" class="editorPage">
+                <div id="functionBar" class="downList">
                     <button onclick="addCube()">addCube</button>
                     <button onclick="addCircle()">addCircle</button>
+                    <button onclick="addPlatform()">addPlatform</button>
                 </div>
                 <div id="items"></div>
             </div>
         </div>
+
         <div id="previews">
             <div id="preview-screen"></div>
         </div>
-        <aside id="toolsBar">
 
+        <aside id="toolsBar">
+            <button>entities</button>
+            <br>
+            <button onclick="toggleToolsBar('close')"><</button>
         </aside>
+
+        <button id="openToolsButton" onclick="toggleToolsBar('open')">></button>
+
+        <script src="UI.js"></script>
+
         <script src="objects.js"></script>
         <script src="gameEngine.js"></script>
         <script src="controls.js"></script>

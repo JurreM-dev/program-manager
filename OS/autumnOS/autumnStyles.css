@@ -167,6 +167,7 @@ iframe {
   z-index: 9999;
   padding: 4px;
   background-color: white;
+  display: none;
 }
 .popupBtn {
   border: none;

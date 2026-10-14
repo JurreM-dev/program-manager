@@ -3,5 +3,6 @@ let physicsDebug = true;
 
 let entities = {
     cubes: [],
-    circles: []
+    circles: [],
+    platforms: []
 };

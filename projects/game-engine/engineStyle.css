@@ -20,8 +20,18 @@ body {
 }
 #toolsBar {
     display: none;
+    width: 10vw;
+    z-index: 9999;
+    position: fixed;
+    flex-direction: column;
+    border: 2px solid white;
+    border-radius: 20px;
 }
-
+#openToolsButton {
+    position: fixed;
+    z-index: 8888;
+    bottom: 10vh;
+}
 #preview-screen {
     height: 50%;
     width: 100%;
@@ -47,4 +57,15 @@ body {
     border-color: white;
     border-width: 2px;
     color: white;
+}
+
+.editorPage {
+    display: flex;
+    flex-direction: column;
+}
+
+.downList {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
