@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>moon game engine</title>
         <link rel="stylesheet" href="engineStyle.css">
         <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
@@ -17,14 +18,22 @@
 
         <!-- EDITOR -->
         <div id="editor">
+            <!-- ENTITY SCREEN -->
             <div id="entityTab" class="editorPage">
-                <div id="functionBar" class="downList">
+                <div id="functionBar" class="sideList editorCard">
                     <button onclick="addCube()">addCube</button>
                     <button onclick="addCircle()">addCircle</button>
                     <button onclick="addPlatform()">addPlatform</button>
                 </div>
-                <div id="items"></div>
+                <div id="items" class="downList editorCard"></div>
             </div>
+
+            <!-- PLAYER SCREEN -->
+             <div id="playerTab" class="editorPage">
+                <div class="downList editorCard" id="playerSettings">
+                    <h1>player settings</h1>
+                </div>
+             </div>
         </div>
 
         <div id="previews">
@@ -32,12 +41,14 @@
         </div>
 
         <aside id="toolsBar">
-            <button>entities</button>
+            <button onclick="openEditorPage('entityTab')">entities</button>
+            <button onclick="openEditorPage('playerTab')">player</button>
             <br>
             <button onclick="toggleToolsBar('close')"><</button>
         </aside>
 
         <button id="openToolsButton" onclick="toggleToolsBar('open')">></button>
+        <button id="refreshBtn" onclick="restartScene()">⟳</button>
 
         <script src="UI.js"></script>
 

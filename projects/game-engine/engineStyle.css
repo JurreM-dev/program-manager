@@ -26,6 +26,9 @@ body {
     flex-direction: column;
     border: 2px solid white;
     border-radius: 20px;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(12, 0, 71, 0.614);
 }
 #openToolsButton {
     position: fixed;
@@ -62,10 +65,32 @@ body {
 .editorPage {
     display: flex;
     flex-direction: column;
+    gap: 10px;
+    overflow: auto;
 }
 
 .downList {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+.sideList {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+#refreshBtn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.editorCard {
+    display: flex;
+    width: 80%;
+    align-self: center;
+    gap: 10px;
+    border: 2px solid white;
+    border-radius: 20px;
+    overflow: auto;
+    padding: 10px
 }
