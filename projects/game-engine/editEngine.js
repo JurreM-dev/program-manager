@@ -71,3 +71,15 @@ function addPlatform() {
     addEntity("platforms", sample)
     renderAllEntities();
 }
+
+function addPlayer() {
+    let type = prompt("type") ?? "none";
+    let name = prompt("name") ?? "none";
+    const playerObj = entities[type].find(item => item.name === name);
+    if(playerObj) {
+        currentPlayer = playerObj;
+        restartScene();
+    } else {
+        alert("entity not found");
+    }
+}

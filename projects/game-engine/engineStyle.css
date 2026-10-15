@@ -7,7 +7,9 @@ body {
     margin: 0;
     padding: 0;
 }
-
+h1 {
+    color: white;
+}
 #editor {
     width: 50vw;
     background-color: black;
@@ -61,9 +63,11 @@ body {
     border-width: 2px;
     color: white;
 }
-
-.editorPage {
+#entityTab {
     display: flex;
+}
+.editorPage {
+    display: none;
     flex-direction: column;
     gap: 10px;
     overflow: auto;
