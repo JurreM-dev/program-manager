@@ -41,6 +41,14 @@
       "installTime": 1000,
       "version": "v0.0.1",
       "iconEmoji": "⏳"
+    },
+    "gameEngine": {
+      "name": "moon game engine",
+      "path": "projects/game-engine/engine.html",
+      "message": "a game engine project for stellarOS",
+      "installTime": 7000,
+      "version": "v0.0.1",
+      "iconEmoji": "🛠"
     }
   }
 }
