@@ -6,6 +6,8 @@
         <link rel="stylesheet" href="engineStyle.css">
         <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
+
+        <script src="helpers.js"></script>
     </head>
     <body>
         <div id="logoBox">
@@ -50,6 +52,15 @@
 
         <button id="openToolsButton" onclick="toggleToolsBar('open')">></button>
         <button id="refreshBtn" onclick="restartScene()">⟳</button>
+        
+        <div id="darkenScreen" onclick="lightenScreen(); document.getElementById('editEntityMenu').style.display = 'none';"></div>
+
+        <div id="editEntityMenu" class="downList">
+            <h1 class="blackColor">edit entity</h1>
+            <div id="editEntityBody" class="downList">
+
+            </div>
+        </div>
 
         <script src="UI.js"></script>
 

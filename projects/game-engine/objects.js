@@ -15,3 +15,5 @@ let boundaries = {
     width: 3000,
     height: 600
 }
+
+let currentEditing = null;
