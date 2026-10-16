@@ -16,6 +16,9 @@ hr {
 .blackColor {
     color: black
 }
+.whiteColor {
+    color: white;
+}
 #editor {
     width: 50vw;
     background-color: black;

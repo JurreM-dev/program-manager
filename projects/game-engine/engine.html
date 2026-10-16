@@ -37,6 +37,16 @@
                     <button onclick="addPlayer()">add player</button>
                 </div>
              </div>
+
+             <!-- SETTINGS PAGE -->
+             <div id="settingsTab" class="editorPage">
+                <div class="downlist editorCard">
+                    <label>
+                        <input id="physicsDebugOption" type="checkbox" value="true" checked>
+                        <span class="whiteColor">Physics Debug</span>
+                    </label>
+                </div>
+             </div>
         </div>
 
         <div id="previews">
@@ -46,6 +56,7 @@
         <aside id="toolsBar">
             <button onclick="openEditorPage('entityTab')">entities</button>
             <button onclick="openEditorPage('playerTab')">player</button>
+            <button onclick="openEditorPage('settingsTab')">editor settings</button>
             <br>
             <button onclick="toggleToolsBar('close')"><</button>
         </aside>

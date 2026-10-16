@@ -101,6 +101,10 @@ function addPlatform() {
 function addPlayer() {
   let type = prompt("type") ?? "none";
   let name = prompt("name") ?? "none";
+  if(type === "none" || type === "platforms") {
+    alert("you cannot make a platform a player!")
+    return;
+  }
   const playerObj = entities[type].find((item) => item.name === name);
   if (playerObj) {
     currentPlayer = playerObj;
@@ -126,6 +130,12 @@ function openEditingMenu(type, item, mode) {
   if (type === "cubes") {
     darkenScreen();
     openEdit(item, mode, "cubes");
+  } else if(type === "circles") {
+    darkenScreen();
+    openEdit(item, mode, "circles");
+  } else if(type === "platforms") {
+    darkenScreen();
+    openEdit(item, mode, "circles");
   }
 }
 
@@ -170,6 +180,18 @@ function openEdit(item, mode, type) {
 
 renderAllEntities();
       console.log(original);
+    };
+
+    let deleter = UI.create.button("delete", output);
+    deleter.onclick = () => {
+      let choice = confirm(`Are you sure you want to delete ${currentEditing}?`);
+      if (!choice) return;
+      entities[type] = entities[type].filter(
+        (entity) => entity.name !== currentEditing,
+      );
+      renderAllEntities();
+      document.getElementById("editEntityMenu").style.display = "none";
+      lightenScreen();
     };
   }
 }
