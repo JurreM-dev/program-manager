@@ -1,88 +1,114 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>moon game engine</title>
-        <link rel="stylesheet" href="engineStyle.css">
-        <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>moon game engine</title>
+    <link rel="stylesheet" href="engineStyle.css" />
+    <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
 
-        <script src="helpers.js"></script>
-    </head>
-    <body>
-        <div id="logoBox">
-            <pre class="logo">
+    <script src="helpers.js"></script>
+  </head>
+  <body>
+    <div id="logoBox">
+      <pre class="logo">
    ____    ____  ____   /___
  /  /  /  /   / /   /  /   /
 /  /  /  /___/ /___/  /   /
-            </pre>
+            </pre
+      >
+    </div>
+
+    <!-- EDITOR -->
+    <div id="editor">
+      <!-- ENTITY SCREEN -->
+      <div id="entityTab" class="editorPage">
+        <div id="functionBar" class="sideList editorCard">
+          <button onclick="addCube()">addCube</button>
+          <button onclick="addCircle()">addCircle</button>
+          <button onclick="addPlatform()">addPlatform</button>
         </div>
+        <div id="items" class="downList editorCard"></div>
+      </div>
 
-        <!-- EDITOR -->
-        <div id="editor">
-            <!-- ENTITY SCREEN -->
-            <div id="entityTab" class="editorPage">
-                <div id="functionBar" class="sideList editorCard">
-                    <button onclick="addCube()">addCube</button>
-                    <button onclick="addCircle()">addCircle</button>
-                    <button onclick="addPlatform()">addPlatform</button>
-                </div>
-                <div id="items" class="downList editorCard"></div>
-            </div>
-
-            <!-- PLAYER SCREEN -->
-             <div id="playerTab" class="editorPage">
-                <div class="downList editorCard" id="playerSettings">
-                    <h1>player settings</h1>
-                    <button onclick="addPlayer()">add player</button>
-                    <hr>
-                    <input placeholder="speed" type="number" id="speedInput" onblur="movementChange('speedInput', 'speed')">
-                    <input placeholder="jump power" type="number" id="jumpInput" onblur="movementChange('jumpInput', 'jumpPower')">
-                    <input placeholder="max jumps" type="number" id="maxJumpsInput" onblur="movementChange('maxJumpsInput', 'maxPlayerJumps')">
-                </div>
-             </div>
-
-             <!-- SETTINGS PAGE -->
-             <div id="settingsTab" class="editorPage">
-                <div class="downList editorCard">
-                    <h1>editor settings</h1>
-                    <label>
-                        <input id="physicsDebugOption" type="checkbox" value="true" onchange="toggleDebug()" checked>
-                        <span class="whiteColor">Physics Debug</span>
-                    </label>
-                </div>
-             </div>
+      <!-- PLAYER SCREEN -->
+      <div id="playerTab" class="editorPage">
+        <div class="downList editorCard" id="playerSettings">
+          <h1>player settings</h1>
+          <button onclick="addPlayer()">add player</button>
+          <hr />
+          <input
+            placeholder="speed"
+            type="number"
+            id="speedInput"
+            onblur="movementChange('speedInput', 'speed')"
+          />
+          <input
+            placeholder="jump power"
+            type="number"
+            id="jumpInput"
+            onblur="movementChange('jumpInput', 'jumpPower')"
+          />
+          <input
+            placeholder="max jumps"
+            type="number"
+            id="maxJumpsInput"
+            onblur="movementChange('maxJumpsInput', 'maxPlayerJumps')"
+          />
         </div>
+      </div>
 
-        <div id="previews">
-            <div id="preview-screen"></div>
+      <!-- SETTINGS PAGE -->
+      <div id="settingsTab" class="editorPage">
+        <div class="downList editorCard">
+          <h1>editor settings</h1>
+          <label>
+            <input
+              id="physicsDebugOption"
+              type="checkbox"
+              value="true"
+              onchange="toggleDebug()"
+              checked
+            />
+            <span class="whiteColor">Physics Debug</span>
+          </label>
         </div>
+      </div>
+    </div>
 
-        <aside id="toolsBar">
-            <button onclick="openEditorPage('entityTab')">entities</button>
-            <button onclick="openEditorPage('playerTab')">player</button>
-            <button onclick="openEditorPage('settingsTab')">editor settings</button>
-            <br>
-            <button onclick="toggleToolsBar('close')"><</button>
-        </aside>
+    <div id="previews">
+      <div id="preview-screen"></div>
+    </div>
 
-        <button id="openToolsButton" onclick="toggleToolsBar('open')">></button>
-        <button id="refreshBtn" onclick="restartScene()">⟳</button>
-        
-        <div id="darkenScreen" onclick="lightenScreen(); document.getElementById('editEntityMenu').style.display = 'none';"></div>
+    <aside id="toolsBar">
+      <button onclick="openEditorPage('entityTab')">entities</button>
+      <button onclick="openEditorPage('playerTab')">player</button>
+      <button onclick="openEditorPage('settingsTab')">editor settings</button>
+      <br />
+      <button onclick="toggleToolsBar('close')"><</button>
+    </aside>
 
-        <div id="editEntityMenu" class="downList">
-            <h1 class="blackColor">edit entity</h1>
-            <div id="editEntityBody" class="downList">
+    <button id="openToolsButton" onclick="toggleToolsBar('open')">></button>
+    <button id="refreshBtn" onclick="restartScene()">⟳</button>
 
-            </div>
-        </div>
+    <div
+      id="darkenScreen"
+      onclick="
+        lightenScreen();
+        document.getElementById('editEntityMenu').style.display = 'none';
+      "
+    ></div>
 
-        <script src="UI.js"></script>
+    <div id="editEntityMenu" class="downList">
+      <h1 class="blackColor">edit entity</h1>
+      <div id="editEntityBody" class="downList"></div>
+    </div>
 
-        <script src="objects.js"></script>
-        <script src="gameEngine.js"></script>
-        <script src="controls.js"></script>
-        <script src="editEngine.js"></script>
-    </body>
+    <script src="UI.js"></script>
+
+    <script src="objects.js"></script>
+    <script src="gameEngine.js"></script>
+    <script src="controls.js"></script>
+    <script src="editEngine.js"></script>
+  </body>
 </html>

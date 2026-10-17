@@ -133,8 +133,8 @@ function addPlatform() {
 function addPlayer() {
   let type = prompt("type") ?? "none";
   let name = prompt("name") ?? "none";
-  if(type === "none" || type === "platforms") {
-    alert("you cannot make a platform a player!")
+  if (type === "none" || type === "platforms") {
+    alert("you cannot make a platform a player!");
     return;
   }
   const playerObj = entities[type].find((item) => item.name === name);
@@ -162,10 +162,10 @@ function openEditingMenu(type, item, mode) {
   if (type === "cubes") {
     darkenScreen();
     openEdit(item, mode, "cubes");
-  } else if(type === "circles") {
+  } else if (type === "circles") {
     darkenScreen();
     openEdit(item, mode, "circles");
-  } else if(type === "platforms") {
+  } else if (type === "platforms") {
     darkenScreen();
     openEdit(item, mode, "platforms");
   }
@@ -202,21 +202,21 @@ function openEdit(item, mode, type) {
       );
 
       if (original) {
-  Object.keys(found).forEach((key) => {
-    original[key] =
-      typeof item[key] === "number"
-        ? Number(found[key])
-        : found[key];
-  });
-}
+        Object.keys(found).forEach((key) => {
+          original[key] =
+            typeof item[key] === "number" ? Number(found[key]) : found[key];
+        });
+      }
 
-renderAllEntities();
+      renderAllEntities();
       console.log(original);
     };
 
     let deleter = UI.create.button("delete", output);
     deleter.onclick = () => {
-      let choice = confirm(`Are you sure you want to delete ${currentEditing}?`);
+      let choice = confirm(
+        `Are you sure you want to delete ${currentEditing}?`,
+      );
       if (!choice) return;
       entities[type] = entities[type].filter(
         (entity) => entity.name !== currentEditing,

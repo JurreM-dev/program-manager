@@ -122,7 +122,11 @@ function update() {
       jumpCount = 0;
     }
 
-    if ((Phaser.Input.Keyboard.JustDown(arrows.space) || Phaser.Input.Keyboard.JustDown(arrows.up)) && jumpCount < movement.maxPlayerJumps) {
+    if (
+      (Phaser.Input.Keyboard.JustDown(arrows.space) ||
+        Phaser.Input.Keyboard.JustDown(arrows.up)) &&
+      jumpCount < movement.maxPlayerJumps
+    ) {
       player.body.setVelocityY(-movement.jumpPower);
       jumpCount++;
     }
