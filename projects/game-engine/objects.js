@@ -17,3 +17,9 @@ let boundaries = {
 }
 
 let currentEditing = null;
+
+let movement = {
+    maxPlayerJumps: 2,
+    speed: 250,
+    jumpPower: 250
+}

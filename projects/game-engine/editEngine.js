@@ -25,6 +25,11 @@ function applyDebugState() {
   }
 }
 
+function movementChange(elementId, key) {
+  const newValue = Number(document.getElementById(elementId).value);
+  movement[key] = Number.isFinite(newValue) ? newValue : 0;
+}
+
 function renderEntities(entities) {
   const output = document.getElementById("items");
 

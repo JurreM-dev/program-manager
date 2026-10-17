@@ -35,6 +35,10 @@
                 <div class="downList editorCard" id="playerSettings">
                     <h1>player settings</h1>
                     <button onclick="addPlayer()">add player</button>
+                    <hr>
+                    <input placeholder="speed" type="number" id="speedInput" onblur="movementChange('speedInput', 'speed')">
+                    <input placeholder="jump power" type="number" id="jumpInput" onblur="movementChange('jumpInput', 'jumpPower')">
+                    <input placeholder="max jumps" type="number" id="maxJumpsInput" onblur="movementChange('maxJumpsInput', 'maxPlayerJumps')">
                 </div>
              </div>
 
