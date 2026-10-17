@@ -78,6 +78,21 @@ function create() {
     circles.add(circleObject);
   });
 
+  // RENDERING EMOJI SPRITES
+  emojiSprites = this.physics.add.group();
+
+  entities.emojiSprites.forEach((emoji)=>{
+    let emojiObj = this.add.text(emoji.x, emoji.y, emoji.emoji, {
+      fontSize: `${emoji.fontSize}px`
+    })
+    emojiObj.setOrigin(0.5);
+
+    this.physics.add.existing(emojiObj);
+
+    emoji.gameObject = emojiObj;
+    emojiSprites.add(emojiObj);
+  }) 
+
   // MAKING PLATFORMS
   platforms = this.physics.add.staticGroup();
 
@@ -96,6 +111,7 @@ function create() {
 
   this.physics.add.collider(cubes, platforms);
   this.physics.add.collider(circles, platforms);
+  this.physics.add.collider(emojiSprites, platforms);
 
   // INITIALIZING PLAYER
   arrows = this.input.keyboard.createCursorKeys();

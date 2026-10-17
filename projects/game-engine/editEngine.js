@@ -110,6 +110,23 @@ function addCircle() {
   renderAllEntities();
 }
 
+function addEmojiSprite() {
+  let x = Number(prompt("x")) ?? 120;
+  let y = Number(prompt("y")) ?? 70;
+  let fontSize = Number(prompt("font size") ?? 64) ?? 64;
+  let emoji = prompt("emoji");
+  let name = prompt("name");
+
+  addEntity("emojiSprites", {
+    x: x,
+    y: y,
+    fontSize: fontSize,
+    emoji: emoji,
+    name: name,
+  });
+  renderAllEntities();
+}
+
 function addPlatform() {
   let x = Number(prompt("x")) ?? 120;
   let y = Number(prompt("y")) ?? 70;
@@ -168,6 +185,9 @@ function openEditingMenu(type, item, mode) {
   } else if (type === "platforms") {
     darkenScreen();
     openEdit(item, mode, "platforms");
+  } else if (type === "emojiSprites") {
+    darkenScreen();
+    openEdit(item, mode, "emojiSprites");
   }
 }
 
