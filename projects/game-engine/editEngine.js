@@ -167,7 +167,7 @@ function openEditingMenu(type, item, mode) {
     openEdit(item, mode, "circles");
   } else if(type === "platforms") {
     darkenScreen();
-    openEdit(item, mode, "circles");
+    openEdit(item, mode, "platforms");
   }
 }
 
