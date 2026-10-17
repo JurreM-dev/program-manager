@@ -1,3 +1,30 @@
+function toggleDebug() {
+  const option = document.getElementById("physicsDebugOption");
+  const enabled = option.checked;
+
+  physicsDebug = enabled;
+  applyDebugState();
+}
+
+function applyDebugState() {
+  if (!activeScene?.physics?.world) {
+    return;
+  }
+
+  const world = activeScene.physics.world;
+  if (physicsDebug && !world.debugGraphic) {
+    world.createDebugGraphic();
+  }
+
+  world.drawDebug = physicsDebug;
+  if (world.debugGraphic) {
+    world.debugGraphic.setVisible(physicsDebug);
+    if (!physicsDebug) {
+      world.debugGraphic.clear();
+    }
+  }
+}
+
 function renderEntities(entities) {
   const output = document.getElementById("items");
 

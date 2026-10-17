@@ -30,6 +30,7 @@ let arrows;
 
 function create() {
      activeScene = this;
+     applyDebugState();
      this.cameras.main.setBackgroundColor("#87CEEB");
      this.cameras.main.setBounds(boundaries.x, boundaries.y, boundaries.width, boundaries.height)
 
