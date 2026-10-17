@@ -127,6 +127,25 @@ function addEmojiSprite() {
   renderAllEntities();
 }
 
+function addEmojiPlatform() {
+  let x = Number(prompt("x")) ?? 120;
+  let y = Number(prompt("y")) ?? 70;
+  let width = Number(prompt("width")) ?? 40;
+  let fontSize = Number(prompt("font size") ?? 64) ?? 64;
+  let emoji = prompt("emoji");
+  let name = prompt("name");
+
+  addEntity("emojiPlatforms", {
+    x: x,
+    y: y,
+    width: width,
+    fontSize: fontSize,
+    emoji: emoji,
+    name: name,
+  });
+  renderAllEntities();
+}
+
 function addPlatform() {
   let x = Number(prompt("x")) ?? 120;
   let y = Number(prompt("y")) ?? 70;
@@ -150,8 +169,8 @@ function addPlatform() {
 function addPlayer() {
   let type = prompt("type") ?? "none";
   let name = prompt("name") ?? "none";
-  if (type === "none" || type === "platforms") {
-    alert("you cannot make a platform a player!");
+  if (type === "none" || type === "platforms" || type === "emojiPlatforms") {
+    alert("you cannot make a platform or nothinness or emoji platform a player!");
     return;
   }
   const playerObj = entities[type].find((item) => item.name === name);
@@ -188,6 +207,9 @@ function openEditingMenu(type, item, mode) {
   } else if (type === "emojiSprites") {
     darkenScreen();
     openEdit(item, mode, "emojiSprites");
+  } else if (type === "emojiPlatforms") {
+    darkenScreen();
+    openEdit(item, mode, "emojiPlatforms");
   }
 }
 

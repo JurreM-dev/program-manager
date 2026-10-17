@@ -21,6 +21,8 @@ const config = {
 };
 
 let platforms;
+let emojiPlatforms;
+let emojiSprites;
 let cubes;
 let circles;
 let activeScene;
@@ -91,7 +93,39 @@ function create() {
 
     emoji.gameObject = emojiObj;
     emojiSprites.add(emojiObj);
-  }) 
+  });
+  
+  // RENDERING EMOJI PLATFORMS
+  emojiPlatforms = this.physics.add.staticGroup();
+
+  entities.emojiPlatforms.forEach((platform) => {
+    const targetWidth = platform.width;
+    const sprite = platform.emoji;
+
+    const tempObj = this.add.text(platform.x, platform.y, sprite, {
+      fontSize: `${platform.fontSize}px`
+    });
+
+    tempObj.setOrigin(0.5);
+
+    const itemWidth = tempObj.width;
+    tempObj.destroy();
+
+    const repeatCount = Math.max(1, Math.floor(targetWidth / itemWidth));
+
+    const platformObj = this.add.text(platform.x, platform.y, sprite.repeat(repeatCount), {
+      fontSize: `${platform.fontSize}px`
+    });
+
+    platformObj.setOrigin(0.5);
+
+    platform.gameObject = platformObj;
+    emojiPlatforms.add(platformObj);
+  });
+  
+  this.physics.add.collider(cubes, emojiPlatforms);
+  this.physics.add.collider(circles, emojiPlatforms);
+  this.physics.add.collider(emojiSprites, emojiPlatforms);
 
   // MAKING PLATFORMS
   platforms = this.physics.add.staticGroup();
@@ -120,6 +154,7 @@ function create() {
     player = currentPlayer.gameObject;
     cubes.remove(player, false, false);
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(player, emojiPlatforms);
     this.cameras.main.startFollow(player);
   }
 }

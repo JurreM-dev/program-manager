@@ -6,6 +6,7 @@ let entities = {
   circles: [],
   platforms: [],
   emojiSprites: [],
+  emojiPlatforms: []
 };
 
 let currentPlayer = null;
