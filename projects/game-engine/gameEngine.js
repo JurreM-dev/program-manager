@@ -71,13 +71,21 @@ function create() {
       circle.radius,
       circle.color,
     );
-
-    this.physics.add.existing(circleObject);
+    
+    this.physics.add.existing(circleObject)
 
     circleObject.body.setCircle(circle.radius);
     circle.gameObject = circleObject;
 
     circles.add(circleObject);
+
+    if(circle.bounce) {
+      console.log("setting bounce for circle", circleObject);
+      circleObject.body.setBounce(circle.bouncePower);  
+    }
+    if(circle.collideWorldBounds) {
+      circleObject.body.setCollideWorldBounds(true);
+    }
   });
 
   // RENDERING EMOJI SPRITES

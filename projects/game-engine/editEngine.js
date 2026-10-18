@@ -100,12 +100,34 @@ function addCircle() {
   let color = prompt("color in the format 0x...");
   let name = prompt("name");
 
+  let complex = confirm(
+    "Do you want to add complex properties? (bounce, collideWorldBounds)",
+  );
+
+  let bounce, collideWorldBounds, bouncePower;
+  if (complex) {
+    bounce = confirm("bounce?");
+    if(bounce) {
+      bouncePower = 0.6;
+    } else {
+      bouncePower = 0;
+    }
+    collideWorldBounds = confirm("collide with world bounds?");
+  } else {
+    bounce = false;
+    bouncePower = 0;
+    collideWorldBounds = false;
+  }
+
   addEntity("circles", {
     x: x,
     y: y,
     radius: radius,
     color: color,
     name: name,
+    bounce: bounce,
+    bouncePower: bouncePower,
+    collideWorldBounds: collideWorldBounds,
   });
   renderAllEntities();
 }
@@ -170,7 +192,9 @@ function addPlayer() {
   let type = prompt("type") ?? "none";
   let name = prompt("name") ?? "none";
   if (type === "none" || type === "platforms" || type === "emojiPlatforms") {
-    alert("you cannot make a platform or nothinness or emoji platform a player!");
+    alert(
+      "you cannot make a platform or nothinness or emoji platform a player!",
+    );
     return;
   }
   const playerObj = entities[type].find((item) => item.name === name);
@@ -223,20 +247,24 @@ function openEdit(item, mode, type) {
     document.getElementById("editEntityMenu").style.display = "flex";
     let parts = {};
     Object.keys(item).forEach((itemName) => {
-      UI.create.text(itemName, output);
+      let textElement = UI.create.text(itemName, output);
+      textElement.style.color = "black";
       let viewedItem = item[itemName];
       if (typeof viewedItem === "number") {
         parts[itemName] = UI.create.numInput(output, viewedItem);
       } else if (typeof viewedItem === "string") {
         parts[itemName] = UI.create.strInput(output, viewedItem);
+      } else if (typeof viewedItem === "boolean") {
+        parts[itemName] = UI.create.checkbox(output, viewedItem);
       }
     });
     let confirmer = UI.create.button("confirm", output);
     confirmer.onclick = () => {
       let found = {};
-
       Object.keys(parts).forEach((partName) => {
-        found[partName] = parts[partName].value;
+        const input = parts[partName];
+        found[partName] =
+          input.type === "checkbox" ? input.checked : input.value;
       });
 
       const original = entities[type].find(
@@ -251,7 +279,7 @@ function openEdit(item, mode, type) {
       }
 
       renderAllEntities();
-      console.log(original);
+      restartScene();
     };
 
     let deleter = UI.create.button("delete", output);

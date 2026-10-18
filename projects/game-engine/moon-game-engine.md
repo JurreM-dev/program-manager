@@ -49,3 +49,7 @@ here you set the player! You use one of the entities you already made (it cannot
 ## editor settings
 
 here you can edit some editor settings
+
+## saving and loading
+
+all games are stored locally on device in indexedDB.

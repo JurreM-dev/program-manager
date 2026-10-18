@@ -40,6 +40,16 @@ class UIcreation {
     return div;
   }
 
+  static checkbox(output, checked = false) {
+    let inputter = document.createElement("input");
+    inputter.type = "checkbox";
+    inputter.checked = checked;
+    output.appendChild(inputter);
+    inputter.style.color = "black";
+
+    return inputter;
+  }
+
   static boldText(text, output) {
     let p = document.createElement("p");
     p.style.fontWeight = "bold";
