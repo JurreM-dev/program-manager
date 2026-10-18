@@ -27,3 +27,10 @@ let movement = {
   speed: 250,
   jumpPower: 250,
 };
+
+let deathOnVoid = true;
+
+let playerStats = {
+  hp: 10,
+  maxHp: 10
+}

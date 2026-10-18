@@ -1,3 +1,4 @@
+// DEBUG SETTINGS
 function toggleDebug() {
   const option = document.getElementById("physicsDebugOption");
   const enabled = option.checked;
@@ -25,11 +26,27 @@ function applyDebugState() {
   }
 }
 
+
+// CHANGING PLAYER STATS
 function movementChange(elementId, key) {
   const newValue = Number(document.getElementById(elementId).value);
   movement[key] = Number.isFinite(newValue) ? newValue : 0;
 }
 
+function hpChange(elementId, key) {
+  const newValue = Number(document.getElementById(elementId).value);
+  playerStats[key] = Number.isFinite(newValue) ? newValue : 0;
+}
+
+function toggleVoidDeath() {
+  const option = document.getElementById("voidDeathToggle");
+  const enabled = option.checked;
+
+  deathOnVoid = enabled;
+  restartScene();
+}
+
+// RENDERING AND HANDELING ENTITIES
 function renderEntities(entities) {
   const output = document.getElementById("items");
 

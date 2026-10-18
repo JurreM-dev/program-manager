@@ -71,7 +71,9 @@ async function saveGame() {
         worldBounds: boundaries,
         player: currentPlayer,
         movement,
-        backColor
+        backColor,
+        deathOnVoid,
+        playerStats
       },
       (key, value) => (key === "gameObject" ? undefined : value),
     ),
@@ -159,6 +161,14 @@ function loadProject(load) {
 
   if (load.backColor) {
     backColor = load.backColor;
+  }
+
+  if(load.deathOnVoid) {
+    deathOnVoid = load.deathOnVoid;
+  }
+
+  if(load.playerStats) {
+    playerStats = load.playerStats;
   }
 
   renderAllEntities();

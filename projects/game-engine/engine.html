@@ -40,6 +40,7 @@
           <h1>player settings</h1>
           <button onclick="addPlayer()">add player</button>
           <hr />
+          <h2>player movement</h2>
           <input
             placeholder="speed"
             type="number"
@@ -58,6 +59,30 @@
             id="maxJumpsInput"
             onblur="movementChange('maxJumpsInput', 'maxPlayerJumps')"
           />
+          <hr />
+          <h2>player HP</h2>
+          <input
+            placeholder="max HP"
+            type="number"
+            id="maxHpInput"
+            onblur="hpChange('maxHpInput', 'maxHp')"
+          />
+          <input
+            placeholder="current HP"
+            type="number"
+            id="hpInput"
+            onblur="hpChange('hpInput', 'hp')"
+          />
+          <label>
+            <input
+              id="voidDeathToggle"
+              type="checkbox"
+              value="true"
+              onchange="toggleVoidDeath()"
+              checked
+            />
+            <span class="whiteColor">die upon falling into the void</span>
+          </label>
         </div>
       </div>
 
@@ -106,6 +131,13 @@
           </div>
           <div class="editorCard downList" id="projectsList"></div>
        </div>
+
+       <!-- WORLD SETTINGS PAGE -->
+        <div id="worldTab" class="editorPage">
+          <div class="downList editorCard">
+            <h2>world settings</h2>
+          </div>
+        </div>
     </div>
 
     <div id="previews">
@@ -118,6 +150,7 @@
       <button onclick="openEditorPage('settingsTab')">editor settings</button>
       <button onclick="openEditorPage('tipsTab')">tips and help</button>
       <button onclick="openEditorPage('projectsTab')">projects</button>
+      <button onclick="openEditorPage('worldTab')">world</button>
       <br />
       <button onclick="toggleToolsBar('close')"><</button>
     </aside>
@@ -144,6 +177,7 @@
     <script src="gameEngine.js"></script>
     <script src="controls.js"></script>
     <script src="editEngine.js"></script>
+    <script src="gameFunctions.js"></script>
 
     <script src="projects.js"></script>
   </body>

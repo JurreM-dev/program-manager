@@ -86,7 +86,6 @@ function create() {
     circles.add(circleObject);
 
     if(circle.bounce) {
-      console.log("setting bounce for circle", circleObject);
       circleObject.body.setBounce(circle.bouncePower);  
     }
     if(circle.collideWorldBounds) {
@@ -194,6 +193,14 @@ function update() {
     ) {
       player.body.setVelocityY(-movement.jumpPower);
       jumpCount++;
+    }
+
+    if(deathOnVoid) {
+      let worldBottom = this.physics.world.bounds.y + this.physics.world.bounds.height;
+      if(player.y > worldBottom) {
+        console.log("player is under world");
+        damagePlayer(playerStats.hp);
+      }
     }
   }
 }
