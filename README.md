@@ -56,6 +56,7 @@ my own version of git. This is still far from done and is also part of the eclip
 
 * [autumnOS docs](OS/autumnOS/autumnOS.md)
 * [eclipse docs](eclipse/eclipse.md)
+* [moon game engine docs](projects/game-engine/moon-game-engine.md)
 
 ## current focus
 

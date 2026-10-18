@@ -26,6 +26,12 @@ function applyDebugState() {
   }
 }
 
+// WORLD SETTINGS
+function changeColor() {
+  let color = document.getElementById("worldColorIn").value;
+
+  backColor = color;
+}
 
 // CHANGING PLAYER STATS
 function movementChange(elementId, key) {
