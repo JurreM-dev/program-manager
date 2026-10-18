@@ -1,6 +1,8 @@
 let gravity = 300;
 let physicsDebug = true;
 
+let backColor = "#87CEEB";
+
 let entities = {
   cubes: [],
   circles: [],

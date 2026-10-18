@@ -35,7 +35,13 @@ let jumpCount = 0;
 function create() {
   activeScene = this;
   applyDebugState();
-  this.cameras.main.setBackgroundColor("#87CEEB");
+  this.cameras.main.setBackgroundColor(backColor);
+  this.physics.world.setBounds(
+    boundaries.x,
+    boundaries.y,
+    boundaries.width,
+    boundaries.height,
+  )
   this.cameras.main.setBounds(
     boundaries.x,
     boundaries.y,

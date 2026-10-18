@@ -71,6 +71,7 @@ async function saveGame() {
         worldBounds: boundaries,
         player: currentPlayer,
         movement,
+        backColor
       },
       (key, value) => (key === "gameObject" ? undefined : value),
     ),
@@ -154,6 +155,10 @@ function loadProject(load) {
 
   if (load.name) {
     document.getElementById("projectNameInput").value = load.name;
+  }
+
+  if (load.backColor) {
+    backColor = load.backColor;
   }
 
   renderAllEntities();
