@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="engineStyle.css" />
     <script src="https://cdn.jsdelivr.net/npm/phaser@3/dist/phaser.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js"></script>
+    <script src="../../libraries/localforage.min.js"></script>
 
     <script src="helpers.js"></script>
   </head>
@@ -93,6 +94,16 @@
           </ul>
         </div>
        </div>
+
+       <!-- PROJECTS PAGE -->
+       <div id="projectsTab" class="editorPage">
+          <div class="downList editorCard" id="saveCard">
+            <h2>current project</h2>
+            <input id="projectNameInput" placeholder="enter name, otherwise it will be saved under a random name">
+            <button onclick="saveGame()">save</button>
+          </div>
+          <div class="editorCard downList" id="projectsList"></div>
+       </div>
     </div>
 
     <div id="previews">
@@ -104,6 +115,7 @@
       <button onclick="openEditorPage('playerTab')">player</button>
       <button onclick="openEditorPage('settingsTab')">editor settings</button>
       <button onclick="openEditorPage('tipsTab')">tips and help</button>
+      <button onclick="openEditorPage('projectsTab')">projects</button>
       <br />
       <button onclick="toggleToolsBar('close')"><</button>
     </aside>
@@ -130,5 +142,7 @@
     <script src="gameEngine.js"></script>
     <script src="controls.js"></script>
     <script src="editEngine.js"></script>
+
+    <script src="projects.js"></script>
   </body>
 </html>

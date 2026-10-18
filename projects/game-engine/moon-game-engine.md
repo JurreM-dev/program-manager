@@ -44,7 +44,7 @@ you can click on an item in the list to edit it too!
 
 ## player
 
-here you set the player!
+here you set the player! You use one of the entities you already made (it cannot be a platform). Also you can change settings like max jumps, speed and jumpPower.
 
 ## editor settings
 

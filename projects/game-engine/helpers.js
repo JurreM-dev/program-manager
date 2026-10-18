@@ -33,6 +33,20 @@ class UIcreation {
 
     return button;
   }
+
+  static box(output) {
+    let div = document.createElement("div");
+    output.appendChild(div);
+    return div;
+  }
+
+  static boldText(text, output) {
+    let p = document.createElement("p");
+    p.style.fontWeight = "bold";
+    p.textContent = text;
+    output.appendChild(p);
+    return p;
+  }
 }
 
 class UI {
