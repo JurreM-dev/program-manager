@@ -1,0 +1,36 @@
+:root {
+    --main-color-green: #06a103;
+    --second-color-green: #054b04;
+}
+body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: rgb(4, 24, 0);
+}
+
+#titleBox {
+    border: none;
+    border-radius: 40px;
+    width: 90vw;
+    min-height: 30vh;
+    background: linear-gradient(to right, var(--main-color-green), var(--second-color-green));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 20px;
+    padding: 0;
+}
+
+.bigTitle {
+    font-family: 'Brush Script MT', cursive;
+    color: white;
+    font-weight: bold;
+    font-size: 12vh; 
+    margin: 0;
+}

@@ -27,6 +27,10 @@ export class Stardust {
     }
 
     writeMoney(triedToken, stardust) {
+        if(stardust < 0) {
+            alert("ERROR, cannot write negative stardust");
+            return false;
+        }
         if(triedToken === this.#userToken) {
             this.#stardustData.balance += stardust;
             console.log("succesfully write " + stardust + " into your account!");
@@ -39,6 +43,10 @@ export class Stardust {
     }
 
     takeMoney(triedPincode, cost) {
+        if(cost < 0) {
+            alert("ERROR, you can't take negative stardust");
+            return false;
+        }
         if(triedPincode !== this.#pincode || !triedPincode) {
             alert("pincode is not right, transaction failed");
             return false;
