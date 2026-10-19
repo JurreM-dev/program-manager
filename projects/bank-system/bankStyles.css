@@ -11,8 +11,11 @@ body {
     margin: 0;
     padding: 0;
     background-color: rgb(4, 24, 0);
+    color: white;
 }
-
+hr {
+    width: 80%;
+}
 #titleBox {
     border: none;
     border-radius: 40px;
@@ -26,7 +29,23 @@ body {
     margin: 20px;
     padding: 0;
 }
-
+.mainBox {
+    border: 2px solid var(--second-color-green);
+    border-radius: 40px;
+    width: 75vw;
+    min-height: 0vh;
+    background-color: var(--main-color-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin: 20px;
+    padding: 10px;
+}
+.inputBar {
+    width: 80%;
+    padding: 3px;
+}
 .bigTitle {
     font-family: 'Brush Script MT', cursive;
     color: white;
