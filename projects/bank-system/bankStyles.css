@@ -12,9 +12,15 @@ body {
     padding: 0;
     background-color: rgb(4, 24, 0);
     color: white;
+    font-family: 'Brush Script MT', cursive;
 }
 hr {
     width: 80%;
+}
+input {
+    font-family: 'Brush Script MT', cursive;
+    padding: 1px;
+    border-radius: 5px;
 }
 #titleBox {
     border: none;
@@ -49,9 +55,11 @@ hr {
     padding: 3px;
 }
 .bigTitle {
-    font-family: 'Brush Script MT', cursive;
     color: white;
     font-weight: bold;
     font-size: 12vh; 
     margin: 0;
+}
+.longerText {
+    width: 60%;
 }
