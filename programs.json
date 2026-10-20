@@ -55,7 +55,7 @@
       "path": "projects/bank-system/leafBank.html",
       "message": "A bank system to watch your stellarOS internal currencies",
       "installTime": 2500,
-      "version": "v0.1.0",
+      "version": "v0.2.0",
       "iconEmoji": "💰"
     }
   }
