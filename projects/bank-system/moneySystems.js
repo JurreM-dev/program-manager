@@ -70,6 +70,52 @@ export class Stardust {
         }
     }
 
+    lendMoney(triedUserToken, amount) {
+        if(triedUserToken !== this.#userToken) {
+            alert("ERROR, wrong user token");
+            return false;
+        }
+        if(amount > (this.#stardustData.balance + 1) * 10) {
+            alert("ERROR, the stardust system doesn't allow loans of that size for you right now");
+            return false;
+        }
+        if(amount < 1) {
+            alert("ERROR, cannot lend less than 1 stardust");
+            return false;
+        }
+        if(this.#stardustData.owed > 0) {
+            alert("ERROR, not allowed to have more than one loan at a time");
+            return false;
+        }
+        this.#stardustData.balance += amount;
+        this.#stardustData.owed += amount;
+        this.#saveStardust();
+        return true;
+    }
+
+    payBackLoan(triedPincode, money) {
+        if(!triedPincode || triedPincode !== this.#pincode) {
+            alert("ERROR, transaction failed, wrong pincode");
+            return false;
+        }
+        if(money > this.#stardustData.balance) {
+            alert("ERROR, cannot pay back more than you have");
+            return false;
+        }
+        if(money > this.#stardustData.owed) {
+            alert("ERROR, cannot pay back than you owe");
+            return false;
+        }
+        if(money < 1) {
+            alert("ERROR, need to at least pay 1 stardust back");
+            return false;
+        }
+        this.#stardustData.balance -= money;
+        this.#stardustData.owed -= money;
+        this.#saveStardust();
+        return true;
+    }
+
     #saveStardust() {
         let stringedData = JSON.stringify(this.#stardustData);
         let asciiData = btoa(stringedData);
