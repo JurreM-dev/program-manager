@@ -15,6 +15,7 @@ function titleBox() {
     <div id="titleBox">
         <h1 class="bigTitle">welcome ${username}!</h1>
         <h2>...to the best banking system of stellarOS!</h2>
+        <h2>LEAF BANK</h2>
     </div>
     `
 }
@@ -39,6 +40,7 @@ function countsBox() {
 
     return html`
     <div class="mainBox">
+        <h1><strong>✨ stardust</strong></h1>
         <p>put in your pincode below, only saved locally, only used to read out your balance =)</p>
         <input
             id="pinInput"
@@ -47,9 +49,9 @@ function countsBox() {
             onBlur=${(e) => setPincode(e.currentTarget.value)}
         />
         <hr/>
-        <p>balance: ${balance}</p>
+        <p>✨ balance: ${balance}</p>
         <hr/>
-        <p>owed: ${owed}</p>
+        <p>✨ owed: ${owed}</p>
     </div>
     `
 }
