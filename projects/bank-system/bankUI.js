@@ -4,6 +4,8 @@ import { html, render, useContext, useState, useEffect } from "https://unpkg.com
 // custom component & logic imports
 import { appContext } from "./contexts.js";
 
+import { loanStardust, repayStardust } from "./loanComponents.js";
+
 // bank systems imports
 import { Stardust } from './moneySystems.js';
 
@@ -24,9 +26,7 @@ function countsBox() {
     const [balance, setBalance] = useState(0);
     const [owed, setOwed] = useState(0);
 
-    const [pincode, setPincode] = useState(null);
-
-    const { triggers, setTriggers } = useContext(appContext);
+    const { triggers, setTriggers, pincode, setPincode } = useContext(appContext);
 
     useEffect(() => {
         if(!pincode) {
@@ -49,6 +49,8 @@ function countsBox() {
             class="inputBar"
             type="text"
             onBlur=${(e) => setPincode(e.currentTarget.value)}
+            placeholder="pincode"
+            value=${pincode}
         />
         <hr/>
         <p>✨ balance: ${balance}</p>
@@ -65,44 +67,9 @@ function loansBox() {
         <h1><strong>loans</strong></h1>
         <h2>✨ stardust</h2>
         <hr/>
-        <p>use this to take out loans in stardust</p>
-        <p class="longerText"><strong>important! </strong>the stardust system is hardcoded not allowing us to lend you more than ten times your current balance</p>
-        <br/>
-        <p>amount you want to lend:</p>
-        <input 
-            type="number" 
-            class="inputBar"
-            id="loanAmountInput"
-            placeholder="the amount you want to lend"
-        />
-        <br/>
-        <input
-            type="text"
-            class="inputBar"
-            id="loanTokenInput"
-            placeholder="your user token of stardust"
-        />
-        <br/>
-        <button
-            onclick=${() => {
-                const tokenAttempt = document.getElementById("loanTokenInput").value;
-                if(!tokenAttempt) {
-                    alert("you need to put in your user token!");
-                    return;
-                }
-                const amountAttempt = document.getElementById("loanAmountInput").value;
-                if(!amountAttempt) {
-                    alert("put in a valid amount to lend first!");
-                    return;
-                }
-                const response = stardust.lendMoney(tokenAttempt, amountAttempt);
-                if(!response) {
-                    return;
-                }
-                setTriggers(oldTriggers => oldTriggers + 1);
-            }}>
-            confirm
-            </button>
+        <${loanStardust} stardust=${stardust} />
+        <hr/>
+        <${repayStardust} stardust=${stardust} />
         <hr/>
     </div>
     `
@@ -111,12 +78,15 @@ function loansBox() {
 function App() {
     const [username, setUsername] = useState("user");
     const [triggers, setTriggers] = useState(0);
+    const [pincode, setPincode] = useState(null);
 
     const state = {
         username,
         setUsername,
         triggers,
-        setTriggers
+        setTriggers,
+        pincode,
+        setPincode
     };
 
     return html`
