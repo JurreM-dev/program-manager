@@ -57,6 +57,14 @@
       "installTime": 2500,
       "version": "v0.2.0",
       "iconEmoji": "💰"
+    },
+    "base64": {
+      "name": "base64",
+      "path": "apps/base64App.html",
+      "message": "a base64 decoder/encoder",
+      "installTime": 800,
+      "version": "v0.1.0",
+      "iconEmoji": "📟"
     }
   }
 }

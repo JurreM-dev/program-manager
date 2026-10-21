@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 23px;
+        font-weight: 900;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      .rootBox {
+        flex: 1;
+        display: flex;
+        flex-direction: row;
+      }
+      .mainBox {
+        flex: 1;
+        border: 2px solid white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      textarea {
+        background-color: rgba(176, 177, 178, 0.412);
+        width: 95%;
+        height: 75%;
+        padding: 10px;
+        border-radius: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import {
+        html,
+        render,
+        useContext,
+        useState,
+        createContext,
+      } from "https://unpkg.com/htm/preact/standalone.module.js";
+
+      const translationsContext = createContext(null);
+
+      function normalText() {
+        const { setNormal, normal, base64, setBase64 } =
+          useContext(translationsContext);
+
+        return html`
+          <div class="mainBox" style="background-color: #8cffd7;">
+            <h1>text</h1>
+            <textarea
+              placeholder="your normal text"
+              value=${normal}
+              onInput=${(e) => {
+                const text = e.currentTarget.value;
+                setNormal(text);
+                setBase64(btoa(text));
+              }}
+            />
+          </div>
+        `;
+      }
+
+      function base64Text() {
+        const { base64, setBase64, setNormal, normal } =
+          useContext(translationsContext);
+
+        return html`
+          <div class="mainBox" style="background-color: #baff8c;">
+            <h1>base64</h1>
+            <textarea
+              placeholder="your base64 text"
+              value=${base64}
+              onInput=${(e) => {
+                const text = e.currentTarget.value;
+                setBase64(text);
+
+                try {
+                  setNormal(atob(text));
+                } catch (error) {}
+              }}
+            />
+          </div>
+        `;
+      }
+      function App() {
+        const [normal, setNormal] = useState("");
+        const [base64, setBase64] = useState("");
+
+        const state = {
+          normal,
+          setNormal,
+          base64,
+          setBase64,
+        };
+
+        return html`
+                <${translationsContext.Provider} value=${state}>
+                    <div class="rootBox">
+                        <${normalText}/>
+                        <${base64Text}/>
+                    </div>
+                </${translationsContext.Provider}>
+                `;
+      }
+
+      render(html`<${App} />`, document.body);
+    </script>
+  </body>
+</html>
