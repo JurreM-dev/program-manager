@@ -10,7 +10,7 @@
     },
     "docs": {
       "name": "docs",
-      "message": "docs is not discontinued, use skyDocs instead",
+      "message": "docs is discontinued, use skyDocs instead",
       "version": "v0.0.0"
     },
     "aether": {
