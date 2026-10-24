@@ -52,9 +52,9 @@ function CreateEntryPage() {
 
   return html`
     <div class="pagePart centerDown" style="display: ${entryTab};">
-    <p style="left: 10px; bottom: 10px;" class="decoMedium">${availableStyles[currentThemeKey].style_deco}</p>
-    <p style="right: 10px; top: 40%;" class="decoMedium">${availableStyles[currentThemeKey].style_deco}</p>
-    <p style="left: 10px; top: 5%;" class="decoMedium">${availableStyles[currentThemeKey].style_deco}</p>
+    <p style="left: 10px; bottom: 10px;" class="decoIcon decoMedium">${availableStyles[currentThemeKey].style_deco}</p>
+    <p style="right: 10px; top: 40%;" class="decoIcon decoMedium">${availableStyles[currentThemeKey].style_deco}</p>
+    <p style="left: 10px; top: 5%;" class="decoIcon decoMedium">${availableStyles[currentThemeKey].style_deco}</p>
       <h1>create new entry</h1>
       <hr />
       <div class="smallMenu horizontalFlex">

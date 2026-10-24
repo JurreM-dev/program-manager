@@ -1,3 +1,5 @@
+let currentThemeKey = "blossom";
+
 let availableStyles = {
   blossom: {
     main_color: "rgb(247, 170, 247)",
@@ -55,5 +57,8 @@ function updateTheme() {
     root.style.setProperty('--border-color', styles.border_color);
     root.style.setProperty('--text-color', styles.text_color);
 
+    document.querySelectorAll(".decoIcon").forEach((icon)=>{
+        icon.innerText = styles.style_deco;
+    })
 }
 updateTheme();
