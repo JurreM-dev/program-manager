@@ -8,14 +8,18 @@ import {
 
 import { appContext, displaysContext } from "./contexts.js";
 
+import { Stardust } from '../bank-system/moneySystems.js';
+const stardust = new Stardust();
+
 let entries = {};
 
 function SideBar() {
-  const { showEntryTab, showEntryListTab } = useContext(displaysContext);
+  const { showEntryTab, showEntryListTab, showThemeTab } = useContext(displaysContext);
 
   function closeAll() {
     showEntryTab("none");
     showEntryListTab("none");
+    showThemeTab("none");
   }
 
   return html`
@@ -37,6 +41,15 @@ function SideBar() {
         }}
       >
         entries
+      </button>
+      <button
+        class="sideBtn"
+        onclick=${() => {
+          closeAll();
+          showThemeTab("flex");
+        }}
+      >
+        themes
       </button>
     </aside>
   `;
@@ -165,9 +178,76 @@ function EntriesPage() {
   `;
 }
 
+function ThemesPage() {
+  const { themeTab } = useContext(displaysContext);
+
+  const { trigger, setTrigger } = useContext(appContext);
+
+  return html`
+  <div class="pagePart centerDown" style="display: ${themeTab};">
+    <h1>themes</h1>
+    ${Object.keys(availableStyles).map((theme)=>{
+      let themeJson = availableStyles[theme];
+      let price = themeJson.price;
+      let priceDisplay = price + "✨";
+      if(price <= 0) {
+        priceDisplay = "free";
+      }
+      let buttonHtml = "";
+
+      if (currentThemeKey === theme) {
+        buttonHtml = html`<button disabled>equipped</button>`;
+      } else if (ownedThemes.includes(theme)) {
+        buttonHtml = html`
+          <button onclick=${() => {
+            currentThemeKey = theme;
+            updateTheme();
+            setTrigger(prevTrigger => prevTrigger + 1);
+          }}>
+            equip
+          </button>
+        `;
+      } else {
+        buttonHtml = html`
+          <button onclick=${() => {
+            if(price > 0) {
+              let pincode = prompt("your pincode for stardust? (used to purchase the theme)");
+              if(!pincode) {
+                alert("not a valid pincode");
+                return
+              }
+              const buySuccess = stardust.takeMoney(pincode, price);
+              if(!buySuccess) {
+                return;
+              }
+            }
+            ownedThemes.push(theme);
+            currentThemeKey = theme;
+            updateTheme();
+            setTrigger(prevTrigger => prevTrigger + 1);
+          }}>
+            buy
+          </button>
+        `;
+      }
+      return html`
+      <div class="pageCard centerDown">
+        <h2>${theme}</h2>
+        <p>price: ${priceDisplay}</p>
+        <div class="smallMenu">
+          ${buttonHtml}
+        </div>
+      </div>
+      `
+    })}
+  </div>
+  `
+}
+
 function App() {
   const [entryListTab, showEntryListTab] = useState("none");
   const [entryTab, showEntryTab] = useState("flex");
+  const [themeTab, showThemeTab] = useState("none");
   const [trigger, setTrigger] = useState(0);
 
   const showStates = {
@@ -175,6 +255,8 @@ function App() {
     showEntryTab,
     entryListTab,
     showEntryListTab,
+    themeTab,
+    showThemeTab
   };
 
   const appStates = {
@@ -189,6 +271,7 @@ function App() {
         <${SideBar}/>
         <${CreateEntryPage}/>
         <${EntriesPage}/>
+        <${ThemesPage}/>
     </div>
     </${appContext.Provider}>
     </${displaysContext.Provider}>

@@ -1,5 +1,7 @@
 let currentThemeKey = "blossom";
 
+let ownedThemes = ["blossom"]
+
 let availableStyles = {
   blossom: {
     main_color: "rgb(247, 170, 247)",
@@ -61,4 +63,5 @@ function updateTheme() {
         icon.innerText = styles.style_deco;
     })
 }
+
 updateTheme();

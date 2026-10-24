@@ -43,8 +43,11 @@ button {
 }
 .pagePart {
     flex: 1;
+    min-width: 0;
+    min-height: 0;
     padding: 10px;
     position: relative;
+    overflow-y: auto;
 }
 .centerDown {
     display: flex;
@@ -106,4 +109,24 @@ button {
 .decoMedium {
     position: absolute;
     font-size: 70px;
+}
+
+
+.pagePart {
+    flex: 1;
+    min-width: 0;
+    min-height: 0;
+    padding: 10px;
+    position: relative;
+    overflow-y: auto;
+}
+
+.pageCard {
+    box-sizing: border-box;
+    width: 65%;
+    flex: 0 0 auto;
+    padding: 5px;
+    border: 3px solid var(--border-color);
+    border-radius: 20px;
+    background-color: var(--second-color);
 }
