@@ -223,6 +223,7 @@ function ThemesPage() {
             }
             ownedThemes.push(theme);
             currentThemeKey = theme;
+            saveThemes();
             updateTheme();
             setTrigger(prevTrigger => prevTrigger + 1);
           }}>

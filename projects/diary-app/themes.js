@@ -58,10 +58,36 @@ function updateTheme() {
     root.style.setProperty('--third-color', styles.third_color);
     root.style.setProperty('--border-color', styles.border_color);
     root.style.setProperty('--text-color', styles.text_color);
-
-    document.querySelectorAll(".decoIcon").forEach((icon)=>{
-        icon.innerText = styles.style_deco;
-    })
 }
 
+function saveThemes() {
+    const neededContent = {
+        owned: ownedThemes,
+        current: currentThemeKey
+    }
+    const savableContent = JSON.stringify(neededContent);
+    localStorage.setItem("blossomDiaryThemes", savableContent);
+}
+
+
+
+function saveThemes() {
+    const neededContent = {
+        owned: ownedThemes,
+        current: currentThemeKey
+    }
+    const savableContent = JSON.stringify(neededContent);
+    localStorage.setItem("blossomDiaryThemes", savableContent);
+}
+
+function loadThemes() {
+    let potential = localStorage.getItem("blossomDiaryThemes");
+    if(potential) {
+        const loadedContent = JSON.parse(potential);
+        ownedThemes = loadedContent.owned;
+        currentThemeKey = loadedContent.current;
+    }
+}
+
+loadThemes();
 updateTheme();
