@@ -42,6 +42,7 @@ button {
 .pagePart {
     flex: 1;
     padding: 10px;
+    position: relative;
 }
 .centerDown {
     display: flex;
@@ -94,4 +95,10 @@ button {
     padding: 5px;
     scrollbar-width: none;
     border: 3px solid var(--border-color);
+}
+
+
+.decoMedium {
+    position: absolute;
+    font-size: 70px;
 }
