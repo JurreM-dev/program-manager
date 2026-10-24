@@ -65,6 +65,14 @@
       "installTime": 800,
       "version": "v0.1.0",
       "iconEmoji": "📟"
+    },
+    "blossom-diary": {
+      "name": "blossom-diary",
+      "path": "projects/diary-app/diary.html",
+      "message": "A diary app in cherry blossom theme",
+      "installTime": 2300,
+      "version": "v0.1.0",
+      "iconEmoji": "🌸"
     }
   }
 }
