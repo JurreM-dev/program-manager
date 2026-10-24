@@ -12,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    max-height: 100vh;
     font-family: var(--main-font);
     color: var(--text-color);
 }
@@ -32,6 +33,7 @@ button {
     background-color: var(--main-color);
     flex: 1;
     display: flex;
+    max-height: 100vh;
 }
 #sideBar {
     width: 20%;
@@ -54,8 +56,11 @@ button {
     border-radius: 40px;
     width: 60%;
     height: 65%;
+    max-height: 65%;
     background-color: var(--second-color);
     border: 3px solid var(--border-color);
+    overflow: auto;
+    scrollbar-width: none;
 }
 .entryInput:focus {
     box-shadow: 0 0 12px 5px var(--third-color);
