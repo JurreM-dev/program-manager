@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+
+        <script type="module">
+            import { Bronze } from './compiler.js';
+
+            const compiler = new Bronze(console.log);
+            compiler.compileBronze(`
+BODY (TEXT hi!! <<ID hiText, CLASS redText, COLOR red>>\nBUTTON click me!)
+    `)
+            const results = compiler.readHtml();
+            document.body.innerHTML = results;
+        </script>
+    </body>
+</html>

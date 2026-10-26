@@ -130,3 +130,8 @@ button {
     border-radius: 20px;
     background-color: var(--second-color);
 }
+.pageCard:hover {
+    box-shadow: 0 0 12px 5px var(--third-color);
+    width: 72%;
+    padding: 20px;
+}
