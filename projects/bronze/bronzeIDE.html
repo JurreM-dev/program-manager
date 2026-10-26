@@ -8,8 +8,11 @@
 
             const compiler = new Bronze(console.log);
             compiler.compileBronze(`
-BODY (TEXT hi!! <<ID hiText, CLASS redText, COLOR red>>\nBUTTON click me!)
-    `)
+BODY (
+    TEXT hi!! <<ID hiText, CLASS redText, COLOR red>>
+    LINE
+    BUTTON click me! <<COLOR blue, BACKGROUNDCOLOR red, ROUNDING 20px>>
+)`)
             const results = compiler.readHtml();
             document.body.innerHTML = results;
         </script>

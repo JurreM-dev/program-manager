@@ -54,12 +54,15 @@ export class Bronze {
             const attributes = broken[1];
 
             if(!this.#bodyCompilerObject[keyWord] || typeof this.#bodyCompilerObject[keyWord] !== "function") {
-                this.#errorPut("COMPILER ERROR, the keyword " + keyWord + " does not exist on line " + (index + 1));
+                if(keyWord.match(/\s/)) {
+                    this.#errorPut("COMPILER ERROR, the keyword " + keyWord + " does not exist on line " + (index + 1));
+                }
                 return;
             } 
-
-            const attributeHTML = this.#atributesCompiler(attributes);
-
+            let attributeHTML
+            if(attributes) {
+                attributeHTML = this.#atributesCompiler(attributes);
+            }
             this.#bodyCompilerObject[keyWord](value, attributeHTML);
 
         })
@@ -121,6 +124,22 @@ export class Bronze {
             const cleanColor = DOMPurify.sanitize(chosenValue);
 
             return {body: ` color: ${cleanColor};`, specificType: "styling"};
+        },
+        BACKGROUNDCOLOR: (value) => {
+            const splitValue = value.split(" ");
+            const chosenValue = splitValue[0];
+
+            const cleanColor = DOMPurify.sanitize(chosenValue);
+
+            return {body: ` background-color: ${cleanColor};`, specificType: "styling"};
+        },
+        ROUNDING: (value) => {
+            const splitValue = value.split(" ");
+            const chosenValue = splitValue[0];
+
+            const cleanRound = DOMPurify.sanitize(chosenValue);
+
+            return {body: ` border-radius: ${cleanRound};`, specificType: "styling"};
         }
     }
 
@@ -129,6 +148,14 @@ export class Bronze {
             const unFiltered = value;
             const filtered = DOMPurify.sanitize(unFiltered);
             this.#htmlBody += `<p ${parsedAttributes}>${filtered.trim()}</p>\n`;
+        },
+        BUTTON: (value, parsedAttributes = "") => {
+            const unFiltered = value;
+            const filtered = DOMPurify.sanitize(unFiltered);
+            this.#htmlBody += `<button ${parsedAttributes}>${filtered.trim()}</button>\n`;
+        },
+        LINE: () => {
+            this.#htmlBody += `<hr />\n`;
         }
     }
 }
