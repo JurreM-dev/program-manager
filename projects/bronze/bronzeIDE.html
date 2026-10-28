@@ -34,13 +34,21 @@
 
       import { closeBrackets } from "https://esm.sh/@codemirror/autocomplete@6";
 
+      const logPlace = document.getElementById("errorLogs");
+
+      function logError(message) {
+        const errorElement = document.createElement("p");
+        errorElement.innerText = message;
+        logPlace.appendChild(errorElement);
+      };
+
       const innerStyleTag = Tag.define();
 
       const editorStyle = HighlightStyle.define([
         { tag: tags.keyword, color: "#fcba03" },
         { tag: tags.string, color: "#f5dc98" },
         { tag: tags.meta, color: "#e8e002" },
-        { tag: innerStyleTag, color: "#a8327d" },
+        { tag: innerStyleTag, color: "#f760d2" },
       ]);
 
       const bronzeLanguage = StreamLanguage.define({
@@ -79,9 +87,10 @@
         parent: document.getElementById("editor"),
       });
 
-      const compiler = new Bronze(console.log);
+      const compiler = new Bronze(logError);
 
       function executeBronze() {
+        logPlace.innerHTML = "";
         const input = view.state.doc.toString();
         compiler.compileBronze(input);
         const output = compiler.readHtml();

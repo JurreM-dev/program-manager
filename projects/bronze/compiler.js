@@ -55,7 +55,7 @@ export class Bronze {
             const attributes = broken[1];
 
             if(!this.#bodyCompilerObject[keyWord] || typeof this.#bodyCompilerObject[keyWord] !== "function") {
-                if(keyWord.match(/\s/)) {
+                if(keyWord) {
                     this.#errorPut("COMPILER ERROR, the keyword " + keyWord + " does not exist on line " + (index + 1));
                 }
                 return;
@@ -158,6 +158,22 @@ export class Bronze {
 
             return {body: ` border-radius: ${cleanRound};`, specificType: "styling"};
         },
+        PADDING: (value) => {
+            const splitValue = value.split(" ");
+            const chosenValue = splitValue[0];
+
+            const cleanPadding = DOMPurify.sanitize(chosenValue);
+
+            return {body: ` padding: ${cleanPadding};`, specificType: "styling"};
+        },
+        MARGIN: (value) => {
+            const splitValue = value.split(" ");
+            const chosenValue = splitValue[0];
+
+            const cleanMargin = DOMPurify.sanitize(chosenValue);
+
+            return {body: ` padding: ${cleanMargin};`, specificType: "styling"};
+        },
         ONCLICK: (value) => {
             const actionString = value;
             const actions = actionString.split("&&");
@@ -208,5 +224,14 @@ export class Bronze {
 
             return ` alert('${cleanContent}'); `;
         }
+    }
+
+    // ============================================================
+    // COMPILER STYLESHEETS
+    // ============================================================
+
+    #stylesheetCompiler(sheet) {
+        const parts = sheet.split(",");
+        
     }
 }
