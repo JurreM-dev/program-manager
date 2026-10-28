@@ -1,0 +1,32 @@
+body {
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    background-color: #BB4513;
+    overflow: hidden;
+}
+iframe {
+    background-color: white;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+.pagePart {
+    flex: 1;
+    height: 100%;
+    border: 2px solid white;
+    overflow-y: scroll;
+}
+.centerDown {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.pageChild {
+    flex: 1;
+}
+.floatBtn {
+    position: absolute;
+    left: 10px;
+}

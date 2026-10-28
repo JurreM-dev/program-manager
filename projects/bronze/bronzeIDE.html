@@ -1,20 +1,94 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head></head>
-    <body>
+  <head>
+    <link rel="stylesheet" href="editorStyle.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  </head>
+  <body>
+    <div id="editor" class="pagePart"></div>
+    <div id="output" class="pagePart centerDown">
+      <iframe id="outputFrame" class="pageChild"></iframe>
+      <div id="errorLogs" class="pageChild"></div>
+    </div>
 
-        <script type="module">
-            import { Bronze } from './compiler.js';
+    <!-- BUTTONS -->
+     <button class="floatBtn" id="runButton">run</button>
 
-            const compiler = new Bronze(console.log);
-            compiler.compileBronze(`
-BODY (
-    TEXT hi!! <<ID hiText, CLASS redText, COLOR red>>
-    LINE
-    BUTTON click me! <<COLOR blue, BACKGROUNDCOLOR red, ROUNDING 20px>>
-)`)
-            const results = compiler.readHtml();
-            document.body.innerHTML = results;
-        </script>
-    </body>
+    <script type="module">
+      // IMPORTING BRONZE COMPILER
+      import { Bronze } from "./compiler.js";
+
+      // IMPORTING EDITOR LIBRARY
+      import { basicSetup } from "https://esm.sh/codemirror@6.0.2";
+
+      import { EditorView } from "https://esm.sh/@codemirror/view@6";
+
+      import { StreamLanguage } from "https://esm.sh/@codemirror/language@6";
+
+      import { tags, Tag } from "https://esm.sh/@lezer/highlight@1";
+
+      import {
+        HighlightStyle,
+        syntaxHighlighting,
+      } from "https://esm.sh/@codemirror/language@6";
+
+      import { closeBrackets } from "https://esm.sh/@codemirror/autocomplete@6";
+
+      const innerStyleTag = Tag.define();
+
+      const editorStyle = HighlightStyle.define([
+        { tag: tags.keyword, color: "#fcba03" },
+        { tag: tags.string, color: "#f5dc98" },
+        { tag: tags.meta, color: "#e8e002" },
+        { tag: innerStyleTag, color: "#a8327d" },
+      ]);
+
+      const bronzeLanguage = StreamLanguage.define({
+        tokenTable: {
+          innerStyleTag,
+        },
+        token(stream, state) {
+          if (stream.sol()) {
+            if (stream.match("TEXT")) return "keyword";
+            if (stream.match("LINE")) return "keyword";
+            if (stream.match("BUTTON")) return "keyword";
+          }
+
+          if (stream.match(/<<.*?>>/)) return "innerStyleTag";
+
+          if (stream.match(/<<COLOR\s+\w+\s*>>/)) {
+            return "meta";
+          }
+
+          if (stream.eatSpace()) return null;
+
+          stream.next();
+          return "string";
+        },
+      });
+
+      const view = new EditorView({
+        doc: "BODY(\nTEXT hello world\nLINE\nBUTTON click me\n)",
+        extensions: [
+          basicSetup,
+          bronzeLanguage,
+          syntaxHighlighting(editorStyle),
+          closeBrackets(),
+        ],
+        parent: document.getElementById("editor"),
+      });
+
+      const compiler = new Bronze(console.log);
+
+      function executeBronze() {
+        const input = view.state.doc.toString();
+        compiler.compileBronze(input);
+        const output = compiler.readHtml();
+        console.log(output);
+        document.getElementById("outputFrame").srcdoc = output;
+      }
+
+      document.getElementById("runButton").addEventListener("click", executeBronze);
+    </script>
+  </body>
 </html>
