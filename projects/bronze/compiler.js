@@ -18,6 +18,7 @@ export class Bronze {
     compileBronze(code) {
         if(typeof code !== "string") {
             this.#errorPut("COMPILER ERROR, type of inserted code is not string");
+            return;
         }
         this.#htmlBody = "";
         const segments = code.split("<--->");
@@ -148,6 +149,19 @@ export class Bronze {
             const unFiltered = value;
             const filtered = DOMPurify.sanitize(unFiltered);
             this.#htmlBody += `<p ${parsedAttributes}>${filtered.trim()}</p>\n`;
+        },
+        HEADER: (value, parsedAttributes = "") => {
+            const unFiltered = value;
+            const filtered = DOMPurify.sanitize(unFiltered);
+
+            const parts = filtered.trim().split(" ");
+            const levelPart = parts[0];
+            const restParts = parts.splice(1).join(" ");
+            if(!levelPart.match(/^[1-6]$/)) {
+                this.#errorPut("COMPILER ERROR, header level " + levelPart + " is not valid, must be between 1 and 6");
+                return;
+            }
+            this.#htmlBody += `<h${levelPart} ${parsedAttributes}>${restParts}</h${levelPart}>\n`;
         },
         BUTTON: (value, parsedAttributes = "") => {
             const unFiltered = value;

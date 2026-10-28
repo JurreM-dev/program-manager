@@ -52,6 +52,7 @@
             if (stream.match("TEXT")) return "keyword";
             if (stream.match("LINE")) return "keyword";
             if (stream.match("BUTTON")) return "keyword";
+            if (stream.match("HEADER")) return "keyword";
           }
 
           if (stream.match(/<<.*?>>/)) return "innerStyleTag";
