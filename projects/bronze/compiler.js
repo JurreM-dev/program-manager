@@ -3,6 +3,7 @@ import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.4.16/+esm";
 export class Bronze {
     #errorPut;
     #htmlBody;
+    #bronzeBody;
 
     constructor(errorOut = console.log) {
         this.name = "Bronze";
@@ -13,6 +14,9 @@ export class Bronze {
     readHtml() {
         return(this.#htmlBody);
     }
+    readBronze() {
+        return(this.#bronzeBody);
+    }
 
     // COMPILER
     compileBronze(code) {
@@ -20,6 +24,7 @@ export class Bronze {
             this.#errorPut("COMPILER ERROR, type of inserted code is not string");
             return;
         }
+        this.#bronzeBody = code;
         this.#htmlBody = "";
         const segments = code.split("<--->");
         segments.forEach((segment) => {
@@ -28,6 +33,10 @@ export class Bronze {
                 case "BODY":
                     const body = segment.split("(").splice(1).join("(").split(")").splice(0, 1).join(")");
                     this.#bodyCompiler(body);
+                break
+                case "STYLESHEET":
+                    const sheet = segment.split("(").splice(1).join("(").split(")").splice(0, 1).join(")");
+                    this.#stylesheetCompiler(sheet);
                 break
                 default: 
                     this.#errorPut("COMPILER ERROR, segment " + identifier + " is unvalid");
@@ -231,7 +240,20 @@ export class Bronze {
     // ============================================================
 
     #stylesheetCompiler(sheet) {
-        const parts = sheet.split(",");
-        
+        const parts = sheet.split("},\n");
+        let styleString = "<style>\n";
+        parts.forEach((part) => {
+            if(part.trim() === "") {
+                return;
+            }
+            const trimmedPart = part.trim();
+            const broken = trimmedPart.split("{");
+            const selector = broken[0].trim();
+            const rules = broken[1].trim();
+
+            styleString += `${selector} {\n${rules}\n}\n`;
+        });
+        styleString += "</style>\n";
+        this.#htmlBody += styleString;
     }
 }
