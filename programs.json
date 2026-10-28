@@ -73,6 +73,14 @@
       "installTime": 2300,
       "version": "v0.2.0",
       "iconEmoji": "🌸"
+    },
+    "bronzeIDE": {
+      "name": "bronzeIDE",
+      "path": "projects/bronze/bronzeIDE.html",
+      "message": "A simple IDE for the bronze programming language",
+      "installTime": 3000,
+      "version": "v0.1.0",
+      "iconEmoji": "🟤"
     }
   }
 }
