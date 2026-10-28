@@ -103,6 +103,22 @@ export class Bronze {
         return `${attributeHTML} ${styleAttribute}`;
     }
 
+    // actions compiler
+    #actionCompiler(actionString) {
+        const actionParts = actionString?.trim().split(" ");
+        const keyWord = actionParts[0];
+        
+        const actionRest = actionParts?.splice(1).join(" ");
+
+        if(!this.#actionCompilerObject[keyWord] || typeof this.#actionCompilerObject[keyWord] !== "function") {
+            this.#errorPut("COMPILER ERROR, action " + keyWord + " does not exist");
+            return;
+        }
+
+        const response = this.#actionCompilerObject.ALERT(actionRest);
+        return response;
+    }
+
     // compiler objects
     #attributeCompilerObject = {
         ID: (value) => {
@@ -141,6 +157,19 @@ export class Bronze {
             const cleanRound = DOMPurify.sanitize(chosenValue);
 
             return {body: ` border-radius: ${cleanRound};`, specificType: "styling"};
+        },
+        ONCLICK: (value) => {
+            const actionString = value;
+            const actions = actionString.split("&&");
+
+            let actionsOutput = "";
+
+            actions.forEach((action)=>{
+                action = action.trim();
+                const response = this.#actionCompiler(action);
+                actionsOutput += response;
+            });
+            return {body: `onclick="${actionsOutput}"`};
         }
     }
 
@@ -170,6 +199,14 @@ export class Bronze {
         },
         LINE: () => {
             this.#htmlBody += `<hr />\n`;
+        }
+    }
+
+    #actionCompilerObject = {
+        ALERT: (content) => {
+            const cleanContent = DOMPurify.sanitize(content);
+
+            return ` alert('${cleanContent}'); `;
         }
     }
 }
