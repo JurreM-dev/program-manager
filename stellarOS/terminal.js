@@ -128,79 +128,17 @@ async function files(command) {
     mkdir(dirName);
     Logs("created directory " + dirName);
   } else if (parts[0] === "ls") {
-    let files = currentDirectory.files;
-    if (files.length === 0) {
-      Logs("no files found");
-    } else {
-      let fileNames = files.map((f) => f.name);
-      Logs("files in current directory:");
-      fileNames.forEach((name) => {
-        if (!name.startsWith(".") && parts.includes("--all")) {
-          Logs("- " + name);
-        } else if (name.startsWith(".")) {
-        } else {
-          Logs("- " + name);
-        }
-      });
-    }
+    ls(parts, Logs);
   } else if (parts[0] === "cd") {
     let dirName = parts[1];
-    if (dirName === "..") {
-      if (currentDirectory.name !== "root") {
-        let parentDirPath =
-          currentDirectory.directory.split("/").slice(0, -2).join("/") + "/";
-        let parentDir = root;
-        if (parentDirPath !== "/") {
-          let pathParts = parentDirPath.split("/").filter((p) => p !== "");
-          for (let part of pathParts) {
-            parentDir = parentDir.files.find(
-              (f) => f.type === "directory" && f.name === part,
-            );
-          }
-        }
-        currentDirectory = parentDir;
-        currentPath = currentDirectory.directory;
-        Logs("changed directory to " + currentPath);
-      } else {
-        Logs("directory not found");
-      }
-    } else {
-      let newDir = currentDirectory.files.find(
-        (f) => f.type === "directory" && f.name === dirName,
-      );
-      if (newDir) {
-        currentDirectory = newDir;
-        currentPath = currentDirectory.directory;
-        Logs("changed directory to " + currentPath);
-      } else {
-        Logs("directory not found");
-      }
-    }
+    cd(dirName, Logs);
   } else if (parts[0] === "touch") {
     let fileName = parts[1];
-    let fileParts = fileName.split(".");
-    let newFile = {
-      type: "file",
-      name: fileName,
-      directory: currentPath + fileName,
-      content: "",
-      typeFile: fileParts[fileParts.length - 1],
-    };
-    currentDirectory.files.push(newFile);
-    saveRoot();
+    touch(fileName);
     Logs("file created: " + fileName);
   } else if (parts[0] === "rm") {
     let fileName = parts[1];
-    let fileIndex = currentDirectory.files.findIndex(
-      (f) => f.name === fileName,
-    );
-    if (fileIndex !== -1) {
-      currentDirectory.files.splice(fileIndex, 1);
-      saveRoot();
-      Logs("file removed: " + fileName);
-    } else {
-      Logs("file not found");
-    }
+    rm(fileName, Logs);
   }
 }
 
