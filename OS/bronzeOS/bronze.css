@@ -1,0 +1,27 @@
+:root {
+    --terminal-color: #ffffff;
+    --terminal-background: #000000;
+}
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: none;
+    height: 100vh;
+    overflow: hidden;
+}
+#terminal {
+    caret-shape: block;
+    flex: 1;
+    background-color: var(--terminal-background);
+    color: var(--terminal-color);
+    font-family: monospace;
+    font-size: 16px;
+    padding: 10px;
+    overflow-y: auto;
+    height: 100%;
+    border: none;
+    border: none;
+    outline: none;
+}
