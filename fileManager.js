@@ -41,7 +41,11 @@ function getDirectoryByPath(path) {
 }
 
 // MAIN FILE MANAGER COMMANDS
-function mkdir(dirName) {
+function mkdir(dirName, Logs) {
+  if(currentDirectory.files.some(dir => dir.name === dirName)) {
+    Logs("directory already exists");
+    return;
+  }
   let newDir = {
     type: "directory",
     name: dirName,
@@ -50,6 +54,7 @@ function mkdir(dirName) {
   };
   currentDirectory.files.push(newDir);
   saveRoot();
+  Logs("directory created: " + dirName);
 }
 
 function touch(fileName) {

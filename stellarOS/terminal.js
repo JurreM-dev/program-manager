@@ -125,7 +125,7 @@ async function files(command) {
   let parts = command.split(" ");
   if (parts[0] === "mkdir") {
     let dirName = parts[1];
-    mkdir(dirName);
+    mkdir(dirName, Logs);
     Logs("created directory " + dirName);
   } else if (parts[0] === "ls") {
     ls(parts, Logs);

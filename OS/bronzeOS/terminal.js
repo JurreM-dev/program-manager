@@ -1,16 +1,22 @@
-let typingIndicator = "@bronzeOS:user :~ $ "
+// defining the kernel
+
+const kernel = new BronzeKernel();
+
+let typingIndicator = `@bronzeOS:${kernel.userName} :~ $ `
+
+const terminal = document.getElementById("terminal");
 
 // preventing backspaces and process enters
-document.getElementById("terminal").addEventListener("keydown", function(event) {
+terminal.addEventListener("keydown", function(event) {
     if (event.key === "Enter") {
         event.preventDefault();
-        const input = document.getElementById("terminal").value;
+        const input = terminal.value;
         const line = input.split("\n").pop().replace(typingIndicator, "");
         
         processCommand(line);
-        document.getElementById("terminal").value += `\n${typingIndicator}`;
+        newLine();
     } else if (event.key === "Backspace") {
-        const currentValue = document.getElementById("terminal").value;
+        const currentValue = terminal.value;
         if (currentValue.endsWith(typingIndicator)) {
             event.preventDefault();
         };
@@ -20,9 +26,9 @@ document.getElementById("terminal").addEventListener("keydown", function(event) 
 });
 
 // making sure you can't just place your cursor back
-document.getElementById("terminal").addEventListener("pointerdown", function(event) {
+terminal.addEventListener("pointerdown", function(event) {
     event.preventDefault();
-    document.getElementById("terminal").focus();
+    terminal.focus();
 });
 
 // putting typing indicator in the terminal on load
@@ -32,9 +38,36 @@ window.addEventListener("load", function() {
 });
 
 // ================================================
+// terminal functions
+// ================================================
+
+function newLine() {
+    terminal.value += `\n${typingIndicator}`;
+}
+
+function println(content) {
+    terminal.value += `\n${content}`
+}
+
+function clearTerminal() {
+    terminal.value = "";
+}
+
+const terminalCommands = {
+    println: println,
+    newLine: newLine,
+    clear: clearTerminal,
+}
+
+// ================================================
 // actual terminal logic
 // ================================================
 
 function processCommand(line) {
-    console.log(line);
+    const commandLine = line.trim().toLowerCase();
+
+    let parts = commandLine.split(" ");
+    let command = parts[0];
+    let rest = parts.slice(1).join(" ");
+    kernel.exec(command, rest, terminalCommands);
 }
