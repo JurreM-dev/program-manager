@@ -57,7 +57,7 @@ function mkdir(dirName, Logs) {
   Logs("directory created: " + dirName);
 }
 
-function touch(fileName) {
+function touch(fileName, Logs = console.log) {
   let fileParts = fileName.split(".");
   let newFile = {
     type: "file",
@@ -68,6 +68,7 @@ function touch(fileName) {
   };
   currentDirectory.files.push(newFile);
   saveRoot();
+  Logs("succesfully created file " + fileName);
 }
 
 function cd(dirName, Logs = console.log) {
@@ -106,6 +107,7 @@ function rm(fileName, Logs = console.log) {
 }
 
 function ls(parts, Logs = console.log) {
+  Logs("\n" + "current directory: " + currentPath + "\n");
   let files = currentDirectory.files;
   if (files.length === 0) {
     Logs("no files found");

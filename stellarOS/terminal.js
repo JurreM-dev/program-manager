@@ -134,8 +134,7 @@ async function files(command) {
     cd(dirName, Logs);
   } else if (parts[0] === "touch") {
     let fileName = parts[1];
-    touch(fileName);
-    Logs("file created: " + fileName);
+    touch(fileName, Logs);
   } else if (parts[0] === "rm") {
     let fileName = parts[1];
     rm(fileName, Logs);

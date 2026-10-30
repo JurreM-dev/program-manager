@@ -41,6 +41,7 @@ window.addEventListener("load", function() {
 // terminal functions
 // ================================================
 
+// CLI functions
 function newLine() {
     terminal.value += `\n${typingIndicator}`;
 }
@@ -53,11 +54,19 @@ function clearTerminal() {
     terminal.value = "";
 }
 
-const terminalCommands = {
-    println: println,
-    newLine: newLine,
-    clear: clearTerminal,
+function refreshTypingIndicator() {
+    typingIndicator = `@bronzeOS:${kernel.userName} :~ $ `
 }
+
+// CLI commands 
+const terminalCommands = {
+    println,
+    newLine,
+    clear: clearTerminal,
+    refreshTypingIndicator
+}
+
+// GUI functions
 
 // ================================================
 // actual terminal logic
