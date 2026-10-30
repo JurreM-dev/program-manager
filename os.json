@@ -6,6 +6,13 @@
             "downloadTime": 10000,
             "message": "autumnOS is the first official OS inside of stellarOS!",
             "version": "v0.1.0"
+        },
+        "bronzeOS": {
+            "name": "bronzeOS",
+            "path": "./OS/bronzeOS/bronze.html",
+            "downloadTime": 6000,
+            "message": "A more technical inner OS, made for customizability",
+            "version": "v0.0.1"
         }
     }
 }
