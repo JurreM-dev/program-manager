@@ -172,6 +172,9 @@ class BronzeKernel {
         let object = root.programs[objectIndex];
         GUI.showWindow("./../../" + object.path);
       },
+      close: (args, terminal, GUI) => {
+        GUI.closeWindow();
+      }
     },
   };
 

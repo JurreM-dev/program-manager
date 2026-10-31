@@ -77,16 +77,16 @@ function showWindow(link) {
     document.getElementById("windowFrame").src = link;
 }
 
-function hideWindow() {
+function closeWindow() {
     const windowBody = document.getElementById("standardWindow");
-    windowBody.replaceChildren("");
+    windowBody.replaceChildren();
     windowBody.style.display = "none";
 }
 
 // GUI commands
 const GUICommands = {
     showWindow,
-    hideWindow
+    closeWindow
 }
 
 // ================================================
