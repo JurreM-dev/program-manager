@@ -3,6 +3,8 @@
   <head>
     <link rel="stylesheet" href="editorStyle.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <script src="./../../libraries/localforage.min.js"></script>
   </head>
   <body>
     <div id="editor" class="pagePart"></div>
@@ -15,9 +17,11 @@
      <div class="floatBtnBar">
       <button class="floatBtn" id="exportBronzeBtn">export as bronze</button>
       <button class="floatBtn" id="exportHtmlBtn">export as HTML</button>
+      <button class="floatBtn" id="exportFileBtn">export bronze in files</button>
       <button class="floatBtn" id="runButton">run</button>
     </div>
 
+    <script src="./../../fileManager.js"></script>
     <script type="module">
       // IMPORTING BRONZE COMPILER
       import { Bronze } from "./compiler.js";
@@ -103,8 +107,8 @@
       }
 
       // blob help function
-      function download(fileName, content) {
-        const blob = new Blob([content], {type: "text/plain"});
+      function download(fileName, content, type = "text/plain") {
+        const blob = new Blob([content], {type: type});
         const link = document.createElement("a");
   
         link.href = URL.createObjectURL(blob);
@@ -121,12 +125,40 @@
         }
         name = name + ".brz";
         const content = compiler.readBronze();
-        download(name, content);
+        download(name, content, "text/plain");
+      }
+
+      function exportHtml() {
+        let name = prompt("name of your file?");
+        if(name.length < 1) {
+          alert("your name must be at least one character!");
+          return;
+        }
+        name = name + ".html";
+        const content = compiler.readHtml();
+        download(name, content, "text/html");
+      }
+
+      function exportFile() {
+        let name = prompt("name of your file?");
+        if(name.length < 1) {
+          alert("your name must be at least one character!");
+          return;
+        }
+        name = name + ".brz";
+        const content = compiler.readBronze();
+        alert("your bronze file will be saved in the bronze folder, and othewise in root");
+        cd("bronze");
+        console.log(currentPath);
+        writeFile(name, content);
+        sendRefreshMessage();
       }
 
       // click listeners
       document.getElementById("runButton").addEventListener("click", executeBronze);
       document.getElementById("exportBronzeBtn").addEventListener("click", exportBronze);
+      document.getElementById("exportHtmlBtn").addEventListener("click", exportHtml);
+      document.getElementById("exportFileBtn").addEventListener("click", exportFile); 
     </script>
   </body>
 </html>

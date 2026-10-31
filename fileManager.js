@@ -154,3 +154,43 @@ function readFile(fileName) {
     log("File not found");
   }
 }
+
+function refreshFiles() {
+  (async () => {
+  const potential = await localforage.getItem("rootSave");
+  if (potential) {
+    root = potential;
+    currentDirectory = root;
+    currentPath = "/";
+  }
+})();
+}
+
+function sendRefreshMessage() {
+  const isEmbedded = window.self !== window.top;
+
+  if(!isEmbedded) {
+    return;
+  }
+  const message = {
+    type: "REFRESH_ORDER"
+  }
+
+  const parentOrigin = window.parent.location.origin;
+
+  window.parent.postMessage(message, parentOrigin);
+}
+
+window.addEventListener("message", (event) => {
+  const ownOrigin = window.location.origin;
+  if (event.origin !== ownOrigin) {
+    console.log("unsafe data refresh attempt")
+    return;
+  }
+
+  console.log("Message received from iframe:", event.data);
+  
+  if (event.data.type === "REFRESH_ORDER") {
+    refreshFiles();
+  }
+});
