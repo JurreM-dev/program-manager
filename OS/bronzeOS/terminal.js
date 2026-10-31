@@ -94,7 +94,7 @@ const GUICommands = {
 // ================================================
 
 function processCommand(line) {
-    const commandLine = line.trim().toLowerCase();
+    const commandLine = line.trim();
 
     let parts = commandLine.split(" ");
     let command = parts[0];

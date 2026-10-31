@@ -3,11 +3,12 @@ import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.4.16/+esm";
 export class Bronze {
     #errorPut;
     #htmlBody;
-    #bronzeBody;
+    #bronzeBody
 
     constructor(errorOut = console.log) {
         this.name = "Bronze";
         this.#errorPut = errorOut;
+        this.#bronzeBody = "BODY(\nTEXT hello world\nLINE\nBUTTON click me\n)"
     }
 
     // READING OUT

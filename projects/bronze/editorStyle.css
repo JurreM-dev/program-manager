@@ -30,7 +30,7 @@ iframe {
     padding: 0;
     overflow-y: scroll;
 }
-.floatBtn {
+.floatBtnBar {
     position: absolute;
     left: 10px;
     bottom: 10px;

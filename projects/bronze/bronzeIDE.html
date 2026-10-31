@@ -12,7 +12,11 @@
     </div>
 
     <!-- BUTTONS -->
-     <button class="floatBtn" id="runButton">run</button>
+     <div class="floatBtnBar">
+      <button class="floatBtn" id="exportBronzeBtn">export as bronze</button>
+      <button class="floatBtn" id="exportHtmlBtn">export as HTML</button>
+      <button class="floatBtn" id="runButton">run</button>
+    </div>
 
     <script type="module">
       // IMPORTING BRONZE COMPILER
@@ -98,7 +102,31 @@
         document.getElementById("outputFrame").srcdoc = output;
       }
 
+      // blob help function
+      function download(fileName, content) {
+        const blob = new Blob([content], {type: "text/plain"});
+        const link = document.createElement("a");
+  
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName
+        link.click()
+      }
+
+      // export functions
+      function exportBronze() {
+        let name = prompt("name of your file?");
+        if(name.length < 1) {
+          alert("your name must be at least one character!");
+          return;
+        }
+        name = name + ".brz";
+        const content = compiler.readBronze();
+        download(name, content);
+      }
+
+      // click listeners
       document.getElementById("runButton").addEventListener("click", executeBronze);
+      document.getElementById("exportBronzeBtn").addEventListener("click", exportBronze);
     </script>
   </body>
 </html>
