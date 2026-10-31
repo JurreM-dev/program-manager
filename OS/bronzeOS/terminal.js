@@ -83,6 +83,12 @@ function hideWindow() {
     windowBody.style.display = "none";
 }
 
+// GUI commands
+const GUICommands = {
+    showWindow,
+    hideWindow
+}
+
 // ================================================
 // actual terminal logic
 // ================================================
@@ -93,5 +99,5 @@ function processCommand(line) {
     let parts = commandLine.split(" ");
     let command = parts[0];
     let rest = parts.slice(1).join(" ");
-    kernel.exec(command, rest, terminalCommands);
+    kernel.exec(command, rest, terminalCommands, GUICommands);
 }

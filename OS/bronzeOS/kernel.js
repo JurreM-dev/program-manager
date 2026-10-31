@@ -15,7 +15,7 @@ class BronzeKernel {
     }
   }
 
-  exec(command, args, terminal) {
+  exec(command, args, terminal, GUI) {
     if (!command || (!this.#commands[command] && !this.#CLIcommands[command])) {
       terminal.println("ERROR, invalid command");
       return;
@@ -24,7 +24,7 @@ class BronzeKernel {
       this.#commands[command] &&
       typeof this.#commands[command] === "function"
     ) {
-      this.#commands[command](args, terminal);
+      this.#commands[command](args, terminal, GUI);
     }
   }
 
@@ -99,7 +99,7 @@ class BronzeKernel {
       this.#saveUserData();
     },
     // app commands
-    app: (args, terminal) => {
+    app: (args, terminal, GUI) => {
       const words = args.split(" ");
       const Keyword = words[0];
       if (
@@ -110,7 +110,10 @@ class BronzeKernel {
         return;
       }
       const rest = words.splice(1).join(" ").trim();
-      this.#innerCommands.app[Keyword](rest, terminal);
+      this.fetchApps().then(() => {
+        this.#innerCommands.app[Keyword](rest, terminal, GUI);
+        terminal.newLine();
+      });
     },
     // terminal commands
     clear: (args, terminal) => {
@@ -128,19 +131,46 @@ class BronzeKernel {
     },
     app: {
       list: (args, terminal) => {
-        this.fetchApps().then(() => {
-          const usedObj = this.#appsData.programs;
-          Object.keys(usedObj).forEach((key) => {
-            if (
-              usedObj[key].version.startsWith("x") ||
-              usedObj[key].version === "v0.0.0"
-            ) {
-              return;
-            }
-            terminal.println(usedObj[key].name);
-          });
-          terminal.newLine();
+        const usedObj = this.#appsData.programs;
+        Object.keys(usedObj).forEach((key) => {
+          if (
+            usedObj[key].version.startsWith("x") ||
+            usedObj[key].version === "v0.0.0"
+          ) {
+            return;
+          }
+          terminal.println(usedObj[key].name);
         });
+      },
+      install: (args, terminal) => {
+        const appName = args.split(" ")[0];
+        if (!this.#appsData.programs[appName]) {
+          terminal.println("ERROR, app does not exist");
+          return;
+        }
+        if (root.programs.some((program) => program.name === appName)) {
+          terminal.println("app already downloaded, updating if needed...");
+          let index = root.programs.findIndex((app) => app.name === appName);
+          root.programs[index] = this.#appsData.programs[appName];
+        } else {
+          root.programs.push(this.#appsData.programs[appName]);
+        }
+        terminal.println("succesfully installed app");
+        saveRoot();
+      },
+      open: (args, terminal, GUI) => {
+        const appName = args.split(" ")[0];
+        if (!root.programs.some((program) => program.name === appName)) {
+          terminal.println("app cannot be opened, not installed");
+          return;
+        }
+        let objectIndex = root.programs.findIndex(app => app.name === appName);
+        if (objectIndex === -1) {
+          terminal.println("app cannot be opened, not found");
+          return;
+        }
+        let object = root.programs[objectIndex];
+        GUI.showWindow("./../../" + object.path);
       },
     },
   };

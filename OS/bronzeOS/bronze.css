@@ -30,10 +30,10 @@ body {
     width: 52vw;
     height: auto;
     min-height: 50px;
-    height: 50vh;
+    height: 60vh;
     position: absolute;
-    right: 12px;
-    top: 12px;
+    right: 16px;
+    top: 16px;
 }
 .standardFrame {
     width: 100%;
