@@ -67,6 +67,21 @@ const terminalCommands = {
 }
 
 // GUI functions
+let windowHtml = `
+<iframe id="windowFrame" class="standardFrame"></iframe>
+`;
+function showWindow(link) {
+    const windowBody = document.getElementById("standardWindow");
+    windowBody.style.display = "block";
+    windowBody.innerHTML = windowHtml;
+    document.getElementById("windowFrame").src = link;
+}
+
+function hideWindow() {
+    const windowBody = document.getElementById("standardWindow");
+    windowBody.replaceChildren("");
+    windowBody.style.display = "none";
+}
 
 // ================================================
 // actual terminal logic
