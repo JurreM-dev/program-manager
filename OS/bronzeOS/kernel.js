@@ -132,15 +132,21 @@ class BronzeKernel {
     clear: (args, terminal) => {
       terminal.clear();
     },
-    // for testing
+    // for testing bronze CLI comilation
     compileBrz: (args, terminal) => {
       const bronze = new Bronze(
         terminal.println,
         "bronzeOS",
         this.#OSfunctions,
       );
-
-      bronze.compileBronze("CLI (\n  IDENTIFIER sayYo\n  PRINT yo\n)");
+      const words = args.split(" ");
+      const fileName = words[0];
+      const fileContent = readFile(fileName);
+      if (!fileContent) {
+        terminal.println("ERROR, file does not exist");
+        return;
+      }
+      bronze.compileBronze(fileContent);
     },
   };
 
