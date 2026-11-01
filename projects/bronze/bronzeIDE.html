@@ -95,7 +95,7 @@
         parent: document.getElementById("editor"),
       });
 
-      const compiler = new Bronze(logError);
+      const compiler = new Bronze(logError, "bronzeIDE");
 
       function executeBronze() {
         logPlace.innerHTML = "";

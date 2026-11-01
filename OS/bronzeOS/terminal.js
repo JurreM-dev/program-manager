@@ -1,6 +1,20 @@
 // defining the kernel
 
-const kernel = new BronzeKernel();
+// CLI commands 
+const terminalCommands = {
+    println,
+    newLine,
+    clear: clearTerminal,
+    refreshTypingIndicator
+}
+
+// GUI commands
+const GUICommands = {
+    showWindow,
+    closeWindow
+}
+
+const kernel = new BronzeKernel(terminalCommands, GUICommands);
 
 let typingIndicator = `@bronzeOS:${kernel.userName} :~ $ `
 
@@ -58,14 +72,6 @@ function refreshTypingIndicator() {
     typingIndicator = `@bronzeOS:${kernel.userName} :~ $ `
 }
 
-// CLI commands 
-const terminalCommands = {
-    println,
-    newLine,
-    clear: clearTerminal,
-    refreshTypingIndicator
-}
-
 // GUI functions
 let windowHtml = `
 <iframe id="windowFrame" class="standardFrame"></iframe>
@@ -81,12 +87,6 @@ function closeWindow() {
     const windowBody = document.getElementById("standardWindow");
     windowBody.replaceChildren();
     windowBody.style.display = "none";
-}
-
-// GUI commands
-const GUICommands = {
-    showWindow,
-    closeWindow
 }
 
 // ================================================

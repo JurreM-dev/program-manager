@@ -3,9 +3,20 @@ class BronzeKernel {
   #userRole = "user";
 
   #appsData;
+  #terminal;
+  #GUI;
 
-  constructor() {
+  #OSfunctions;
+
+  constructor(terminal, GUI) {
+    this.#GUI = GUI;
+    this.#terminal = terminal;
     this.#loadUserData();
+
+    this.#OSfunctions = {
+      println: this.#terminal.println.bind(this.#terminal),
+      addCLI: this.#addCLI.bind(this),
+    };
   }
 
   async fetchApps() {
@@ -25,6 +36,8 @@ class BronzeKernel {
       typeof this.#commands[command] === "function"
     ) {
       this.#commands[command](args, terminal, GUI);
+    } else if (this.#CLIcommands[command] && typeof this.#CLIcommands[command] === "function") {
+      this.#CLIcommands[command](args, terminal, GUI);
     }
   }
 
@@ -119,6 +132,16 @@ class BronzeKernel {
     clear: (args, terminal) => {
       terminal.clear();
     },
+    // for testing
+    compileBrz: (args, terminal) => {
+      const bronze = new Bronze(
+        terminal.println,
+        "bronzeOS",
+        this.#OSfunctions,
+      );
+
+      bronze.compileBronze("CLI (\n  IDENTIFIER sayYo\n  PRINT yo\n)");
+    },
   };
 
   #innerCommands = {
@@ -164,7 +187,9 @@ class BronzeKernel {
           terminal.println("app cannot be opened, not installed");
           return;
         }
-        let objectIndex = root.programs.findIndex(app => app.name === appName);
+        let objectIndex = root.programs.findIndex(
+          (app) => app.name === appName,
+        );
         if (objectIndex === -1) {
           terminal.println("app cannot be opened, not found");
           return;
@@ -174,9 +199,15 @@ class BronzeKernel {
       },
       close: (args, terminal, GUI) => {
         GUI.closeWindow();
-      }
+      },
     },
   };
+
+  // CLI system
+  #addCLI(identifier, body, params) {
+    console.log(body);
+    this.#CLIcommands[identifier] = new Function(...params, body);
+  }
 
   #CLIcommands = {};
 }

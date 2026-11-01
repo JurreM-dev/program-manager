@@ -1,14 +1,24 @@
 import DOMPurify from "https://cdn.jsdelivr.net/npm/dompurify@3.4.16/+esm";
 
+import { customCompilers } from './libraries.js';
+
 export class Bronze {
     #errorPut;
     #htmlBody;
-    #bronzeBody
+    #bronzeBody;
 
-    constructor(errorOut = console.log) {
+    #OSfunctions;
+
+    #bronzeEnvironment = "unknown";
+
+    constructor(errorOut = console.log, environment = "unknown", OSfunctions = {}) {
         this.name = "Bronze";
         this.#errorPut = errorOut;
         this.#bronzeBody = "BODY(\nTEXT hello world\nLINE\nBUTTON click me\n)"
+
+        this.#bronzeEnvironment = environment;
+        this.#OSfunctions = OSfunctions;
+        console.log(this.#OSfunctions);
     }
 
     // READING OUT
@@ -40,6 +50,11 @@ export class Bronze {
                     this.#stylesheetCompiler(sheet);
                 break
                 default: 
+                    if(customCompilers[identifier] && typeof customCompilers[identifier] === "function") {
+                        const body = segment.split("(").splice(1).join("(").split(")").splice(0, 1).join(")");
+                        customCompilers[identifier](body, this.#errorPut, this.#htmlBody, this.#bronzeEnvironment, this.#OSfunctions);
+                        return;
+                    }
                     this.#errorPut("COMPILER ERROR, segment " + identifier + " is unvalid");
                 break
             }

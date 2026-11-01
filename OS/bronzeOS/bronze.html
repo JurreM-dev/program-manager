@@ -12,6 +12,11 @@
         <div id="standardWindow"></div>
 
         <script src="../../fileManager.js"></script>
+        <script type="module">
+            import { Bronze } from './../../projects/bronze/compiler.js';
+
+            window.Bronze = Bronze;
+        </script>
         <script src="kernel.js"></script>
         <script src="terminal.js"></script>
     </body>
