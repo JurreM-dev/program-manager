@@ -17,6 +17,14 @@ export const customCompilers = {
             IDENTIFIER: (value) => {
                 const chosen = value.split(" ")[0];
                 identifier = chosen;
+            },
+            CHANGECOLOR: (value) => {
+                const color = value.split(" ")[0];
+                CLIstring += `document.getElementById("terminal").style.color = "${color}";\n`;
+            },
+            CHANGEBGCOLOR: (value) => {
+                const color = value.split(" ")[0];
+                CLIstring += `document.getElementById("terminal").style.background-color = "${color}";\n`;
             }
         }
         
