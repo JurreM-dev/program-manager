@@ -1,23 +1,33 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-    <head>
-        <title>bronzeOS CLI</title>
-        <link rel="stylesheet" href="bronze.css" />
+  <head>
+    <title>bronzeOS CLI</title>
+    <link rel="stylesheet" href="bronze.css" />
 
-        <script src="../../libraries/localforage.min.js"></script>
-    </head>
-    <body>
-        <textarea id="terminal" spellcheck="false" ></textarea>
+    <script src="../../libraries/localforage.min.js"></script>
+    <script src="../../libraries/localforage.min.js"></script>
 
-        <div id="standardWindow"></div>
+    <script type="module">
+      import { Bronze } from "../../projects/bronze/compiler.js";
 
-        <script src="../../fileManager.js"></script>
-        <script type="module">
-            import { Bronze } from './../../projects/bronze/compiler.js';
+      window.Bronze = Bronze;
 
-            window.Bronze = Bronze;
-        </script>
-        <script src="kernel.js"></script>
-        <script src="terminal.js"></script>
-    </body>
+      const kernelScript = document.createElement("script");
+      kernelScript.src = "kernel.js";
+
+      kernelScript.onload = () => {
+        const terminalScript = document.createElement("script");
+        terminalScript.src = "terminal.js";
+        document.body.appendChild(terminalScript);
+      };
+
+      document.body.appendChild(kernelScript);
+    </script>
+  </head>
+  <body>
+    <textarea id="terminal" spellcheck="false"></textarea>
+
+    <div id="standardWindow"></div>
+    <script src="../../fileManager.js"></script>
+  </body>
 </html>

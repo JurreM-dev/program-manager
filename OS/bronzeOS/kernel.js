@@ -17,6 +17,8 @@ class BronzeKernel {
       println: this.#terminal.println.bind(this.#terminal),
       addCLI: this.#addCLI.bind(this),
     };
+
+    this.#loadCLIs();
   }
 
   async fetchApps() {
@@ -148,6 +150,18 @@ class BronzeKernel {
       }
       bronze.compileBronze(fileContent);
     },
+    registerCLI: (args, terminal) => {
+      const words = args.split(" ");
+      const fileName = words[0];
+      const fileContent = readFile(fileName, this.#terminal.println.bind(this.#terminal));
+      if (!fileContent) {
+        terminal.println("ERROR, file does not exist");
+        return;
+      }
+      console.log("registering CLI: " + fileName.replace(/\.brz$/, ""));
+      console.log("file content: " + fileContent);
+      this.#registerCLI(fileName.replace(/\.brz$/, ""), fileContent);
+    }
   };
 
   #innerCommands = {
@@ -213,6 +227,51 @@ class BronzeKernel {
   #addCLI(identifier, body, params) {
     console.log(body);
     this.#CLIcommands[identifier] = new Function(...params, body);
+  }
+
+  #savedCLIs = {};
+
+  #registerCLI(identifier, body) {
+    localforage.getItem("bronzeOS_CLI_register")
+    .then((potential)=>{
+      if(potential) {
+        console.log("has potential")
+        this.#savedCLIs = potential;
+        console.log(this.#savedCLIs);
+      }
+      console.log("reached");
+
+      this.#savedCLIs[identifier] = {
+        body: body,
+        name: identifier
+      };
+
+      console.log(this.#savedCLIs);
+
+      localforage.setItem("bronzeOS_CLI_register", this.#savedCLIs);
+    })
+  }
+
+  #loadCLIs() {
+    const bronze = new Bronze(
+        this.#terminal.println,
+        "bronzeOS",
+        this.#OSfunctions,
+      );
+    localforage.getItem("bronzeOS_CLI_register")
+    .then((potential)=>{
+      if(potential) {
+        this.#savedCLIs = potential;
+      }
+
+      Object.keys(this.#savedCLIs).forEach((key)=>{
+        const obj = this.#savedCLIs[key];
+        const fileContent = obj.body;
+        console.log(fileContent);
+        bronze.compileBronze(fileContent);
+      })
+      this.#terminal.newLine();
+    })
   }
 
   #customVars = {};
