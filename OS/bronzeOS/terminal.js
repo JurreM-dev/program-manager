@@ -5,7 +5,9 @@ const terminalCommands = {
     println,
     newLine,
     clear: clearTerminal,
-    refreshTypingIndicator
+    refreshTypingIndicator,
+    changeColor,
+    changeBackColor
 }
 
 // GUI commands
@@ -70,6 +72,13 @@ function clearTerminal() {
 
 function refreshTypingIndicator() {
     typingIndicator = `@bronzeOS:${kernel.userName} :~ $ `
+}
+
+function changeColor(color) {
+    terminal.style.color = color;
+}
+function changeBackColor(color) {
+    terminal.style.backgroundColor = color;
 }
 
 // GUI functions

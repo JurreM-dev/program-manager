@@ -225,7 +225,6 @@ class BronzeKernel {
 
   // CLI system
   #addCLI(identifier, body, params) {
-    console.log(body);
     this.#CLIcommands[identifier] = new Function(...params, body);
   }
 

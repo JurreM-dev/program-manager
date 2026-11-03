@@ -23,18 +23,18 @@ export const customCompilers = {
         identifier = chosen;
       },
       CHANGECOLOR: (value) => {
-        const color = value.split(" ")[0];
-        CLIstring += `document.getElementById("terminal").style.color = "${color}";\n`;
+        const color = JSON.stringify(value.split(" ")[0]);
+        CLIstring += `terminal.changeColor(${color});\n`;
       },
       CHANGEBGCOLOR: (value) => {
         const parts = value.split(" ");
         if (parts[0] === "VAR") {
           const key = JSON.stringify(parts.slice(1).join(" "));
-          CLIstring += `document.getElementById("terminal").style.backgroundColor = customVars[${key}];\n`;
+          CLIstring += `terminal.changeBackColor(customVars[${key}]);\n`;
           return;
         }
         const color = JSON.stringify(parts[0]);
-        CLIstring += `document.getElementById("terminal").style.backgroundColor = ${color};\n`;
+        CLIstring += `terminal.changeBackColor(${color});\n`;
       },
       DEFINE: (value) => {
         const parts = value.split(" ");
