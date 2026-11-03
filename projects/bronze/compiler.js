@@ -89,8 +89,8 @@ export class Bronze {
             if(attributes) {
                 attributeHTML = this.#atributesCompiler(attributes);
             }
-            this.#bodyCompilerObject[keyWord](value, attributeHTML);
-
+            let addedHtml = this.#bodyCompilerObject[keyWord](value, attributeHTML);
+            this.#htmlBody += addedHtml;
         })
     }
 
@@ -218,7 +218,7 @@ export class Bronze {
         TEXT: (value, parsedAttributes = "") => {
             const unFiltered = value;
             const filtered = DOMPurify.sanitize(unFiltered);
-            this.#htmlBody += `<p ${parsedAttributes}>${filtered.trim()}</p>\n`;
+            return `<p ${parsedAttributes}>${filtered.trim()}</p>\n`;
         },
         HEADER: (value, parsedAttributes = "") => {
             const unFiltered = value;
@@ -231,15 +231,15 @@ export class Bronze {
                 this.#errorPut("COMPILER ERROR, header level " + levelPart + " is not valid, must be between 1 and 6");
                 return;
             }
-            this.#htmlBody += `<h${levelPart} ${parsedAttributes}>${restParts}</h${levelPart}>\n`;
+            return `<h${levelPart} ${parsedAttributes}>${restParts}</h${levelPart}>\n`;
         },
         BUTTON: (value, parsedAttributes = "") => {
             const unFiltered = value;
             const filtered = DOMPurify.sanitize(unFiltered);
-            this.#htmlBody += `<button ${parsedAttributes}>${filtered.trim()}</button>\n`;
+            return `<button ${parsedAttributes}>${filtered.trim()}</button>\n`;
         },
         LINE: () => {
-            this.#htmlBody += `<hr />\n`;
+            return `<hr />\n`;
         }
     }
 

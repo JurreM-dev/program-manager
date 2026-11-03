@@ -134,7 +134,7 @@ class BronzeKernel {
     clear: (args, terminal) => {
       terminal.clear();
     },
-    // for testing bronze CLI comilation
+    // CLI commands
     compileBrz: (args, terminal) => {
       const bronze = new Bronze(
         terminal.println,

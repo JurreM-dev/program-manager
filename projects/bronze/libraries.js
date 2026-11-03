@@ -132,6 +132,47 @@ export const customCompilers = {
           environment +
           " commands",
       );
+    } else if(environment === "bronzeOS" && errorCount > 0) {
+      errorPutter("COMPILER ERROR, there are " + errorCount + " errors in the CLI compilation");
     }
   },
+  GUI: (body, errorPutter, pageHtml, environment, OScommands) => {
+    let errorCount = 0;
+
+    function errorPut(message) {
+      errorCount++;
+      errorPutter(message);
+    }
+    const GUIcompilerObject = {};
+    let GUIcalls = [];
+    // environment check
+    if (environment !== "bronzeOS") {
+      errorPut(
+        "WARNING, please note that this code does not actually run the GUI in this environment",
+      );
+    };
+      // split parts divided by { and }
+      let parts = body.trim().split(/\{|\}/);
+      let actualParts = [];
+
+      // get actual parts and check if it's a valid amount of parts
+      parts.forEach((part)=>{
+        part = part.trim();
+        if(!part) {
+          return;
+        }
+        actualParts.push(part);
+      });
+      if(actualParts.length % 2 > 0) {
+        errorPut("COMPILER ERROR, invalid amount of parts for GUI library, each title needs a body")
+        return;
+      }
+
+      // compiling the parts
+      for(let i = 0; i++; i < actualParts.length()) {
+        const partId = actualParts[i];
+        i++;
+        const partBody = actualParts[i];
+      }
+  }
 };
