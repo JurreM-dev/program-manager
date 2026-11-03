@@ -37,7 +37,7 @@ class BronzeKernel {
     ) {
       this.#commands[command](args, terminal, GUI);
     } else if (this.#CLIcommands[command] && typeof this.#CLIcommands[command] === "function") {
-      this.#CLIcommands[command](args, terminal, GUI);
+      this.#CLIcommands[command](args, terminal, this.#customVars, GUI);
     }
   }
 
@@ -141,7 +141,7 @@ class BronzeKernel {
       );
       const words = args.split(" ");
       const fileName = words[0];
-      const fileContent = readFile(fileName);
+      const fileContent = readFile(fileName, this.#terminal.println.bind(this.#terminal));
       if (!fileContent) {
         terminal.println("ERROR, file does not exist");
         return;
@@ -214,6 +214,8 @@ class BronzeKernel {
     console.log(body);
     this.#CLIcommands[identifier] = new Function(...params, body);
   }
+
+  #customVars = {};
 
   #CLIcommands = {};
 }

@@ -88,6 +88,16 @@ CLI (
 )
 ```
 
+Variables can be stored in `customVars`. `ARGS` is the text passed after the
+command name, and `VAR <name>` reads a stored variable:
+
+```bronze
+CLI (
+    IDENTIFIER say
+    DEFINE message TEXT = ARGS
+    PRINT VAR message
+)
+```
 
 ## how do you use segments?
 

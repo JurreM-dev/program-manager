@@ -144,7 +144,7 @@ function writeFile(fileName, content, log = console.log) {
   saveRoot();
 }
 
-function readFile(fileName) {
+function readFile(fileName, log = console.log) {
   let file = currentDirectory.files.find(
     (f) => f.name === fileName && f.type === "file",
   );
