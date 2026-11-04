@@ -139,6 +139,12 @@ export const customCompilers = {
   GUI: (body, errorPutter, pageHtml, environment, OScommands, { bodyCompilerObj }) => {
     let errorCount = 0;
 
+    let settings = {
+      resizableWindows: false,
+      moveableWindows: false,
+      multipleWindows: false
+    }
+
     function errorPut(message) {
       errorCount++;
       errorPutter(message);
@@ -149,9 +155,28 @@ export const customCompilers = {
         // WINDOW COMPILER OBJECT
         const windowCompObj = {
           FRAME: (value, attributes = "") => {
-            return `<iframe id="windowFrame" class="standardFrame"></iframe>`;
+            return `<iframe src="%LINK%"></iframe>`;
+          },
+          MULTIPLE: (value) => {
+            if(value.trim() === "TRUE") {
+              settings.multipleWindows = true;
+            } else if(value.trim() === "FALSE") {
+              settings.multipleWindows = false;
+            } else {
+              errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
+            }
+          },
+          MOVEABLE: (value) => {
+            if(value.trim() === "TRUE") {
+              settings.moveableWindows = true;
+            } else if(value.trim() === "FALSE") {
+              settings.moveableWindows = false;
+            } else {
+              errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
+            }
           }
         };
+        windowCompObj["MOVABLE"] = windowCompObj["MOVEABLE"];
         let windowHtml = "";
         const lines = body.split("\n");
 
@@ -160,9 +185,15 @@ export const customCompilers = {
           const keyWord = parts[0].trim();
           const value = parts.splice(1).join(" ");
           if(windowCompObj[keyWord] && typeof windowCompObj[keyWord] === "function") {
-            windowHtml += windowCompObj[keyWord](value);
+            const result = windowCompObj[keyWord](value);
+            if(result) {
+              windowHtml += result;
+            }
           } else if(bodyCompilerObj[keyWord] && typeof bodyCompilerObj[keyWord] === "function") {
-            windowHtml += bodyCompilerObj[keyWord](value);
+            const result = bodyCompilerObj[keyWord](value);
+            if(result && typeof result === "string") {
+              windowHtml += result;
+            }
           }
           else {
             if(keyWord) {
@@ -220,7 +251,7 @@ export const customCompilers = {
           errorPut("COMPILER ERROR, error in os commands");
           return;
         }
-        OScommands.addGUI(GUIcalls);
+        OScommands.addGUI(GUIcalls, { moveable: settings.moveableWindows, multiple: settings.multipleWindows});
       }
   }
 };

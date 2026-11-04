@@ -283,7 +283,7 @@ class BronzeKernel {
   // GUI SYSTEM
   // ===============================================
 
-  #addGUI(calls) {
+  #addGUI(calls, { moveable = false, multiple = false } = {}) {
     calls.forEach((call)=>{
       console.log("adding GUI call: " + call.type);
       switch(call.type) {
@@ -294,7 +294,8 @@ class BronzeKernel {
         default:
           this.#terminal.println("IMPLEMENTATION ERROR, type not found");
           break
-      }
-    })
+      };
+    });
+    this.#GUI.setWindowSettings({draggable: moveable, multiple: multiple})
   }
 }

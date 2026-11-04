@@ -14,7 +14,8 @@ const terminalCommands = {
 const GUICommands = {
     showWindow,
     closeWindow,
-    changeWindow
+    changeWindow,
+    setWindowSettings
 }
 
 const kernel = new BronzeKernel(terminalCommands, GUICommands);
@@ -84,7 +85,7 @@ function changeBackColor(color) {
 
 // GUI functions
 let windowHtml = `
-<iframe id="windowFrame" class="standardFrame" src="%LINK%"></iframe>
+<iframe class="standardFrame" src="%LINK%"></iframe>
 `;
 
 let draggableWindows = false;
@@ -96,7 +97,7 @@ function changeWindow(html) {
     windowHtml = html;
 }
 
-function showWindow(link, { handle = null}) {
+function showWindow(link, { handle = null } = {}) {
     if(!multipleWindows) {
         const existingWindows = document.querySelectorAll(".window");
         existingWindows.forEach((window) => {
@@ -127,9 +128,10 @@ function closeWindow() {
     });
 }
 
-function saveWindowSettings(draggable = false, multiple = false) {
+function setWindowSettings({ draggable = false, multiple = false, resizable = false} = {}) {
     draggableWindows = draggable;
     multipleWindows = multiple;
+    resizeWindows = resizable;
 }
 
 // ================================================
