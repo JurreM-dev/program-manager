@@ -30,7 +30,9 @@ class BronzeKernel {
   }
 
   exec(command, args, terminal, GUI) {
+    command = command.trim();
     if (!command || (!this.#commands[command] && !this.#CLIcommands[command])) {
+      terminal.println(command);
       terminal.println("ERROR, invalid command");
       return;
     }
@@ -40,7 +42,7 @@ class BronzeKernel {
     ) {
       this.#commands[command](args, terminal, GUI);
     } else if (this.#CLIcommands[command] && typeof this.#CLIcommands[command] === "function") {
-      this.#CLIcommands[command](args, terminal, this.#customVars, GUI);
+      this.#CLIcommands[command](args, this.exec.bind(this), this.#customVars, terminal, GUI);
     }
   }
 
@@ -225,7 +227,11 @@ class BronzeKernel {
     },
   };
 
+
+  // ===============================================
   // CLI system
+  // ===============================================
+
   #addCLI(identifier, body, params) {
     this.#CLIcommands[identifier] = new Function(...params, body);
   }

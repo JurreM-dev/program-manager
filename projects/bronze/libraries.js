@@ -82,6 +82,18 @@ export const customCompilers = {
           CLIstring += `customVars[${variableName}] = ${JSON.stringify(variableValue)};\n`;
         }
       },
+      EXEC: (value) => {
+        const parts = value.trim().split(/\s+/);
+        const command = parts.shift();
+        const args = parts.join(" ");
+
+        CLIstring += `exec(
+    ${JSON.stringify(command)},
+    ${JSON.stringify(args)},
+    terminal,
+    GUI
+  );`;
+      },
     };
 
     let identifier = null;
@@ -115,7 +127,7 @@ export const customCompilers = {
       CLIcompilerObject[keyWord](line);
     });
     if (errorCount === 0 && environment === "bronzeOS") {
-      const requiredParams = ["args", "terminal", "customVars"];
+      const requiredParams = ["args", "exec", "customVars", "terminal", "GUI"];
       if (!identifier) {
         errorPutter("COMPILER ERROR, need identifier for CLI compilation");
         return;
@@ -132,11 +144,22 @@ export const customCompilers = {
           environment +
           " commands",
       );
-    } else if(environment === "bronzeOS" && errorCount > 0) {
-      errorPutter("COMPILER ERROR, there are " + errorCount + " errors in the CLI compilation");
+    } else if (environment === "bronzeOS" && errorCount > 0) {
+      errorPutter(
+        "COMPILER ERROR, there are " +
+          errorCount +
+          " errors in the CLI compilation",
+      );
     }
   },
-  GUI: (body, errorPutter, pageHtml, environment, OScommands, { bodyCompilerObj, attributeCompiler }) => {
+  GUI: (
+    body,
+    errorPutter,
+    pageHtml,
+    environment,
+    OScommands,
+    { bodyCompilerObj, attributeCompiler },
+  ) => {
     let errorCount = 0;
 
     let windowSelfStyles = "";
@@ -144,8 +167,8 @@ export const customCompilers = {
     let settings = {
       resizableWindows: false,
       moveableWindows: false,
-      multipleWindows: false
-    }
+      multipleWindows: false,
+    };
 
     function errorPut(message) {
       errorCount++;
@@ -153,37 +176,42 @@ export const customCompilers = {
     }
     const GUIcompilerObject = {
       WINDOW: (body, { bodyCompilerObj, attributes }) => {
-
         // WINDOW COMPILER OBJECT
         const windowCompObj = {
           FRAME: (value, attributes = "") => {
             return `<iframe ${attributes} src="%LINK%"></iframe>`;
           },
           MULTIPLE: (value) => {
-            if(value.trim() === "TRUE") {
+            if (value.trim() === "TRUE") {
               settings.multipleWindows = true;
-            } else if(value.trim() === "FALSE") {
+            } else if (value.trim() === "FALSE") {
               settings.multipleWindows = false;
             } else {
-              errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
+              errorPut(
+                "COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE",
+              );
             }
           },
           MOVEABLE: (value) => {
-            if(value.trim() === "TRUE") {
+            if (value.trim() === "TRUE") {
               settings.moveableWindows = true;
-            } else if(value.trim() === "FALSE") {
+            } else if (value.trim() === "FALSE") {
               settings.moveableWindows = false;
             } else {
-              errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
+              errorPut(
+                "COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE",
+              );
             }
           },
           RESIZABLE: (value) => {
-            if(value.trim() === "TRUE") {
+            if (value.trim() === "TRUE") {
               settings.resizableWindows = true;
-            } else if(value.trim() === "FALSE") {
+            } else if (value.trim() === "FALSE") {
               settings.resizableWindows = false;
             } else {
-              errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
+              errorPut(
+                "COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE",
+              );
             }
           },
           SELF: (value) => {
@@ -194,7 +222,7 @@ export const customCompilers = {
         let windowHtml = "";
         const lines = body.split("\n");
 
-        lines.forEach((line) =>{
+        lines.forEach((line) => {
           const parts = line.trim().split(" ");
           const keyWord = parts[0].trim();
           line = parts.splice(1).join(" ");
@@ -203,24 +231,33 @@ export const customCompilers = {
           const attributes = broken[1];
 
           let attributeHTML = "";
-          if(attributes) {
+          if (attributes) {
             attributeHTML = attributeCompiler(attributes);
           }
 
-          if(windowCompObj[keyWord] && typeof windowCompObj[keyWord] === "function") {
+          if (
+            windowCompObj[keyWord] &&
+            typeof windowCompObj[keyWord] === "function"
+          ) {
             const result = windowCompObj[keyWord](value, attributeHTML);
-            if(result) {
+            if (result) {
               windowHtml += result;
             }
-          } else if(bodyCompilerObj[keyWord] && typeof bodyCompilerObj[keyWord] === "function") {
+          } else if (
+            bodyCompilerObj[keyWord] &&
+            typeof bodyCompilerObj[keyWord] === "function"
+          ) {
             const result = bodyCompilerObj[keyWord](value, attributeHTML);
-            if(result && typeof result === "string") {
+            if (result && typeof result === "string") {
               windowHtml += result;
             }
-          }
-          else {
-            if(keyWord) {
-              errorPut("COMPILER ERROR, in library: GUI, keyword: " + keyWord + " does not exist");
+          } else {
+            if (keyWord) {
+              errorPut(
+                "COMPILER ERROR, in library: GUI, keyword: " +
+                  keyWord +
+                  " does not exist",
+              );
             }
             return;
           }
@@ -228,9 +265,9 @@ export const customCompilers = {
         console.log("window html: " + windowHtml);
         GUIcalls.push({
           type: "WINDOW",
-          html: windowHtml
+          html: windowHtml,
         });
-      }
+      },
     };
     let GUIcalls = [];
     // environment check
@@ -238,43 +275,57 @@ export const customCompilers = {
       errorPut(
         "WARNING, please note that this code does not actually run the GUI in this environment",
       );
-    };
-      // split parts divided by { and }
-      let parts = body.trim().split(/\{|\}/);
-      let actualParts = [];
+    }
+    // split parts divided by { and }
+    let parts = body.trim().split(/\{|\}/);
+    let actualParts = [];
 
-      // get actual parts and check if it's a valid amount of parts
-      parts.forEach((part)=>{
-        part = part.trim();
-        if(!part) {
-          return;
-        }
-        actualParts.push(part);
-      });
-      if(actualParts.length % 2 > 0) {
-        errorPut("COMPILER ERROR, invalid amount of parts for GUI library, each title needs a body")
+    // get actual parts and check if it's a valid amount of parts
+    parts.forEach((part) => {
+      part = part.trim();
+      if (!part) {
         return;
       }
+      actualParts.push(part);
+    });
+    if (actualParts.length % 2 > 0) {
+      errorPut(
+        "COMPILER ERROR, invalid amount of parts for GUI library, each title needs a body",
+      );
+      return;
+    }
 
-      // compiling the parts
-      for(let i = 0; i < actualParts.length; i++) {
-        console.log("compiling part " + (i + 1) + " of " + actualParts.length);
-        const partId = actualParts[i];
-        i++;
-        const partBody = actualParts[i];
+    // compiling the parts
+    for (let i = 0; i < actualParts.length; i++) {
+      console.log("compiling part " + (i + 1) + " of " + actualParts.length);
+      const partId = actualParts[i];
+      i++;
+      const partBody = actualParts[i];
 
-        if(!GUIcompilerObject[partId] || typeof GUIcompilerObject[partId] !== "function") {
-          errorPut("COMPILER ERROR, in library: GUI, keyword: " + partId + " does not exist");
-          return;
-        }
-        GUIcompilerObject[partId](partBody, { bodyCompilerObj });
+      if (
+        !GUIcompilerObject[partId] ||
+        typeof GUIcompilerObject[partId] !== "function"
+      ) {
+        errorPut(
+          "COMPILER ERROR, in library: GUI, keyword: " +
+            partId +
+            " does not exist",
+        );
+        return;
       }
-      if(errorCount === 0 && environment === "bronzeOS") {
-        if(!OScommands.addGUI || typeof OScommands.addGUI !== "function") {
-          errorPut("COMPILER ERROR, error in os commands");
-          return;
-        }
-        OScommands.addGUI(GUIcalls, { moveable: settings.moveableWindows, multiple: settings.multipleWindows, resizable: settings.resizableWindows, selfStyles: windowSelfStyles });
+      GUIcompilerObject[partId](partBody, { bodyCompilerObj });
+    }
+    if (errorCount === 0 && environment === "bronzeOS") {
+      if (!OScommands.addGUI || typeof OScommands.addGUI !== "function") {
+        errorPut("COMPILER ERROR, error in os commands");
+        return;
       }
-  }
+      OScommands.addGUI(GUIcalls, {
+        moveable: settings.moveableWindows,
+        multiple: settings.multipleWindows,
+        resizable: settings.resizableWindows,
+        selfStyles: windowSelfStyles,
+      });
+    }
+  },
 };
