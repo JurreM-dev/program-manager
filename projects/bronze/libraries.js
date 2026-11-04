@@ -136,14 +136,48 @@ export const customCompilers = {
       errorPutter("COMPILER ERROR, there are " + errorCount + " errors in the CLI compilation");
     }
   },
-  GUI: (body, errorPutter, pageHtml, environment, OScommands) => {
+  GUI: (body, errorPutter, pageHtml, environment, OScommands, { bodyCompilerObj }) => {
     let errorCount = 0;
 
     function errorPut(message) {
       errorCount++;
       errorPutter(message);
     }
-    const GUIcompilerObject = {};
+    const GUIcompilerObject = {
+      WINDOW: (body, { bodyCompilerObj }) => {
+
+        // WINDOW COMPILER OBJECT
+        const windowCompObj = {
+          FRAME: (value, attributes = "") => {
+            return `<iframe id="windowFrame" class="standardFrame"></iframe>`;
+          }
+        };
+        let windowHtml = "";
+        const lines = body.split("\n");
+
+        lines.forEach((line)=>{
+          const parts = line.trim().split(" ");
+          const keyWord = parts[0].trim();
+          const value = parts.splice(1).join(" ");
+          if(windowCompObj[keyWord] && typeof windowCompObj[keyWord] === "function") {
+            windowHtml += windowCompObj[keyWord](value);
+          } else if(bodyCompilerObj[keyWord] && typeof bodyCompilerObj[keyWord] === "function") {
+            windowHtml += bodyCompilerObj[keyWord](value);
+          }
+          else {
+            if(keyWord) {
+              errorPut("COMPILER ERROR, in library: GUI, keyword: " + keyWord + " does not exist");
+            }
+            return;
+          }
+        });
+        console.log("window html: " + windowHtml);
+        GUIcalls.push({
+          type: "WINDOW",
+          html: windowHtml
+        });
+      }
+    };
     let GUIcalls = [];
     // environment check
     if (environment !== "bronzeOS") {
@@ -169,10 +203,24 @@ export const customCompilers = {
       }
 
       // compiling the parts
-      for(let i = 0; i++; i < actualParts.length()) {
+      for(let i = 0; i < actualParts.length; i++) {
+        console.log("compiling part " + (i + 1) + " of " + actualParts.length);
         const partId = actualParts[i];
         i++;
         const partBody = actualParts[i];
+
+        if(!GUIcompilerObject[partId] || typeof GUIcompilerObject[partId] !== "function") {
+          errorPut("COMPILER ERROR, in library: GUI, keyword: " + partId + " does not exist");
+          return;
+        }
+        GUIcompilerObject[partId](partBody, { bodyCompilerObj });
+      }
+      if(errorCount === 0 && environment === "bronzeOS") {
+        if(!OScommands.addGUI || typeof OScommands.addGUI !== "function") {
+          errorPut("COMPILER ERROR, error in os commands");
+          return;
+        }
+        OScommands.addGUI(GUIcalls);
       }
   }
 };

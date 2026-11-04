@@ -25,7 +25,7 @@ body {
     border: none;
     outline: none;
 }
-#standardWindow {
+.window {
     display: none;
     width: 52vw;
     height: auto;
@@ -34,8 +34,14 @@ body {
     position: absolute;
     right: 16px;
     top: 16px;
+    overflow-y: auto;
+    padding: 0;
+    overflow-x: hidden;
+    border: none;
+    scrollbar-width: none;
 }
 .standardFrame {
     width: 100%;
     height: 100%;
+    margin: 0;
 }

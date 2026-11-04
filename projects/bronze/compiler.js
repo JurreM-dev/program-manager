@@ -52,7 +52,7 @@ export class Bronze {
                 default: 
                     if(customCompilers[identifier] && typeof customCompilers[identifier] === "function") {
                         const body = segment.split("(").splice(1).join("(").split(")").splice(0, 1).join(")");
-                        customCompilers[identifier](body, this.#errorPut, this.#htmlBody, this.#bronzeEnvironment, this.#OSfunctions);
+                        customCompilers[identifier](body, this.#errorPut, this.#htmlBody, this.#bronzeEnvironment, this.#OSfunctions, { bodyCompilerObj: this.#bodyCompilerObject });
                         return;
                     }
                     this.#errorPut("COMPILER ERROR, segment " + identifier + " is unvalid");

@@ -16,6 +16,7 @@ class BronzeKernel {
     this.#OSfunctions = {
       println: this.#terminal.println.bind(this.#terminal),
       addCLI: this.#addCLI.bind(this),
+      addGUI: this.#addGUI.bind(this),
     };
 
     this.#loadCLIs();
@@ -140,6 +141,7 @@ class BronzeKernel {
         terminal.println,
         "bronzeOS",
         this.#OSfunctions,
+
       );
       const words = args.split(" ");
       const fileName = words[0];
@@ -276,4 +278,23 @@ class BronzeKernel {
   #customVars = {};
 
   #CLIcommands = {};
+
+  // ===============================================
+  // GUI SYSTEM
+  // ===============================================
+
+  #addGUI(calls) {
+    calls.forEach((call)=>{
+      console.log("adding GUI call: " + call.type);
+      switch(call.type) {
+        case "WINDOW":
+          this.#GUI.changeWindow(call.html);
+          break
+
+        default:
+          this.#terminal.println("IMPLEMENTATION ERROR, type not found");
+          break
+      }
+    })
+  }
 }

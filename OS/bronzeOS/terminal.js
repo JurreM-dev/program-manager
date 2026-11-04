@@ -13,7 +13,8 @@ const terminalCommands = {
 // GUI commands
 const GUICommands = {
     showWindow,
-    closeWindow
+    closeWindow,
+    changeWindow
 }
 
 const kernel = new BronzeKernel(terminalCommands, GUICommands);
@@ -83,19 +84,52 @@ function changeBackColor(color) {
 
 // GUI functions
 let windowHtml = `
-<iframe id="windowFrame" class="standardFrame"></iframe>
+<iframe id="windowFrame" class="standardFrame" src="%LINK%"></iframe>
 `;
-function showWindow(link) {
-    const windowBody = document.getElementById("standardWindow");
+
+let draggableWindows = false;
+let multipleWindows = false;
+let resizeWindows = false;
+
+function changeWindow(html) {
+    console.log("changing window html to: " + html);
+    windowHtml = html;
+}
+
+function showWindow(link, { handle = null}) {
+    if(!multipleWindows) {
+        const existingWindows = document.querySelectorAll(".window");
+        existingWindows.forEach((window) => {
+            window.remove();
+        });
+    }
+    const windowBody = document.createElement("div");
+    if(draggableWindows) {
+        if(handle) {
+            makeDraggable(windowBody, handle);
+        } else {
+            makeDraggable(windowBody);
+        }
+    }
+    windowBody.classList.add("window");
+    windowBody.innerHTML = windowHtml.replace("%LINK%", link);
+    if(resizeWindows) {
+        windowBody.style.resize = "both";
+    }
     windowBody.style.display = "block";
-    windowBody.innerHTML = windowHtml;
-    document.getElementById("windowFrame").src = link;
+    document.body.appendChild(windowBody);
 }
 
 function closeWindow() {
-    const windowBody = document.getElementById("standardWindow");
-    windowBody.replaceChildren();
-    windowBody.style.display = "none";
+    const windows = document.querySelectorAll(".window");
+    windows.forEach((window) => {
+        window.remove();
+    });
+}
+
+function saveWindowSettings(draggable = false, multiple = false) {
+    draggableWindows = draggable;
+    multipleWindows = multiple;
 }
 
 // ================================================
