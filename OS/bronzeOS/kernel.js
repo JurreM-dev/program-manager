@@ -283,12 +283,12 @@ class BronzeKernel {
   // GUI SYSTEM
   // ===============================================
 
-  #addGUI(calls, { moveable = false, multiple = false } = {}) {
+  #addGUI(calls, { moveable = false, multiple = false, resizable = false, selfStyles = "" } = {}) {
     calls.forEach((call)=>{
       console.log("adding GUI call: " + call.type);
       switch(call.type) {
         case "WINDOW":
-          this.#GUI.changeWindow(call.html);
+          this.#GUI.changeWindow(call.html, selfStyles);
           break
 
         default:
@@ -296,6 +296,6 @@ class BronzeKernel {
           break
       };
     });
-    this.#GUI.setWindowSettings({draggable: moveable, multiple: multiple})
+    this.#GUI.setWindowSettings({draggable: moveable, multiple: multiple, resizable: resizable, selfStyles: selfStyles});
   }
 }

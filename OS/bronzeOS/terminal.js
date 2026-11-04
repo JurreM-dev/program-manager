@@ -88,13 +88,16 @@ let windowHtml = `
 <iframe class="standardFrame" src="%LINK%"></iframe>
 `;
 
+let windowStyle = "";
+
 let draggableWindows = false;
 let multipleWindows = false;
 let resizeWindows = false;
 
-function changeWindow(html) {
+function changeWindow(html, selfStyles = "") {
     console.log("changing window html to: " + html);
     windowHtml = html;
+    windowStyle = selfStyles;
 }
 
 function showWindow(link, { handle = null } = {}) {
@@ -113,11 +116,14 @@ function showWindow(link, { handle = null } = {}) {
         }
     }
     windowBody.classList.add("window");
+    if(windowStyle) {
+        windowBody.setAttribute("style", windowStyle);
+    }
     windowBody.innerHTML = windowHtml.replace("%LINK%", link);
     if(resizeWindows) {
         windowBody.style.resize = "both";
     }
-    windowBody.style.display = "block";
+    windowBody.style.display = "flex";
     document.body.appendChild(windowBody);
 }
 

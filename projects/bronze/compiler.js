@@ -52,7 +52,7 @@ export class Bronze {
                 default: 
                     if(customCompilers[identifier] && typeof customCompilers[identifier] === "function") {
                         const body = segment.split("(").splice(1).join("(").split(")").splice(0, 1).join(")");
-                        customCompilers[identifier](body, this.#errorPut, this.#htmlBody, this.#bronzeEnvironment, this.#OSfunctions, { bodyCompilerObj: this.#bodyCompilerObject });
+                        customCompilers[identifier](body, this.#errorPut, this.#htmlBody, this.#bronzeEnvironment, this.#OSfunctions, { bodyCompilerObj: this.#bodyCompilerObject, attributeCompiler: this.#atributesCompiler.bind(this) });
                         return;
                     }
                     this.#errorPut("COMPILER ERROR, segment " + identifier + " is unvalid");
@@ -195,9 +195,25 @@ export class Bronze {
             const splitValue = value.split(" ");
             const chosenValue = splitValue[0];
 
-            const cleanMargin = DOMPurify.sanitize(chosenValue);
+            const cleanPadding = DOMPurify.sanitize(chosenValue);
 
-            return {body: ` padding: ${cleanMargin};`, specificType: "styling"};
+            return {body: ` padding: ${cleanPadding};`, specificType: "styling"};
+        },
+        WIDTH: (value) => {
+            const splitValue = value.split(" ");
+            const chosenValue = splitValue[0];
+
+            const cleanWidth = DOMPurify.sanitize(chosenValue);
+
+            return {body: ` width: ${cleanWidth};`, specificType: "styling"};
+        },
+        HEIGHT: (value) => {
+            const splitValue = value.split(" ");
+            const chosenValue = splitValue[0];
+
+            const cleanHeight = DOMPurify.sanitize(chosenValue);
+
+            return {body: ` height: ${cleanHeight};`, specificType: "styling"};
         },
         ONCLICK: (value) => {
             const actionString = value;

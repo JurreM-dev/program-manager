@@ -136,8 +136,10 @@ export const customCompilers = {
       errorPutter("COMPILER ERROR, there are " + errorCount + " errors in the CLI compilation");
     }
   },
-  GUI: (body, errorPutter, pageHtml, environment, OScommands, { bodyCompilerObj }) => {
+  GUI: (body, errorPutter, pageHtml, environment, OScommands, { bodyCompilerObj, attributeCompiler }) => {
     let errorCount = 0;
+
+    let windowSelfStyles = "";
 
     let settings = {
       resizableWindows: false,
@@ -150,12 +152,12 @@ export const customCompilers = {
       errorPutter(message);
     }
     const GUIcompilerObject = {
-      WINDOW: (body, { bodyCompilerObj }) => {
+      WINDOW: (body, { bodyCompilerObj, attributes }) => {
 
         // WINDOW COMPILER OBJECT
         const windowCompObj = {
           FRAME: (value, attributes = "") => {
-            return `<iframe src="%LINK%"></iframe>`;
+            return `<iframe ${attributes} src="%LINK%"></iframe>`;
           },
           MULTIPLE: (value) => {
             if(value.trim() === "TRUE") {
@@ -174,23 +176,44 @@ export const customCompilers = {
             } else {
               errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
             }
-          }
+          },
+          RESIZABLE: (value) => {
+            if(value.trim() === "TRUE") {
+              settings.resizableWindows = true;
+            } else if(value.trim() === "FALSE") {
+              settings.resizableWindows = false;
+            } else {
+              errorPut("COMPILER ERROR, in library: GUI, keyword: MULTIPLE needs to be TRUE or FALSE");
+            }
+          },
+          SELF: (value) => {
+            windowSelfStyles += value;
+          },
         };
         windowCompObj["MOVABLE"] = windowCompObj["MOVEABLE"];
         let windowHtml = "";
         const lines = body.split("\n");
 
-        lines.forEach((line)=>{
+        lines.forEach((line) =>{
           const parts = line.trim().split(" ");
           const keyWord = parts[0].trim();
-          const value = parts.splice(1).join(" ");
+          line = parts.splice(1).join(" ");
+          const broken = line.trim().split(/<<|>>/);
+          const value = broken[0];
+          const attributes = broken[1];
+
+          let attributeHTML = "";
+          if(attributes) {
+            attributeHTML = attributeCompiler(attributes);
+          }
+
           if(windowCompObj[keyWord] && typeof windowCompObj[keyWord] === "function") {
-            const result = windowCompObj[keyWord](value);
+            const result = windowCompObj[keyWord](value, attributeHTML);
             if(result) {
               windowHtml += result;
             }
           } else if(bodyCompilerObj[keyWord] && typeof bodyCompilerObj[keyWord] === "function") {
-            const result = bodyCompilerObj[keyWord](value);
+            const result = bodyCompilerObj[keyWord](value, attributeHTML);
             if(result && typeof result === "string") {
               windowHtml += result;
             }
@@ -251,7 +274,7 @@ export const customCompilers = {
           errorPut("COMPILER ERROR, error in os commands");
           return;
         }
-        OScommands.addGUI(GUIcalls, { moveable: settings.moveableWindows, multiple: settings.multipleWindows});
+        OScommands.addGUI(GUIcalls, { moveable: settings.moveableWindows, multiple: settings.multipleWindows, resizable: settings.resizableWindows, selfStyles: windowSelfStyles });
       }
   }
 };
