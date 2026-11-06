@@ -201,6 +201,7 @@ function ThemesPage() {
         buttonHtml = html`
           <button onclick=${() => {
             currentThemeKey = theme;
+            saveThemes();
             updateTheme();
             setTrigger(prevTrigger => prevTrigger + 1);
           }}>
