@@ -1,0 +1,23 @@
+body {
+    font-family: 'Brush Script MT', cursive;
+    display: flex;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    color: white;
+    background: linear-gradient(to right, #000000, #0f0047, #28003c);
+    flex-direction: column;
+    align-items: center;
+}
+
+h1 {
+    margin: 5px;
+}
+
+.galaxyTitle {
+    font-family: monospace;
+    font-weight: bold;
+    text-shadow: 3px 3px 3px white;
+    margin: 5px;
+}
