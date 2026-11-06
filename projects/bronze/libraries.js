@@ -168,6 +168,7 @@ export const customCompilers = {
       resizableWindows: false,
       moveableWindows: false,
       multipleWindows: false,
+      handleId: null
     };
 
     function errorPut(message) {
@@ -216,6 +217,9 @@ export const customCompilers = {
           },
           SELF: (value) => {
             windowSelfStyles += value;
+          },
+          HANDLE: (value) => {
+            settings.handleId = value;
           },
         };
         windowCompObj["MOVABLE"] = windowCompObj["MOVEABLE"];
@@ -324,6 +328,7 @@ export const customCompilers = {
         moveable: settings.moveableWindows,
         multiple: settings.multipleWindows,
         resizable: settings.resizableWindows,
+        handleId: settings.handleId,
         selfStyles: windowSelfStyles,
       });
     }
