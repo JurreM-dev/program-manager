@@ -27,8 +27,9 @@ h1 {
 
 .nestedPage {
     width: 80%;
-    min-height: 55vh;
-    overflow-y: scroll;
+    height: 55vh;
+    min-height: 0;
+    overflow-y: auto;
     border-radius: 50px;
     border: 3px solid white;
     display: flex;
@@ -47,4 +48,40 @@ h1 {
     background-color: #29242b62;
     flex: 1;
     width: 100%;
+}
+
+/* areas screen */
+.areasBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #29242b62;
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+}
+.areasScreen {
+    display: flex;
+    overflow-x: auto;
+    padding-left: 30px;
+    flex-direction: row;
+    width: 90%;
+    flex: 1;
+    scrollbar-width: 0;
+    min-height: 0;
+}
+.areaDisplay {
+    border: 2px solid white;
+    background-color:rgb(80, 6, 90);
+    border-radius: 20px;
+    padding: 10px;
+    margin: 10px;
+    height: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.travelBtn {
+    border-radius: 10px;
+    padding: 2px;
 }

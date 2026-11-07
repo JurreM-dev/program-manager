@@ -7,6 +7,7 @@ import { GalaxyTitle } from "./components/parts.js";
 
 // page imports
 import { Collection } from "./pages/collection.js";
+import { Areas } from "./pages/areas.js";
 
 // data imports
 import monsterData from './data/monsters.json' with { type: 'json' };
@@ -17,7 +18,22 @@ const monsters = monsterData.monsters;
 function App() {
     const [collection, setCollection] = useState([]);
 
+    const [player, setPlayer] = useState({
+        name: "Player",
+        heighestLevel: 1,
+        world: "normal",
+        currentArea: "forest"
+    });
+
     const currentIndex = useRef(1);
+
+    function travelToArea(area) {
+        if(player.heighestLevel < area.minLevel) {
+            alert("you are still to weak to travel to this area!");
+            return; 
+        }
+        setPlayer(previous => ({previous, currentArea: area.name}));
+    }
 
     function chooseRandomMonster(area) {
         let randomIndex = Math.floor(Math.random() * monsters[area].length);
@@ -100,7 +116,8 @@ function App() {
         setCollection,
         chooseRandomMonster,
         buildMonsterStats,
-        addMonster
+        addMonster,
+        travelToArea
     };
 
     return html`
@@ -112,6 +129,9 @@ function App() {
             <div class="nestedPage">
                 <${Collection} />
             </div>
+            <div class="nestedPage">
+                <${Areas} />
+            </div> 
         </${appContext.Provider}>
     `
 }

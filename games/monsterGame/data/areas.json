@@ -1,0 +1,9 @@
+{
+    "areas": [
+        {
+            "name": "forest",
+            "display": "🌲🌳 forest",
+            "minLevel": 1
+        }
+    ]
+}
