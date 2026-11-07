@@ -22,25 +22,33 @@ function App() {
         name: "Player",
         heighestLevel: 1,
         world: "normal",
-        currentArea: "forest"
+        currentArea: "forest",
+        maxStorage: 10,
+        currentStorage: 0,
+        RAM: 1
     });
 
     const currentIndex = useRef(1);
 
+    function calcStorage() {
+        let totalStorage = 0;
+        collection.forEach(monster => {
+            totalStorage += monster.size;
+        });
+        setPlayer(previous => ({...previous, currentStorage: totalStorage}));
+    }
     function travelToArea(area) {
         if(player.heighestLevel < area.minLevel) {
-            alert("you are still to weak to travel to this area!");
+            alert("you are still too weak to travel to this area!");
             return; 
         }
         setPlayer(previous => ({previous, currentArea: area.name}));
     }
-
     function chooseRandomMonster(area) {
         let randomIndex = Math.floor(Math.random() * monsters[area].length);
         let chosenMonster = monsters[area][randomIndex];
         return chosenMonster;
     }
-
     function buildMonsterStats(monster, levelRand = 0) {
         // building level stats
         let levelAdd = 0;
@@ -90,11 +98,14 @@ function App() {
 
         return monster;
     }
-
     function addMonster(monster) {
         monster.key = currentIndex.current;
         currentIndex.current += 1;
         setCollection(previousCollection => [...previousCollection, monster]);
+        calcStorage();
+    }
+    function catchMonster(monster) {
+        
     }
 
     useEffect(() => {

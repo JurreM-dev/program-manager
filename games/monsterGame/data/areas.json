@@ -4,6 +4,11 @@
             "name": "forest",
             "display": "🌲🌳 forest",
             "minLevel": 1
+        },
+        {
+            "name": "desert",
+            "display": "🏜️🌪 desert",
+            "minLevel": 8
         }
     ]
 }

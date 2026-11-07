@@ -7,7 +7,9 @@
         "type": "Fire",
         "startLevel": 5,
         "minLvlAttack": 2,
-        "minLvlHP": 2
+        "minLvlHP": 2,
+        "rarity": "starter",
+        "size": 2
       },
       {
         "id": 2,
@@ -15,7 +17,9 @@
         "type": "Water",
         "startLevel": 5,
         "minLvlAttack": 1.2,
-        "minLvlHP": 4
+        "minLvlHP": 4,
+        "rarity": "starter",
+        "size": 2
       },
       {
         "id": 3,
@@ -23,7 +27,51 @@
         "type": "Earth",
         "startLevel": 5,
         "minLvlAttack": 1.55,
-        "minLvlHP": 3
+        "minLvlHP": 3,
+        "rarity": "starter",
+        "size": 2
+      }
+    ],
+    "forest": [
+      {
+        "id": 4,
+        "name": "Earoleaf",
+        "type": "nature",
+        "startLevel": 3,
+        "minLvlAttack": 1.25,
+        "minLvlHP": 4,
+        "rarity": "common",
+        "size": 1
+      },
+      {
+        "id": 5,
+        "name": "Emberrock",
+        "type": "fire",
+        "startLevel": 4,
+        "minLvlAttack": 1.50,
+        "minLvlHP": 3,
+        "rarity": "common",
+        "size": 1
+      },
+      {
+        "id": 6,
+        "name": "groundplant",
+        "type": "nature",
+        "startLevel": 2,
+        "minLvlAttack": 1.1,
+        "minLvlHP": 4.5,
+        "rarity": "common",
+        "size": 1
+      },
+      {
+        "id": 7,
+        "name": "Windbite",
+        "type": "air",
+        "startLevel": 5,
+        "minLvlAttack": 1.45,
+        "minLvlHP": 5,
+        "rarity": "uncommon",
+        "size": 3
       }
     ]
   }
