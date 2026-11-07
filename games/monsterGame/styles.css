@@ -13,11 +13,38 @@ body {
 
 h1 {
     margin: 5px;
+    text-align: center;
 }
 
 .galaxyTitle {
+    display: block;
+    width: fit-content;
     font-family: monospace;
     font-weight: bold;
     text-shadow: 3px 3px 3px white;
-    margin: 5px;
+    margin: 5px auto;
+}
+
+.nestedPage {
+    width: 80%;
+    min-height: 55vh;
+    overflow-y: scroll;
+    border-radius: 50px;
+    border: 3px solid white;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    align-self: center;
+    margin: 10px;
+}
+
+
+/* collection screen */
+.collectionScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #29242b62;
+    flex: 1;
+    width: 100%;
 }

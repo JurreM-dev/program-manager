@@ -1,0 +1,30 @@
+{
+  "monsters": {
+    "lab": [
+      {
+        "id": 1,
+        "name": "Flameling",
+        "type": "Fire",
+        "startLevel": 5,
+        "minLvlAttack": 2,
+        "minLvlHP": 2
+      },
+      {
+        "id": 2,
+        "name": "Aquasnake",
+        "type": "Water",
+        "startLevel": 5,
+        "minLvlAttack": 1.2,
+        "minLvlHP": 4
+      },
+      {
+        "id": 3,
+        "name": "Earthclimb",
+        "type": "Earth",
+        "startLevel": 5,
+        "minLvlAttack": 1.55,
+        "minLvlHP": 3
+      }
+    ]
+  }
+}
