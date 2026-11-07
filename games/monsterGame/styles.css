@@ -37,6 +37,7 @@ h1 {
     flex-direction: column;
     align-self: center;
     margin: 10px;
+    background-color: #29242b62;
 }
 
 
@@ -45,7 +46,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #29242b62;
     flex: 1;
     width: 100%;
 }
@@ -55,7 +55,6 @@ h1 {
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #29242b62;
     flex: 1;
     width: 100%;
     min-height: 0;
@@ -84,4 +83,50 @@ h1 {
 .travelBtn {
     border-radius: 10px;
     padding: 2px;
+}
+
+/* battle screen */
+.randomEncounterBtn {
+    border-radius: 10px;
+    padding: 2px;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+.randomEncounterBtn:hover {
+    box-shadow: 0 0 10px rgb(145, 43, 182);
+    padding: 4px;
+}
+#battleField {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    gap: 8px;
+}
+#peaceScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+}
+#battleScreen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 23px;
+    gap: 23px;
+}
+.battleBox {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(41, 37, 42, 0.347);
+    border-radius: 20px;
 }

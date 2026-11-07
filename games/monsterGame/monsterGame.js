@@ -48,7 +48,7 @@ function App() {
     }
     function chooseRandomMonster(area) {
         let randomIndex = Math.floor(Math.random() * monsters[area].length);
-        let chosenMonster = monsters[area][randomIndex];
+        let chosenMonster = monsters[area]?.[randomIndex];
         return chosenMonster;
     }
     function buildMonsterStats(monster, levelRand = 0) {
@@ -103,6 +103,9 @@ function App() {
         currentIndex.current += 1;
         setCollection(previousCollection => [...previousCollection, monster]);
         calcStorage();
+        if(monster.level > player.heighestLevel) {
+            setPlayer(previous => ({...previous, heighestLevel: monster.level}));
+        }
     }
     function catchMonster(monster) {
         let chance = Math.random();
@@ -120,6 +123,7 @@ function App() {
             return;
         }
         addMonster(monster);
+        alert("successfully caught the monster!");
     }
 
     useEffect(() => {
