@@ -8,9 +8,11 @@ import { GalaxyTitle } from "./components/parts.js";
 // page imports
 import { Collection } from "./pages/collection.js";
 import { Areas } from "./pages/areas.js";
+import { Battle } from "./pages/battle.js";
 
 // data imports
 import monsterData from './data/monsters.json' with { type: 'json' };
+import rarities from './data/rarities.json' with { type: 'json' }; 
 
 // app constant variables
 const monsters = monsterData.monsters;
@@ -59,7 +61,6 @@ function App() {
 
         // building HP stats
         const HpPLMod = Math.round((Math.random() * 5))
-        console.log(HpPLMod);
         monster.hpPL = monster.minLvlHP + HpPLMod;
 
         monster.maxHp = monster.hpPL * monster.level;
@@ -67,7 +68,6 @@ function App() {
 
         // building attack stats
         const DmgPLMod = Math.round((Math.random() * 2) * 10) / 10;
-        console.log(DmgPLMod);
         monster.dmgPL = monster.minLvlAttack + DmgPLMod;
         monster.dmg = Math.round(monster.dmgPL * monster.level);
 
@@ -105,7 +105,21 @@ function App() {
         calcStorage();
     }
     function catchMonster(monster) {
-        
+        let chance = Math.random();
+        let rarity = rarities[monster.rarity];
+        let catchChance = rarity.chance;
+        const usedChance = chance / player.RAM;
+
+        if(usedChance > catchChance) {
+            console.log(`usedChance: ${usedChance}, catchChance: ${catchChance}`)
+            alert("failed to catch the monster!");
+            return;
+        }
+        if(monster.size > player.maxStorage - player.currentStorage) {
+            alert("could not catch monster, not enough storage");
+            return;
+        }
+        addMonster(monster);
     }
 
     useEffect(() => {
@@ -128,7 +142,9 @@ function App() {
         chooseRandomMonster,
         buildMonsterStats,
         addMonster,
-        travelToArea
+        travelToArea,
+        catchMonster,
+        player
     };
 
     return html`
@@ -142,6 +158,9 @@ function App() {
             </div>
             <div class="nestedPage">
                 <${Areas} />
+            </div> 
+            <div class="nestedPage">
+                <${Battle} />
             </div> 
         </${appContext.Provider}>
     `
