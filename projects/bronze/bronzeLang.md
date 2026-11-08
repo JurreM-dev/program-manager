@@ -77,8 +77,10 @@ this is from the CLI library, here you write CLIs for bronzeOS, you use an ident
 available actions:
 
 - `PRINT <value>`
-
-more will come soon.
+- `EXEC <stellar command>`
+- `CHANGECOLOR <color>`
+- `CHANGEBGCOLOR <color>`
+- `DEFINE <name> <type> = <value>`
 
 example:
 ```bronze
@@ -94,10 +96,12 @@ command name, and `VAR <name>` reads a stored variable:
 ```bronze
 CLI (
     IDENTIFIER say
-    DEFINE message TEXT = ARGS
+    DEFINE message TEXT = ARGS ALL
     PRINT VAR message
 )
 ```
+
+ARGS can have ALL or a specific index, or you just store a text value, as of now TEXT is the only valid type
 
 ## how do you use segments?
 
@@ -115,6 +119,34 @@ segments are formatted like this:
 
 you seperate it using `<--->`
 
+**GUI**
+
+this is the *official* GUI library for bronzeOS, as of right now it can be used for making custom windows
+
+available parts:
+
+## for windows
+
+- `FRAME`  the iframe that opens the app
+- `MULTIPLE <TRUE or FALSE>` allow multiple windows
+- `MOVABLE <TRUE or FALSE>` allow dragging windows
+- `RESIZABLE <TRUE or FALSE>` allow resizing windows
+- `SELF <any CSS>` for styling the window itself
+- `HANDLE` class of the handle for dragging, otherwise drags window itself
+
+all normal BODY elements and attributes work (some attributes may not work on special GUI elements)
+
+you build GUI like this:
+
+```bronze
+    GUI (
+        WINDOW {
+            FRAME
+            TEXT here goes your window
+        }
+    )
+```
+
 ## in the future
 
-the focus lays on expanding the body compiler, the CLI library and later maybe a GUI library.
+the focus lays on expanding the body compiler, the CLI library and the GUI library, development is currently paused
