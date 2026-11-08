@@ -1,6 +1,7 @@
 {
     "starter": {
         "color": "white",
+        "textColor": "black",
         "chance": 0.05
     },
     "common": {

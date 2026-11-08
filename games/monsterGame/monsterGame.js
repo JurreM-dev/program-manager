@@ -25,6 +25,7 @@ function App() {
         heighestLevel: 1,
         world: "normal",
         currentArea: "forest",
+        currentMonster: null,
         maxStorage: 10,
         currentStorage: 0,
         RAM: 1
@@ -116,14 +117,18 @@ function App() {
         if(usedChance > catchChance) {
             console.log(`usedChance: ${usedChance}, catchChance: ${catchChance}`)
             alert("failed to catch the monster!");
-            return;
+            return false;
         }
         if(monster.size > player.maxStorage - player.currentStorage) {
             alert("could not catch monster, not enough storage");
-            return;
+            return false;
         }
         addMonster(monster);
         alert("successfully caught the monster!");
+        return true;
+    }
+    function chooseMonster(monster) {
+        setPlayer(previous => ({...previous, currentMonster: monster}));
     }
 
     useEffect(() => {
@@ -133,7 +138,7 @@ function App() {
             setCollection(potential);
         } else {
             let chosenMonster = chooseRandomMonster("lab");
-            let builtMonster = buildMonsterStats(chosenMonster, 5);
+            let builtMonster = buildMonsterStats(chosenMonster);
             addMonster(builtMonster);
         }
     }
@@ -148,7 +153,8 @@ function App() {
         addMonster,
         travelToArea,
         catchMonster,
-        player
+        player,
+        chooseMonster
     };
 
     return html`

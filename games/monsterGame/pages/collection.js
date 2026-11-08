@@ -1,17 +1,40 @@
-import { html, render, useContext, useState, useEffect } from "https://unpkg.com/htm/preact/standalone.module.js";
+import {
+  html,
+  render,
+  useContext,
+  useState,
+  useEffect,
+} from "https://unpkg.com/htm/preact/standalone.module.js";
 import { appContext } from "../contexts.js";
 
-export function Collection() {
-    const { collection } = useContext(appContext)
+import rarities from "../data/rarities.json" with { type: "json" };
 
-    return html`
+export function Collection() {
+  const { collection, chooseMonster } = useContext(appContext);
+
+  return html`
     <div class="collectionScreen">
-        <h1>Collection</h1>
-        ${collection.map((monster)=>{
-            return html`
-                <p>${monster.name}</p>
-            `
-        })}
+      <h1>Collection</h1>
+      ${collection.map((monster) => {
+        return html`
+          <div
+            class="monsterDisplay"
+            style="background-color: ${rarities[monster.rarity]
+              .color}; color: ${rarities[monster.rarity].textColor ?? "white"};"
+          >
+            <p>${monster.name}</p>
+            <p>level: ${monster.level}</p>
+            <p>hp: ${monster.currentHp}/${monster.maxHp}</p>
+            <button
+              onclick=${() => {
+                chooseMonster(monster);
+              }}
+            >
+              choose
+            </button>
+          </div>
+        `;
+      })}
     </div>
-    `
+  `;
 }

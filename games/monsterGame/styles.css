@@ -49,6 +49,16 @@ h1 {
     flex: 1;
     width: 100%;
 }
+.monsterDisplay {
+    padding: 10px;
+    margin: 5px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    width: 40%;
+    align-items: center;
+}
 
 /* areas screen */
 .areasBox {
@@ -129,4 +139,15 @@ h1 {
     align-items: center;
     background-color: rgba(41, 37, 42, 0.347);
     border-radius: 20px;
+}
+#movesBox {
+    height: 15%;
+    min-height: 50px;
+    width: 90%;
+    background-color: #2d2e3862;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
