@@ -23,7 +23,9 @@ export function Collection() {
               .color}; color: ${rarities[monster.rarity].textColor ?? "white"};"
           >
             <p>${monster.name}</p>
+            <p>type: ${monster.type}</p>
             <p>level: ${monster.level}</p>
+            <p>exp: ${monster.currentExp}/${monster.neededExp}</p>
             <p>hp: ${monster.currentHp}/${monster.maxHp}</p>
             <button
               onclick=${() => {
