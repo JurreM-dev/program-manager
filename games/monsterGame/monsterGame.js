@@ -74,27 +74,7 @@ function App() {
 
         // building exp
         let level = monster.level;
-        if(level < 10) {
-            monster.neededExp = 100;
-        } else if(level < 20) {
-            monster.neededExp = 250;
-        } else if(level < 30) {
-            monster.neededExp = 500;
-        } else if(level < 40) {
-            monster.neededExp = 675;
-        } else if(level < 50) {
-            monster.neededExp = 900;
-        } else if(level < 60) {
-            monster.neededExp = 1300;
-        } else if(level < 70) {
-            monster.neededExp = 1800;
-        } else if(level < 80) {
-            monster.neededExp = 2300;
-        } else if(level < 90) {
-            monster.neededExp = 2800;
-        } else if(level < 100) {
-            monster.neededExp = 3500;
-        }
+        monster.neededExp = 100 + (100 * monster.level)
         monster.currentExp = 0;
 
         return monster;
@@ -130,6 +110,11 @@ function App() {
     function chooseMonster(monster) {
         setPlayer(previous => ({...previous, currentMonster: monster}));
     }
+    function healCurrentMonster() {
+        let monster = player.currentMonster;
+        monster.currentHp = monster.maxHp;
+        setPlayer(previous => ({...previous, currentMonster: monster}));
+    }
 
     useEffect(() => {
         async function startUp() {
@@ -154,7 +139,8 @@ function App() {
         travelToArea,
         catchMonster,
         player,
-        chooseMonster
+        chooseMonster,
+        healCurrentMonster
     };
 
     return html`

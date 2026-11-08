@@ -2,94 +2,117 @@
     "starter": {
         "color": "white",
         "textColor": "black",
-        "chance": 0.05
+        "chance": 0.05,
+        "expGiven": 100
     },
     "common": {
         "color": "gray",
-        "chance": 0.5
+        "chance": 0.5,
+        "expGiven": 10
     },
     "interesting": {
         "color": "blue",
-        "chance": 0.4
+        "chance": 0.4,
+        "expGiven": 20
     },
     "uncommon": {
         "color": "green",
-        "chance": 0.3
+        "chance": 0.3,
+        "expGiven": 25
     },
     "special": {
         "color": "yellow",
-        "chance": 0.2
+        "chance": 0.2,
+        "expGiven": 40
     },
     "rare": {
         "color": "cyan",
-        "chance": 0.15
+        "chance": 0.15,
+        "expGiven": 70
     },
     "cool": {
         "color": "magenta",
-        "chance": 0.1
+        "chance": 0.1,
+        "expGiven": 100
     },
     "luxury": {
         "color": "teal",
-        "chance": 0.08
+        "chance": 0.08,
+        "expGiven": 150
     },
     "epic": {
         "color": "purple",
-        "chance": 0.05
+        "chance": 0.05,
+        "expGiven": 270
     },
     "elite": {
         "color": "brown",
-        "chance": 0.04
+        "chance": 0.04,
+        "expGiven": 400
     },
     "superior": {
         "color": "pink",
-        "chance": 0.02
+        "chance": 0.02,
+        "expGiven": 700
     },
     "legendary": {
         "color": "orange",
-        "chance": 0.01
+        "chance": 0.01,
+        "expGiven": 1500
     },
     "mythical": {
         "color": "red",
-        "chance": 0.001
+        "chance": 0.001,
+        "expGiven": 2400
     }, 
     "exotic": {
         "color": "lightblue",
-        "chance": 0.0001
+        "chance": 0.0001,
+        "expGiven": 3200
     },
     "extraordinary": {
         "color": "white",
-        "chance": 0.0001
+        "chance": 0.0001,
+        "expGiven": 7000
     },
     "ancient": {
         "color": "black",
-        "chance": 0.00001
+        "chance": 0.00001,
+        "expGiven": 10000
     },
     "cosmic": {
         "color": "gold",
-        "chance": 0.000001
+        "chance": 0.000001,
+        "expGiven": 13000
     },
     "universal": {
         "color": "silver",
-        "chance": 0.0000001
+        "chance": 0.0000001,
+        "expGiven": 25000
     },
     "multiversal": {
         "color": "platinum",
-        "chance": 0.00000001
+        "chance": 0.00000001,
+        "expGiven": 50000
     },
     "infinite": {
         "color": "diamond",
-        "chance": 0.000000001
+        "chance": 0.000000001,
+        "expGiven": 999999
     }, 
     "???": {
         "color": "#0e011f",
-        "chance": 0.0000000001
+        "chance": 0.0000000001,
+        "expGiven": 1100000
     },
     "demigod": {
         "color": "#ff00ff",
-        "chance": 0.00000000001
+        "chance": 0.00000000001,
+        "expGiven": 250000
     },
     "god": {
         "color": "#ff0000",
-        "chance": 0.000000000001
+        "chance": 0.000000000001,
+        "expGiven": 500000
     }
 }
