@@ -81,6 +81,14 @@
       "installTime": 3000,
       "version": "v0.1.0",
       "iconEmoji": "🟤"
+    },
+    "galaxyMonsterGame": {
+      "name": "galaxyMonsterGame",
+      "path": "games/monsterGame/index.html",
+      "message": "A monster game where you can catch and train monsters",
+      "installTime": 5000,
+      "version": "v0.1.0",
+      "iconEmoji": "🌌"
     }
   }
 }
