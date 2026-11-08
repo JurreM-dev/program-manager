@@ -144,6 +144,10 @@ function App() {
     startUp();
     }, []);
 
+    useEffect(() => {
+        localforage.setItem("galaxyMonsterGameCollection", collection);
+    }, [collection])
+
     const appStates = {
         collection,
         setCollection,
