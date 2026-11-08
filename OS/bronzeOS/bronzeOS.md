@@ -37,6 +37,7 @@ USER COMMANDS
 BRONZE COMMANDS
 
 - `compileBrz <filename>`
+- `registerCLI <filename>` compiles a bronze file on load, also works for GUI
 
 TERMINAL COMMANDS
 
@@ -45,8 +46,8 @@ TERMINAL COMMANDS
 ## the file system
 bronzeOS uses the same file system and installed apps (programs) as normal stellarOS, saved in indexedDB using the localforage library
 
-## custom CLI using bronze
+## custom CLI or GUI using bronze
 using the bronze coding language docs you can create a CLI for bronzeOS. then you save it into the file system and compile it using 
 `compileBrz`
 
-as of right now custom CLI functions do not save and are very limited
+you can save a CLI or GUI (or both if they're in one file) using `registerCLI`, this command compiles the file on load of the site, as of right now this is not undoable, make sure you trust the bronze code. running the command does **not** compile the file, it compiles on load of the page.
