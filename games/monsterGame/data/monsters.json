@@ -73,6 +73,48 @@
         "rarity": "uncommon",
         "size": 3
       }
+    ],
+    "desert": [
+      {
+        "id": 8,
+        "name": "Dunejumper",
+        "type": "earth",
+        "startLevel": 9,
+        "minLvlAttack": 1.45,
+        "minLvlHP": 4,
+        "rarity": "interesting",
+        "size": 1
+      },
+      {
+        "id": 9,
+        "name": "Sandhider",
+        "type": "shadow",
+        "startLevel": 7,
+        "minLvlAttack": 0.95,
+        "minLvlHP": 5,
+        "rarity": "uncommon",
+        "size": 3
+      },
+      {
+        "id": 10,
+        "name": "Stormrunner",
+        "type": "wind",
+        "startLevel": 10,
+        "minLvlAttack": 1.65,
+        "minLvlHP": 2,
+        "rarity": "interesting",
+        "size": 2
+      },
+      {
+        "id": 4,
+        "name": "cacticreator",
+        "type": "nature",
+        "startLevel": 3,
+        "minLvlAttack": 1.40,
+        "minLvlHP": 4,
+        "rarity": "special",
+        "size": 4
+      }
     ]
   }
 }

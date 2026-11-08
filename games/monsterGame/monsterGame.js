@@ -48,6 +48,8 @@ function App() {
         setPlayer(previous => ({previous, currentArea: area.name}));
     }
     function chooseRandomMonster(area) {
+        console.log(monsters);
+        console.log(area)
         let randomIndex = Math.floor(Math.random() * monsters[area].length);
         let chosenMonster = monsters[area]?.[randomIndex];
         return chosenMonster;

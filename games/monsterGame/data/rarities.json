@@ -23,7 +23,8 @@
     "special": {
         "color": "yellow",
         "chance": 0.2,
-        "expGiven": 40
+        "expGiven": 40,
+        "textColor": "black"
     },
     "rare": {
         "color": "cyan",
