@@ -9,6 +9,11 @@
             "name": "desert",
             "display": "🏜️🌪 desert",
             "minLevel": 8
+        },
+        {
+            "name": "mountains",
+            "display": "🏔🌨 mountains",
+            "minLevel": 13
         }
     ]
 }

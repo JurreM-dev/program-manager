@@ -106,7 +106,7 @@
         "size": 2
       },
       {
-        "id": 4,
+        "id": 11,
         "name": "cacticreator",
         "type": "nature",
         "startLevel": 3,
@@ -114,6 +114,28 @@
         "minLvlHP": 4,
         "rarity": "special",
         "size": 4
+      }
+    ],
+    "mountains": [
+      {
+        "id": 12,
+        "name": "peakjumper",
+        "type": "air",
+        "startLevel": 14,
+        "minLvlAttack": 1.25,
+        "minLvlHP": 5,
+        "rarity": "special",
+        "size": 4
+      },
+      {
+        "id": 13,
+        "name": "rockcrusher",
+        "type": "earth",
+        "startLevel": 12,
+        "minLvlAttack": 1.55,
+        "minLvlHP": 3,
+        "rarity": "interesting",
+        "size": 2
       }
     ]
   }
