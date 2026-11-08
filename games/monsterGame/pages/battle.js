@@ -33,14 +33,21 @@ export function Battle() {
   }
 
   function handleExp(monster, amount = 0) {
-    monster.currentExp += amount;
-    if(monster.currentExp >= monster.neededExp) {
-      let rest = monster.currentExp - monster.neededExp;
-      monster.level += 1;
-      monster = handleExp(monster, rest);
+    let updatedMonster = {
+      ...monster,
+      currentExp: (Number(monster.currentExp) || 0) + amount,
+    };
+
+    while(updatedMonster.currentExp >= updatedMonster.neededExp) {
+      updatedMonster = {
+        ...updatedMonster,
+        currentExp: updatedMonster.currentExp - updatedMonster.neededExp,
+        level: updatedMonster.level + 1,
+        neededExp: 100 + (100 * (updatedMonster.level + 1)),
+      };
     }
-    console.log(monster);
-    return monster;
+
+    return updatedMonster;
   }
 
   function attacks(attacker, receiver) {
@@ -54,7 +61,7 @@ export function Battle() {
     if(receiver.currentHp <= 0) {
       receiver.currentHp = 0;
       alert(`${attacker.name} won the battle!`);
-      attacker = handleExp(attacker, rarities[receiver.rarity].givenExp);
+      attacker = handleExp(attacker, rarities[receiver.rarity].expGiven);
       exitBattle();
     }
     return { attacker, receiver };

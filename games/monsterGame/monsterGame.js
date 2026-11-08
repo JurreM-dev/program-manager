@@ -108,19 +108,31 @@ function App() {
         return true;
     }
     function chooseMonster(monster) {
+        setCollection(previousCollection => previousCollection.map(collectionMonster =>
+            collectionMonster.key === monster.key ? monster : collectionMonster
+        ));
         setPlayer(previous => ({...previous, currentMonster: monster}));
     }
     function healCurrentMonster() {
-        let monster = player.currentMonster;
-        monster.currentHp = monster.maxHp;
-        setPlayer(previous => ({...previous, currentMonster: monster}));
+        const monster = player.currentMonster;
+        chooseMonster({...monster, currentHp: monster.maxHp});
     }
 
     useEffect(() => {
         async function startUp() {
         const potential = await localforage.getItem("galaxyMonsterGameCollection");
         if(potential && Array.isArray(potential)) {
-            setCollection(potential);
+            const loadedCollection = potential.map((monster, index) => ({
+                ...monster,
+                key: monster.key ?? index + 1,
+                currentExp: Number(monster.currentExp) || 0,
+                neededExp: Number(monster.neededExp) || 100 + (100 * monster.level),
+            }));
+            currentIndex.current = loadedCollection.reduce(
+                (nextKey, monster) => Math.max(nextKey, monster.key + 1),
+                1
+            );
+            setCollection(loadedCollection);
         } else {
             let chosenMonster = chooseRandomMonster("lab");
             let builtMonster = buildMonsterStats(chosenMonster);
