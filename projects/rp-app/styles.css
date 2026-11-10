@@ -38,7 +38,26 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 15px;
 }
 .settingsDiv:hover {
     box-shadow: 0 0 10px #03045e;
+}
+
+.teamBox {
+    border: 0;
+    border-radius: 10px;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    margin: 2px;
+    height:fit-content;
+    min-width: 20%;
+}
+
+.teamBox p {
+    margin: 1px;
 }
