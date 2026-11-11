@@ -73,7 +73,7 @@ export function PlayPage() {
         <h1 class="PageTitle">play roleplay</h1>
         <textarea
           id="playTextArea"
-          spellcheck="false"
+          spellcheck=${false}
           value=${currentWriting}
           onInput=${(event) => {
             setCurrentWriting(event.currentTarget.value);
@@ -85,9 +85,22 @@ export function PlayPage() {
               setSpecialOpen(true);
             }}
           >✨</button>
+          <input
+            spellcheck=${false}
+            type="text"
+            placeholder="type here"
+            id="messageIn"
+          />
+          <button
+            onclick=${() => {
+              setCurrentWriting((previous) => previous + "\n\n" + document.getElementById("messageIn").value);
+              document.getElementById("messageIn").value = "";
+            }}
+          >🖊</button>
         </div>
         <${specialMenu} passed=${passed} />
       </div>
     `;
   }
-}
+ }
+
