@@ -1,9 +1,6 @@
 import {
   html,
-  render,
   useContext,
-  useState,
-  useEffect,
 } from "https://unpkg.com/htm/preact/standalone.module.js";
 
 import { appContext, playerContext, worldContext } from "../contexts.js";

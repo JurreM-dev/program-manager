@@ -6,12 +6,16 @@ import {
   useEffect,
 } from "https://unpkg.com/htm/preact/standalone.module.js";
 
+// pages
 import { CreatePage } from "./pages/Create.js";
-import { appContext, playerContext, worldContext } from "./contexts.js";
+import { PlayPage } from "./pages/Play.js";
+
+// contexts
+import { appContext, playerContext, storyContext, worldContext } from "./contexts.js";
 
 function App() {
   // STATES
-  const [renderedPage, setRenderedPage] = useState("createPage");
+  const [renderedPage, setRenderedPage] = useState("playPage");
   const [player, setPlayer] = useState({
     name: "player",
     species: "human",
@@ -23,11 +27,16 @@ function App() {
     currentLocation: null,
   });
   const [teams, setTeams] = useState({});
+  const [currentWriting, setCurrentWriting] = useState("");
 
   // EFFECTS
   useEffect(() => {
     localforage.setItem("oceanRpGamePlayerSave", player);
   }, [player]);
+
+  useEffect(() => {
+    localforage.setItem("oceanRpGameCurrentWritingSave", currentWriting);
+  })
 
   // STARTUP EFFECT
   useEffect(() => {
@@ -38,6 +47,13 @@ function App() {
         setPlayer(potential);
       }
     }
+    async function loadCurrentWriting() {
+      const potential = await localforage.getItem("oceanRpGameCurrentWritingSave");
+      if(potential) {
+        setCurrentWriting(potential);
+      }
+    }
+    loadCurrentWriting();
     loadPlayer();
   }, []);
 
@@ -57,11 +73,19 @@ function App() {
     setTeams,
   };
 
+  const storyStates = {
+    currentWriting,
+    setCurrentWriting
+  }
+
   return html`
     <${appContext.Provider} value=${states}>
         <${playerContext.Provider} value=${playerStates}>
             <${worldContext.Provider} value=${worldStates}>
+              <${storyContext.Provider} value=${storyStates}>
                 <${CreatePage}/>
+                <${PlayPage}/>
+              </${storyContext.Provider}>
             </${worldContext.Provider}>
         </${playerContext.Provider}>
     </${appContext.Provider}>
