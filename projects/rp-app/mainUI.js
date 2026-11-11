@@ -1,7 +1,6 @@
 import {
   html,
   render,
-  useContext,
   useState,
   useEffect,
 } from "https://unpkg.com/htm/preact/standalone.module.js";
@@ -12,6 +11,7 @@ import { PlayPage } from "./pages/Play.js";
 
 // contexts
 import { appContext, playerContext, storyContext, worldContext } from "./contexts.js";
+import { NavBar } from "./components/NavBar.js";
 
 function App() {
   // STATES
@@ -85,6 +85,8 @@ function App() {
               <${storyContext.Provider} value=${storyStates}>
                 <${CreatePage}/>
                 <${PlayPage}/>
+
+                <${NavBar}/>
               </${storyContext.Provider}>
             </${worldContext.Provider}>
         </${playerContext.Provider}>

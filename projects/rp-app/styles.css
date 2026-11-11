@@ -74,3 +74,33 @@ body {
 #playTextArea:focus {
     box-shadow: 0 0 10px #03045e;
 }
+
+#navBar {
+    position: absolute;
+    min-height: 0;
+    width: 7vw;
+    left: 10px;
+    top: 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(67, 67, 66, 0.289);
+    padding: 10px;
+    gap: 10px;
+    border-radius: 20px;
+}
+#navBar button {
+    width: 75%;
+    aspect-ratio: 1 / 1;
+    corner-shape: squircle;
+    border-radius: 50%;
+    border: none;
+    font-size: 3cqw;
+    padding: 3px;
+}
+#navBar button:hover {
+    box-shadow: 0 0 10px #03045e;
+}
+#navBar button:active {
+    background-color: rgb(174, 245, 221);
+}
