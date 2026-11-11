@@ -36,6 +36,11 @@ function specialMenu({ passed }) {
         >
           roll a D6
         </button>
+        <button
+          onclick=${() => animateOut(String(Math.floor(Math.random() * 20) + 1))}
+        >
+          roll a D20
+        </button>
 
         <button
           class="closeBtn"
@@ -56,7 +61,7 @@ export function PlayPage() {
   const { currentWriting, setCurrentWriting } = useContext(storyContext);
 
   // states
-  const [specialOpen, setSpecialOpen] = useState(true);
+  const [specialOpen, setSpecialOpen] = useState(false);
   const passed = {
     specialOpen,
     setSpecialOpen,
@@ -74,6 +79,13 @@ export function PlayPage() {
             setCurrentWriting(event.currentTarget.value);
           }}
         ></textarea>
+        <div id="inputPlace">
+          <button
+            onclick=${() => {
+              setSpecialOpen(true);
+            }}
+          >✨</button>
+        </div>
         <${specialMenu} passed=${passed} />
       </div>
     `;
