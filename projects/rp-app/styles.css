@@ -74,6 +74,32 @@ body {
 #playTextArea:focus {
     box-shadow: 0 0 10px #03045e;
 }
+#specialMenu {
+    width: 70vw;
+    height: 80vh;
+    position: absolute;
+    background-color: #00b4d8;
+    border-radius: 40px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    flex-direction: column;
+    box-shadow:0 0 10px #03045e;
+}
+#specialMenu button {
+    border: 0;
+    border-radius: 20px;
+    padding: 10px;
+    font-size: 20px;
+}
+.closeBtn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
 
 #navBar {
     position: absolute;
