@@ -61,3 +61,16 @@ body {
 .teamBox p {
     margin: 1px;
 }
+
+#playTextArea {
+    width: 80%;
+    height: 65%;
+    border-radius: 20px;
+    padding: 8px;
+    outline: none;
+    border: 0;
+    resize: none;
+}
+#playTextArea:focus {
+    box-shadow: 0 0 10px #03045e;
+}

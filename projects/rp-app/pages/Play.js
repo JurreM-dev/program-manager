@@ -14,6 +14,8 @@ export function PlayPage() {
             <div class="Page">
                 <h1 class="PageTitle">play roleplay</h1>
                 <textarea 
+                  id="playTextArea"
+                  spellCheck="false"
                   value=${currentWriting}
                   onInput=${(event) => {
                     setCurrentWriting(event.currentTarget.value);
