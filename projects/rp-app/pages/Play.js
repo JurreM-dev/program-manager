@@ -18,8 +18,18 @@ import {
 } from "../contexts.js";
 
 function specialMenu({ passed }) {
-  // special output function
+  // states
+  const [randList, setRandList] = useState(false);
+  const [randomizerContent, setRandomizerContent] = useState("");
 
+  function randomize() {
+    const list = randomizerContent.split("\n");
+    const id = Math.floor(Math.random() * list.length);
+    const result = String(list[id]);
+    animateOut(result);
+  }
+
+  // special output function
   function animateOut(printedValue) {
     const animationOut = document.getElementById("animationOut");
     animate(animationOut, {
@@ -53,6 +63,24 @@ function specialMenu({ passed }) {
         >
           flip a coin
         </button>
+        <h2>randomizer</h2>
+        <button onclick=${randomize}>randomize!</button>
+        <button
+          class="smallBtn"
+          onclick=${()=>{
+            setRandList(!randList);
+          }}
+        >options</button>
+        ${(() => {
+          if (randList) {
+            return html`<textarea 
+              spellcheck=${false} 
+              id="randomIn"
+              onInput=${(event)=>{setRandomizerContent(event.currentTarget.value)}}
+              value=${randomizerContent}
+              ></textarea>`;
+          }
+        })()}
 
         <button
           class="closeBtn"

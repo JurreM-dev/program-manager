@@ -93,6 +93,7 @@ textarea, input {
     flex-direction: column;
     box-shadow:0 0 10px #03045e;
     overflow-y: scroll;
+    scrollbar-width: none;
 }
 #specialMenu button, #inputPlace button {
     border: 0;
@@ -124,6 +125,17 @@ textarea, input {
     font-size: 20px;
     outline: none;
     width: 50%;
+}
+#specialMenu button.smallBtn {
+    font-size: 10px;
+    padding: 1px;
+}
+#randomIn {
+    width: 35%;
+    height: 40%;
+    flex: 0 0 40%;
+    box-sizing: border-box;
+    outline: none;
 }
 
 #navBar {
