@@ -31,15 +31,27 @@ function specialMenu({ passed }) {
     return html`
       <div id="specialMenu">
         <h1 id="animationOut">...</h1>
+        <h2>dice</h2>
         <button
           onclick=${() => animateOut(String(Math.floor(Math.random() * 6) + 1))}
         >
           roll a D6
         </button>
         <button
+          onclick=${() => animateOut(String(Math.floor(Math.random() * 12) + 1))}
+        >
+          roll a D12
+        </button>
+        <button
           onclick=${() => animateOut(String(Math.floor(Math.random() * 20) + 1))}
         >
           roll a D20
+        </button>
+        <h2>flip a coin!</h2>
+        <button
+          onclick=${() => animateOut(Math.random() < 0.5 ? "heads" : "tails")}
+        >
+          flip a coin
         </button>
 
         <button
