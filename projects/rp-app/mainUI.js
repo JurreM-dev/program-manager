@@ -12,6 +12,7 @@ import { PlayPage } from "./pages/Play.js";
 // contexts
 import { appContext, playerContext, storyContext, worldContext } from "./contexts.js";
 import { NavBar } from "./components/NavBar.js";
+import { StoriesPage } from "./pages/Stories.js";
 
 function App() {
   // STATES
@@ -85,6 +86,7 @@ function App() {
               <${storyContext.Provider} value=${storyStates}>
                 <${CreatePage}/>
                 <${PlayPage}/>
+                <${StoriesPage}/>
 
                 <${NavBar}/>
               </${storyContext.Provider}>

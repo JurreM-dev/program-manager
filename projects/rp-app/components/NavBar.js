@@ -16,6 +16,9 @@ export function NavBar() {
             <button
                 onclick=${() => setRenderedPage("createPage")}
             >🌍</button>
+            <button
+                onclick=${() => setRenderedPage("storiesPage")}
+            >📔</button>
         </div>
     `
 }
