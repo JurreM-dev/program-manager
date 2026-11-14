@@ -184,7 +184,7 @@ textarea, input {
 }
 #bookSaveBtn:hover {
     transform: scale(1.1);
-    animation: flowGradient 6s ease infinite;
+    animation: flowGradient 6s linear infinite;
 }
 
 
@@ -192,10 +192,7 @@ textarea, input {
     0% {
         background-position: 0% 50%;
     }
-    50% {
-        background-position: 100% 50%;
-    }
     100% {
-        background-position: 0% 50%;
+        background-position: 100% 50%;
     }
 }
