@@ -12,6 +12,12 @@ import { appContext } from "./contexts.js";
 // components
 import { PageSwitch } from "./components.js";
 
+// pages
+import { StatsPage } from "./pages/stats.js";
+import { ShopPage } from "./pages/shop.js";
+import { StudyPage } from "./pages/study.js";
+import { SetCreatorPage } from "./pages/setCreator.js";
+
 function App() {
     // states
     const [currentPage, setCurrentPage] = useState("setCreator");
@@ -24,11 +30,13 @@ function App() {
 
     return html`
     <${appContext.Provider} value=${appStates}>
-    <div>
         <h1 class="mainTitle">StudyRPG</h1>
         <${PageSwitch}/>
-        <p>${currentPage}</p>
-    </div>
+
+        <${SetCreatorPage}/>
+        <${StatsPage}/>
+        <${StudyPage}/>
+        <${ShopPage}/>
     </${appContext.Provider}>
     `
 }
