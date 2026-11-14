@@ -10,17 +10,26 @@ import {
 import { appContext } from "./contexts.js";
 
 // components
-import { pageSwitch } from "./components.js";
+import { PageSwitch } from "./components.js";
 
 function App() {
     // states
-    const [currentPage, setCurrentPage] = useState("setCreator")
+    const [currentPage, setCurrentPage] = useState("setCreator");
+
+    // context values
+    const appStates = {
+        currentPage,
+        setCurrentPage
+    }
 
     return html`
+    <${appContext.Provider} value=${appStates}>
     <div>
         <h1 class="mainTitle">StudyRPG</h1>
-        <${pageSwitch}/>
+        <${PageSwitch}/>
+        <p>${currentPage}</p>
     </div>
+    </${appContext.Provider}>
     `
 }
 
