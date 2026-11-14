@@ -12,6 +12,7 @@ export function StoriesPage() {
     return html`
       <div class="Page">
         <h1 class="PageTitle">stories page</h1>
+        <button id="bookSaveBtn">save current RP as book</button>
       </div>
     `;
   }
