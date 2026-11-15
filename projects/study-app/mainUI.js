@@ -7,7 +7,7 @@ import {
 } from "https://unpkg.com/htm/preact/standalone.module.js";
 
 // contexts
-import { appContext } from "./contexts.js";
+import { appContext, setsContext } from "./contexts.js";
 
 // components
 import { PageSwitch } from "./components.js";
@@ -19,17 +19,45 @@ import { StudyPage } from "./pages/study.js";
 import { SetCreatorPage } from "./pages/setCreator.js";
 
 function App() {
-    // states
-    const [currentPage, setCurrentPage] = useState("setCreator");
+  // states
+  const [currentPage, setCurrentPage] = useState("setCreator");
+  const [sets, setSets] = useState([]);
 
-    // context values
-    const appStates = {
-        currentPage,
-        setCurrentPage
+  // effects
+  useEffect(() => {
+    async function loadSets() {
+      const potential = await localforage.getItem("studyRPGSetsSave");
+      if (potential) {
+        setSets(potential);
+        console.log(potential);
+      }
     }
+    loadSets();
+  }, []);
+  useEffect(() => {
+    localforage.setItem("studyRPGSetsSave", sets);
+  }, [sets]);
 
-    return html`
+  // inner functions
+  function addSet(set) {
+    setSets((prevSets) => [...prevSets, set]);
+  }
+
+  // context values
+  const appStates = {
+    currentPage,
+    setCurrentPage,
+  };
+
+  const setStates = {
+    sets,
+    setSets,
+    addSet,
+  };
+
+  return html`
     <${appContext.Provider} value=${appStates}>
+    <${setsContext.Provider} value=${setStates}>
         <h1 class="mainTitle">StudyRPG</h1>
         <${PageSwitch}/>
 
@@ -38,7 +66,8 @@ function App() {
         <${StudyPage}/>
         <${ShopPage}/>
     </${appContext.Provider}>
-    `
+    </${setsContext.Provider}>
+    `;
 }
 
 render(html`<${App} />`, document.body);

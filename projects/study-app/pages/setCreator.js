@@ -5,10 +5,11 @@ import {
   useEffect,
 } from "https://unpkg.com/htm/preact/standalone.module.js";
 
-import { appContext } from "./../contexts.js";
+import { appContext, setsContext } from "./../contexts.js";
 
 export function SetCreatorPage() {
     const {currentPage, setCurrentPage} = useContext(appContext);
+    const {addSet} = useContext(setsContext);
 
     const [currentCreating, setCurrentCreating] = useState("");
     const [currentSetName, setCurrentSetName] = useState("");
@@ -36,7 +37,7 @@ export function SetCreatorPage() {
                 definitions: usedDefinitions
             });
         });
-        console.log(set);
+        addSet(set);
     }
 
     if(currentPage === "setCreator") {
