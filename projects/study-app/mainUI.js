@@ -40,7 +40,7 @@ function App() {
       }
     }
     async function loadUser() {
-      const potential = await localforage.getItem("studyRPGCoinSave");
+      const potential = await localforage.getItem("studyRPGUserSave");
       if(potential) {
         setUser(potential);
       }
@@ -63,7 +63,7 @@ function App() {
   }, [goldCoins]);
   useEffect(() => {
     localforage.setItem("studyRPGUserSave", user);
-  })
+  }, [user])
 
   // inner functions
   function addSet(set) {
