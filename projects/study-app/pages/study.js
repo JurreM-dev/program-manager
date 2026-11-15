@@ -15,7 +15,7 @@ import { appContext, setsContext } from "./../contexts.js";
 
 export function StudyPage() {
   // contexts
-  const { currentPage, setCurrentPage } = useContext(appContext);
+  const { currentPage, setCurrentPage, setGoldCoins } = useContext(appContext);
   const { sets } = useContext(setsContext);
 
   // states
@@ -42,7 +42,9 @@ export function StudyPage() {
   function answerQuestion() {
     const answer = answering.toLowerCase();
     if (currentQuestion.answers.includes(answer)) {
-        revealOutput("correct! Well done!");
+        const gainedCoins = Math.floor(Math.random() * 2) + 1;
+        revealOutput(`correct! Well done! you gained ${gainedCoins} golden coins!`);
+        setGoldCoins((prev) => prev + gainedCoins);
         setAnswering("");
         rollQuestion();
     } else {

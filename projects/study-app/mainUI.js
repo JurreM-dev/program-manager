@@ -22,6 +22,7 @@ function App() {
   // states
   const [currentPage, setCurrentPage] = useState("setCreator");
   const [sets, setSets] = useState([]);
+  const [goldCoins, setGoldCoins] = useState(0);
 
   // effects
   useEffect(() => {
@@ -32,11 +33,21 @@ function App() {
         console.log(potential);
       }
     }
+    function loadCoins() {
+      const potential = localStorage.getItem("studyRPGCoinSave");
+      if(potential) {
+        setGoldCoins(Number(potential));
+      }
+    }
     loadSets();
+    loadCoins();
   }, []);
   useEffect(() => {
     localforage.setItem("studyRPGSetsSave", sets);
   }, [sets]);
+  useEffect(() => {
+    localStorage.setItem("studyRPGCoinSave", goldCoins);
+  }, [goldCoins]);
 
   // inner functions
   function addSet(set) {
@@ -47,6 +58,8 @@ function App() {
   const appStates = {
     currentPage,
     setCurrentPage,
+    goldCoins,
+    setGoldCoins
   };
 
   const setStates = {

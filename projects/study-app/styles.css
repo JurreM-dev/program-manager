@@ -111,3 +111,26 @@ body {
     padding-left: 5px;
     padding-right: 5px;
 }
+
+#coinCount {
+    font-size: 20px;
+    color: var(--text-primary);
+    font-weight: bold;
+}
+.shopItem {
+    width: 50%;
+    padding: 10px;
+    border: 2px solid white;
+    border-radius: 20px;
+    margin: 5px;
+    background-color: var(--main-color);
+}
+.shopItem h2, .shopItem p {
+    color: var(--text-primary);
+}
+.shopItem button {
+    background-color: var(--extra-color);
+    color: var(--text-secondary);
+    border-radius: 5px;
+    padding: 3px;
+}

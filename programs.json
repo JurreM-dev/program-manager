@@ -97,6 +97,14 @@
       "installationTime": 6300,
       "version": "v0.1.1",
       "iconEmoji": "🌊"
+    },
+    "studyRPG": {
+      "name": "studyRPG",
+      "path": "projects/study-app/index.html",
+      "message": "a very simple RPG-like studying system",
+      "installationTime": 2000,
+      "version": "v0.1.0",
+      "iconEmoji": "📝"
     }
   }
 }
