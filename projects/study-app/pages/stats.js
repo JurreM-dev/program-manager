@@ -18,6 +18,9 @@ export function StatsPage() {
                     value=${user.name}
                     onInput=${(event)=>{setUser((prev)=> ({...prev, name: event.currentTarget.value}))}}
                 />
+                <h2>level: ${user.currentLevel}</h2>
+                <h2>exp:</h2>
+                <progress id="expBar" value=${user.currentExp} max=${user.neededExp}></progress>
             </div>
         `
     }

@@ -15,7 +15,7 @@ import { appContext, setsContext } from "./../contexts.js";
 
 export function StudyPage() {
   // contexts
-  const { currentPage, setCurrentPage, setGoldCoins } = useContext(appContext);
+  const { currentPage, setCurrentPage, setGoldCoins, setUser } = useContext(appContext);
   const { sets } = useContext(setsContext);
 
   // states
@@ -45,6 +45,10 @@ export function StudyPage() {
         const gainedCoins = Math.floor(Math.random() * 2) + 1;
         revealOutput(`correct! Well done! you gained ${gainedCoins} golden coins!`);
         setGoldCoins((prev) => prev + gainedCoins);
+        setUser((prev)=>({
+          ...prev,
+          currentExp: prev.currentExp + 1
+        }))
         setAnswering("");
         rollQuestion();
     } else {

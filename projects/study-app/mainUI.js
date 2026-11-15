@@ -23,11 +23,12 @@ function App() {
   const [currentPage, setCurrentPage] = useState("setCreator");
   const [sets, setSets] = useState([]);
   const [goldCoins, setGoldCoins] = useState(0);
+  const [isLoaded, setIsLoaded] = useState(false);
   const [user, setUser] = useState({
     name: "user",
     currentExp: 0,
     neededExp: 100,
-    currentLevel: 1
+    currentLevel: 1,
   });
 
   // effects
@@ -41,33 +42,57 @@ function App() {
     }
     async function loadUser() {
       const potential = await localforage.getItem("studyRPGUserSave");
-      if(potential) {
+      if (potential) {
         setUser(potential);
+      } else {
+        setUser({
+          name: "user",
+          currentExp: 0,
+          neededExp: 100,
+          currentLevel: 1,
+        });
       }
     }
     function loadCoins() {
       const potential = localStorage.getItem("studyRPGCoinSave");
-      if(potential) {
+      if (potential) {
         setGoldCoins(Number(potential));
       }
     }
-    loadSets();
-    loadUser();
-    loadCoins();
+    Promise.all([loadSets(), loadUser()]).then(() => {
+      loadCoins();
+      setIsLoaded(true);
+    });
   }, []);
   useEffect(() => {
+    if (!isLoaded) return;
     localforage.setItem("studyRPGSetsSave", sets);
-  }, [sets]);
+  }, [sets, isLoaded]);
   useEffect(() => {
+    if (!isLoaded) return;
     localStorage.setItem("studyRPGCoinSave", goldCoins);
-  }, [goldCoins]);
+  }, [goldCoins, isLoaded]);
   useEffect(() => {
+    if (!isLoaded) return;
+    checkExp();
     localforage.setItem("studyRPGUserSave", user);
-  }, [user])
+  }, [user, isLoaded]);
 
   // inner functions
   function addSet(set) {
     setSets((prevSets) => [...prevSets, set]);
+  }
+  function checkExp() {
+    if (user.currentExp >= user.neededExp) {
+      let tempLevel = user.currentLevel + 1;
+      setUser((prev) => ({
+        ...prev,
+        neededExp: tempLevel * 100,
+        currentExp: 0,
+        currentLevel: prev.currentLevel + 1,
+      }));
+      alert("level up!");
+    }
   }
 
   // context values
@@ -77,7 +102,7 @@ function App() {
     goldCoins,
     setGoldCoins,
     user,
-    setUser
+    setUser,
   };
 
   const setStates = {

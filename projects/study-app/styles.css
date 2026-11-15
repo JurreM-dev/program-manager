@@ -134,3 +134,18 @@ body {
     border-radius: 5px;
     padding: 3px;
 }
+#expBar {
+    height: 20px;
+    width: 60vw;
+    border-radius: 20px;
+    accent-color: var(--text-primary);
+    appearance: none;
+    background: var(--main-color);
+}
+#expBar::-webkit-progress-value {
+    background: var(--text-primary);
+}
+
+#expBar::-moz-progress-bar {
+    background: var(--text-primary);
+}
