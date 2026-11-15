@@ -30,7 +30,7 @@ export function SetCreatorPage() {
             let definitions = parts[1].split("/");
             let usedDefinitions = [];
             definitions.forEach((definition)=>{
-                usedDefinitions.push(definition.trim());
+                usedDefinitions.push(definition.trim().toLowerCase());
             })
             set.set.push({
                 word: word,
