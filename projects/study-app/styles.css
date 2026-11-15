@@ -74,3 +74,13 @@ body {
 #setNameIn:focus, #setIn:focus {
     box-shadow: 0 0 20px var(--text-primary);
 }
+
+.setsOption {
+    background-color: var(--main-color);
+    color: var(--text-primary);
+    border: 2px solid black;
+    padding: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 30px;
+}
