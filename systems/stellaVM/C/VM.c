@@ -1,18 +1,31 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "VM.h"
+
+typedef enum {
+    HLT = 0x00
+} Opcodes;
 
 void stellaVM(
     const uint8_t* instructions,
     int length,
     void (*output)(uint16_t)
 ) {
-    printf("VM initialized.\n");
+    bool running = true;
+    int i = 0;
+    while(running && i < length) {
+        uint8_t command = instructions[i++];
 
-    printf("instuction length: %d\n", length);
-
-    for(int i = 0; i < length; i++) {
-        printf("instruction byte: %d\n", instructions[i]);
+        switch(command) {
+            case HLT: {
+                output(0);
+                running = false;
+                break;
+            }
+            default: {
+                output(1);
+                break;
+            }
+        }
     }
-
-    output(123);
 }
