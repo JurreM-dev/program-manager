@@ -1,0 +1,36 @@
+<script src="../C/vm.js"></script>
+<script>
+// array we want to succesfully run in the VM
+const instructions = new Uint8Array([
+    0x01, 0x07, 10, // SET H 10,
+    0x02, 0x07, // OUT H
+    0x00 // HLT
+]);
+
+function output(value) {
+    console.log(value);
+}
+
+Module.onRuntimeInitialized = function() {
+    console.log("VM loaded!");
+
+    const ptr = Module._malloc(instructions.length);
+
+    Module.HEAPU8.set(instructions, ptr);
+
+    const outputPtr = Module.addFunction(output, "vi");
+
+    try {
+        const result = Module._stellaVM(
+            ptr,
+            instructions.length,
+            outputPtr
+        )
+        output("VM finished!");
+    } finally {
+        Module._free(ptr);
+
+        Module.removeFunction(outputPtr);
+    }
+}
+</script>
