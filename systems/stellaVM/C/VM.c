@@ -8,7 +8,10 @@ typedef enum
     HLT = 0x00,
     SET = 0x01,
     OUT = 0x02,
-    MOV = 0x03
+    MOV = 0x03,
+
+    // numeric operations
+    ADD = 0x04
 } Opcodes;
 
 // function to check registers
@@ -107,6 +110,34 @@ void stellaVM(
             registers[locationRegister] = registers[inputRegister];
             break;
         }
+        
+        // numeric operations
+        case ADD:
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t locationRegister = instructions[i++];
+            if(!checkRegister(locationRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t addedRegister = instructions[i++];
+            if(!checkRegister(addedRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            registers[locationRegister] += registers[addedRegister];
+            break;
+        }
+
         default:
         {
             output(1);
