@@ -11,7 +11,8 @@ typedef enum
     MOV = 0x03,
 
     // numeric operations
-    ADD = 0x04
+    ADD = 0x04,
+    SUB = 0x05,
 } Opcodes;
 
 // function to check registers
@@ -135,6 +136,31 @@ void stellaVM(
                 break;
             }
             registers[locationRegister] += registers[addedRegister];
+            break;
+        }
+        case SUB:
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t locationRegister = instructions[i++];
+            if(!checkRegister(locationRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t subRegister = instructions[i++];
+            if(!checkRegister(subRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            registers[locationRegister] -= registers[subRegister];
             break;
         }
 
