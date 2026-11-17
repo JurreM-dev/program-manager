@@ -30,7 +30,7 @@ void stellaVM(
     void (*output)(uint16_t))
 {
     // define registers
-    uint8_t registers[8];
+    uint8_t registers[8] = {0};
 
     bool running = true;
     int i = 0;
@@ -82,10 +82,31 @@ void stellaVM(
             output(registers[registerIndex]);
             break;
         }
-       // case MOV: 
-       // {
-      //   uint8_t location = instructions[i++];
-       // }
+        case MOV: 
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t locationRegister = instructions[i++];
+            if(!checkRegister(locationRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t inputRegister = instructions[i++];
+            if(!checkRegister(inputRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            registers[locationRegister] = registers[inputRegister];
+            break;
+        }
         default:
         {
             output(1);
