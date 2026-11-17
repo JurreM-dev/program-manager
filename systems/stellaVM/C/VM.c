@@ -7,16 +7,20 @@ typedef enum
 {
     HLT = 0x00,
     SET = 0x01,
-    OUT = 0x02
+    OUT = 0x02,
+    MOV = 0x03
 } Opcodes;
 
 // function to check registers
 bool checkRegister(uint8_t registerIndex) {
-    if(registerIndex < 0 || registerIndex > 7) {
+    return registerIndex < 8;
+}
+
+bool checkBounds(int length, int pc, int reserved) {
+    if(pc + reserved > length) {
         return false;
-    } else {
-        return true;
     }
+    return true;
 }
 
 // main VM execution
@@ -38,12 +42,17 @@ void stellaVM(
         {
         case HLT:
         {
-            output(0);
             running = false;
             break;
         }
         case SET: 
         {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
             uint8_t registerIndex = instructions[i++];
             if(!checkRegister(registerIndex)) {
                 output(1);
@@ -55,7 +64,14 @@ void stellaVM(
             registers[registerIndex] = value;
             break;
         }
-        case OUT: {
+        case OUT: 
+        {
+            if(!checkBounds(length, i, 1)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
             uint8_t registerIndex = instructions[i++];
             if(!checkRegister(registerIndex)) {
                 output(1);
@@ -66,6 +82,10 @@ void stellaVM(
             output(registers[registerIndex]);
             break;
         }
+       // case MOV: 
+       // {
+      //   uint8_t location = instructions[i++];
+       // }
         default:
         {
             output(1);
