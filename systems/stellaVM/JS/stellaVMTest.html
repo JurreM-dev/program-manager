@@ -2,7 +2,7 @@
 <script>
 // array we want to succesfully run in the VM
 const instructions = new Uint8Array([
-    0x01, 0x07, 10,  // SET H 10
+    0x01, 0x07, 0, 10,  // SET H 10
     0x03, 0x06, 0x07, // MOV G H
     0x02, 0x06, // OUT G
     0x04, 0x07, 0x06, // ADD H G

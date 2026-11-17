@@ -34,7 +34,7 @@ void stellaVM(
     void (*output)(uint16_t))
 {
     // define registers
-    uint8_t registers[8] = {0};
+    uint16_t registers[8] = {0};
 
     bool running = true;
     int i = 0;
@@ -51,7 +51,7 @@ void stellaVM(
         }
         case SET: 
         {
-            if(!checkBounds(length, i, 2)) {
+            if(!checkBounds(length, i, 3)) {
                 output(1);
                 output(i - 1);
                 running = false;
@@ -64,8 +64,10 @@ void stellaVM(
                 running = false;
                 break;
             }
-            uint8_t value = instructions[i++];
-            registers[registerIndex] = value;
+            uint8_t value1 = instructions[i++];
+            uint8_t value2 = instructions[i++];
+            uint16_t written = (value1 * 256) + value2;
+            registers[registerIndex] = written;
             break;
         }
         case OUT: 
