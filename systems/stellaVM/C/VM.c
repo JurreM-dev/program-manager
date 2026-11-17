@@ -13,7 +13,19 @@ typedef enum
     // numeric operations
     ADD = 0x04,
     SUB = 0x05,
+    MUL = 0x06,
+    DIV = 0x07,
+    MOD = 0x08,
+
+    // comparisons
+    CMP = 0x09
 } Opcodes;
+
+// flags
+typedef struct {
+    bool Z;
+    bool S;
+} Flags;
 
 // function to check registers
 bool checkRegister(uint8_t registerIndex) {
@@ -35,6 +47,9 @@ void stellaVM(
 {
     // define registers
     uint16_t registers[8] = {0};
+
+    // define flags
+    Flags flags = {};
 
     bool running = true;
     int i = 0;
@@ -163,6 +178,23 @@ void stellaVM(
                 break;
             }
             registers[locationRegister] -= registers[subRegister];
+            break;
+        }
+
+        // comparisons
+        case CMP:
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            int8_t reg1 = instructions[i++];
+            int8_t reg2 = instructions[i++];
+
+            flags.Z = reg1 == reg2;
+            flags.S = reg2 > reg1;
             break;
         }
 
