@@ -18,7 +18,8 @@ typedef enum
     MOD = 0x08,
 
     // comparisons
-    CMP = 0x09
+    CMP = 0x09,
+    JMP = 0x0A,
 } Opcodes;
 
 // flags
@@ -195,6 +196,27 @@ void stellaVM(
 
             flags.Z = reg1 == reg2;
             flags.S = reg2 > reg1;
+            break;
+        }
+
+        // jumps
+        case JMP:
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t value1 = instructions[i++];
+            uint8_t value2 = instructions[i++];
+            uint16_t jumpTo = (value1 * 256) + value2;
+            if(jumpTo > length) {
+                output(1);
+                output(i - 3);
+                running = false;
+                break;
+            }
+            i = jumpTo;
             break;
         }
 
