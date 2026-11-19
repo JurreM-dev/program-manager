@@ -193,8 +193,20 @@ void stellaVM(
                 running = false;
                 break;
             }
-            int8_t reg1 = instructions[i++];
-            int8_t reg2 = instructions[i++];
+            uint8_t reg1 = instructions[i++];
+            if(!checkRegister(reg1)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t reg2 = instructions[i++];
+            if(!checkRegister(reg2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
 
             flags.Z = registers[reg1] == registers[reg2];
             flags.S = registers[reg1] > registers[reg2];
