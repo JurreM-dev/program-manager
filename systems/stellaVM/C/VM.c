@@ -183,6 +183,62 @@ void stellaVM(
             registers[locationRegister] -= registers[subRegister];
             break;
         }
+        case MUL:
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t locationRegister = instructions[i++];
+            if(!checkRegister(locationRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t mulRegister = instructions[i++];
+            if(!checkRegister(mulRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            registers[locationRegister] *= registers[mulRegister];
+            break;
+        }
+        case DIV: 
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t locationRegister = instructions[i++];
+            if(!checkRegister(locationRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t divRegister = instructions[i++];
+            if(!checkRegister(divRegister)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            if(registers[divRegister] == 0) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            registers[locationRegister] /= registers[divRegister];
+            break;
+        }
 
         // comparisons
         case CMP:
