@@ -196,8 +196,8 @@ void stellaVM(
             int8_t reg1 = instructions[i++];
             int8_t reg2 = instructions[i++];
 
-            flags.Z = reg1 == reg2;
-            flags.S = reg2 > reg1;
+            flags.Z = registers[reg1] == registers[reg2];
+            flags.S = registers[reg1] > registers[reg2];
             break;
         }
 
