@@ -1,0 +1,23 @@
+<script src="./particle.js"></script>
+<script>
+  const text = "hello world"
+
+  function print(output) {
+    console.log(output);
+  }
+
+  Module.onRuntimeInitialized = () => {
+    const printCallback = Module.addFunction((strPtr) => {
+      print(Module.UTF8ToString(strPtr));
+    }, "vi");
+    console.log("runtime found");
+
+    const resultPtr = Module.ccall(
+    'buildEnergy',          
+    'number',               
+    ['string', 'number'],   
+    [text, printCallback]   
+);
+  };
+
+</script>
