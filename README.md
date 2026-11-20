@@ -59,6 +59,7 @@ my own version of git. This is still far from done and is also part of the eclip
 * [moon game engine docs](projects/game-engine/moon-game-engine.md)
 * [bronze language docs](projects/bronze/bronzeLang.md)
 * [bronzeOS docs](OS/bronzeOS/bronzeOS.md)
+* [stellaVM docs](systems/stellaVM/stellaVM.md)
 
 ## current focus
 
