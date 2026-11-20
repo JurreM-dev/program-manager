@@ -1,23 +1,37 @@
 <script src="./particle.js"></script>
 <script>
-  const text = "hello world"
+  const text = "hello world";
 
   function print(output) {
     console.log(output);
   }
 
   Module.onRuntimeInitialized = () => {
+    const lengthPtr = Module._malloc(4);
+
     const printCallback = Module.addFunction((strPtr) => {
       print(Module.UTF8ToString(strPtr));
     }, "vi");
     console.log("runtime found");
 
     const resultPtr = Module.ccall(
-    'buildEnergy',          
-    'number',               
-    ['string', 'number'],   
-    [text, printCallback]   
-);
-  };
+      "buildEnergy",
+      "number",
+      ["string", "number", "number"],
+      [text, lengthPtr, printCallback],
+    );
 
+    const arrayLength = Module.HEAP32[lengthPtr >> 2];
+
+    const startIdx = resultPtr >> 2;
+    const jsArray = Array.from(
+      Module.HEAP32.subarray(startIdx, startIdx + arrayLength),
+    );
+
+    console.log(jsArray);
+
+    Module._free(lengthPtr);
+    Module._free(resultPtr);
+    Module.removeFunction(printCallback);
+  };
 </script>

@@ -5,6 +5,7 @@
 
 int* buildEnergy(
     char *rawText,
+    int *outLength,
     void (*printOutput)(const char[])
 );
 
