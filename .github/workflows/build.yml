@@ -28,6 +28,10 @@ jobs:
         run: bash build.sh
         working-directory: systems/stellaVM/C
 
+      - name: Build particle accelerator
+        run: bash build.sh
+        working-directory: systems/particle-accelerator/C
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
 

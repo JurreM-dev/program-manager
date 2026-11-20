@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-int* buildEnergy(
+uint8_t* buildEnergy(
     char *rawText,
     int *outLength,
     void (*printOutput)(const char[])
