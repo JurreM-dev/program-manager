@@ -1,6 +1,6 @@
 <script src="./particle.js"></script>
 <script>
-  const text = "hello world";
+  const text = "hello world, this is a test run";
 
   function print(output) {
     console.log(output);
@@ -23,9 +23,8 @@
 
     const arrayLength = Module.HEAP32[lengthPtr >> 2];
 
-    const startIdx = resultPtr >> 2;
     const jsArray = Array.from(
-      Module.HEAPU8.subarray(startIdx, startIdx + arrayLength),
+      Module.HEAPU8.subarray(resultPtr, resultPtr + arrayLength),
     );
 
     console.log(jsArray);
