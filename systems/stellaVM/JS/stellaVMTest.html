@@ -1,7 +1,8 @@
-<script src="../C/vm.js"></script>
-<script>
+<script type="module">
+import { StellaVM } from './stellaVM.js'
+
 // array we want to succesfully run in the VM
-const instructions = new Uint8Array([
+const instructions = [
     0x01, 0x00, 0, 2, // SET A 2
     // testing if CMP and specific jumps work
     0x01, 0x01, 0, 10, // set B 10
@@ -13,32 +14,18 @@ const instructions = new Uint8Array([
     0x02, 0x00, // OUT A
     0x02, 0x00, // OUT A
     0x00 // HLT
-]);
+];
 
 function output(value) {
     console.log(value);
 }
 
-Module.onRuntimeInitialized = function() {
-    console.log("VM loaded!");
+Module.onRuntimeInitialized = () => {
 
-    const ptr = Module._malloc(instructions.length);
+    const stellaVM = new StellaVM(output, Module);
 
-    Module.HEAPU8.set(instructions, ptr);
-
-    const outputPtr = Module.addFunction(output, "vi");
-
-    try {
-        const result = Module._stellaVM(
-            ptr,
-            instructions.length,
-            outputPtr
-        )
-        output("VM finished!");
-    } finally {
-        Module._free(ptr);
-
-        Module.removeFunction(outputPtr);
-    }
+    stellaVM.run(instructions);
+    
 }
 </script>
+<script src="../C/vm.js"></script>
