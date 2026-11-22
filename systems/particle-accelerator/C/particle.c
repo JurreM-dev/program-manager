@@ -112,6 +112,7 @@ uint8_t *buildEnergy(
         int third = -1;
         int fourth = -1;
         char *word = words[i++];
+        printOutput(word);
         if(strcmp(word, "HLT") == 0) {
             val = 0x00;
         } else if(strcmp(word, "SET") == 0) {
@@ -122,7 +123,6 @@ uint8_t *buildEnergy(
             }
             char *regWord = words[i++];
             char letter = regWord[0];
-            printOutput(regWord);
             uint8_t registerFound = findRegister(letter); 
             if(registerFound > 7) {
                 printOutput("ERROR, register out of bounds");
@@ -139,7 +139,43 @@ uint8_t *buildEnergy(
             uint8_t lowByte = used % 256;
             third = topByte;
             fourth = lowByte;
-        } 
+        } else if(strcmp(word, "OUT") == 0) {
+            val = 0x02;
+            if(!checkBounds(wordCount, i, 1)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *regWord = words[i++];
+            char letter = regWord[0];
+            uint8_t registerFound = findRegister(letter); 
+            if(registerFound > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            sec = registerFound;
+        } else if(strcmp(word, "MOV") == 0) {
+            val = 0x03;
+            if(!checkBounds(wordCount, i, 2)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *regWord1 = words[i++];
+            char letter1 = regWord1[0];
+            uint8_t registerFound1 = findRegister(letter1); 
+            if(registerFound1 > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            sec = registerFound1;
+            char *regWord2 = words[i++];
+            char letter2 = regWord2[0];
+            uint8_t registerFound2 = findRegister(letter2); 
+            if(registerFound2 > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            third = registerFound2;
+        }
 
         if(!pushIn(&byteCode, countPtr, capacityPtr, val)){
             printOutput("error, bug in adding to bytecode");
