@@ -222,6 +222,28 @@ uint8_t *buildEnergy(
                 return NULL;
             }
             third = plusFound;
+        } else if(strcmp(word, "CMP") == 0) {
+            val = 0x09;
+            if(!checkBounds(wordCount, i, 2)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *regWord1 = words[i++];
+            char letter1 = regWord1[0];
+            uint8_t registerFound1 = findRegister(letter1); 
+            if(registerFound1 > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            sec = registerFound1;
+            char *regWord2 = words[i++];
+            char letter2 = regWord2[0];
+            uint8_t registerFound2 = findRegister(letter2); 
+            if(registerFound2 > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            third = registerFound2;
         }
 
         if(!pushIn(&byteCode, countPtr, capacityPtr, val)){
