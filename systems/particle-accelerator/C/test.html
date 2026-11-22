@@ -1,36 +1,27 @@
 <script src="./particle.js"></script>
-<script>
-  const text = "JMP 270  HLT";
+<script type="module">
+
+  import { ParticleAccelerator } from "./../JS/particle-accelerator.js"
 
   function print(output) {
     console.log(output);
   }
 
+  const text = `
+    SET A 500
+    OUT A
+    MOV B A
+    OUT B
+    ADD B A
+    OUT B
+    HLT
+  `
+
   Module.onRuntimeInitialized = () => {
-    const lengthPtr = Module._malloc(4);
+    const assembler = new ParticleAccelerator(Module, print);
 
-    const printCallback = Module.addFunction((strPtr) => {
-      print(Module.UTF8ToString(strPtr));
-    }, "vi");
-    console.log("runtime found");
+    const states = assembler.assemble(text);
 
-    const resultPtr = Module.ccall(
-      "buildEnergy",
-      "number",
-      ["string", "number", "number"],
-      [text, lengthPtr, printCallback],
-    );
-
-    const arrayLength = Module.HEAP32[lengthPtr >> 2];
-
-    const jsArray = Array.from(
-      Module.HEAPU8.subarray(resultPtr, resultPtr + arrayLength),
-    );
-
-    console.log(jsArray);
-
-    Module._free(lengthPtr);
-    Module._free(resultPtr);
-    Module.removeFunction(printCallback);
+    console.log(states);
   };
 </script>
