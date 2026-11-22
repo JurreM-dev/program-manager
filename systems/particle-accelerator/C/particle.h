@@ -2,6 +2,8 @@
 #define PARTICLE_H
 
 #include <stdbool.h>
+#include <stdint.h>
+#include <stdlib.h>
 
 uint8_t* buildEnergy(
     char *rawText,
