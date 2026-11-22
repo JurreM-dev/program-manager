@@ -144,9 +144,26 @@ function writeFile(fileName, content, log = console.log) {
   saveRoot();
 }
 
+function writeBinary(fileName, binArr, log = console.log) {
+  const file = currentDirectory.files.find(
+    (entry) => entry.name === fileName && entry.type === "binary",
+  );
+  if (file) {
+    file.content = binArr;
+  } else {
+    currentDirectory.files.push({
+      type: "binary",
+      name: fileName,
+      directory: currentPath + fileName,
+      content: binArr,
+    });
+  }
+  saveRoot();
+}
+
 function readFile(fileName, log = console.log) {
   let file = currentDirectory.files.find(
-    (f) => f.name === fileName && f.type === "file",
+    (f) => f.name === fileName && (f.type === "file" || f.type === "binary"),
   );
   if (file) {
     return file.content;
