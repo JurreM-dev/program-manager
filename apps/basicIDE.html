@@ -1,0 +1,68 @@
+<!doctype html>
+<html>
+  <head>
+    <title>simple IDE</title>
+
+    <style>
+      body {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+        padding: 0;
+        background-color: rgb(55, 55, 135);
+      }
+      #editor {
+        height: 100vh;
+        width: 100vw;
+        margin: 0;
+      }
+      #buttonBox {
+        position: absolute;
+        bottom: 5px;
+        right: 5px;
+        display: flex;
+        gap: 5px;
+      }
+    </style>
+
+    <script src="../libraries/localforage.min.js"></script>
+    <script src="../fileManager.js"></script>
+  </head>
+  <body>
+    <div id="editor"></div>
+
+    <div id="buttonBox">
+      <button onclick="saveFile()">export to file system</button>
+    </div>
+    <script>
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+
+      let backColor = urlParams.get('backColor');
+      let color = urlParams.get('color');
+      if(backColor) {
+        document.body.style.backgroundColor = backColor;
+      }
+      if(color) {
+        document.body.style.color = color;
+      }
+
+      function saveFile() {
+        let fileName = prompt("file name?") ?? "unknown.txt";
+        writeFile(fileName, view.state.doc.toString(), alert);
+      }
+    </script>
+    <script type="module">
+      import { basicSetup } from "https://esm.sh/codemirror@6.0.2";
+
+      import { EditorView } from "https://esm.sh/@codemirror/view@6";
+
+      const view = new EditorView({
+        doc: "",
+        extensions: [basicSetup],
+        parent: document.getElementById("editor"),
+      });
+      window.view = view;
+    </script>
+  </body>
+</html>

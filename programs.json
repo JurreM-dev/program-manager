@@ -105,6 +105,14 @@
       "installationTime": 2000,
       "version": "v0.1.0",
       "iconEmoji": "📝"
+    },
+    "basicIDE": {
+      "name": "basicIDE",
+      "path": "apps/basicIDE.html",
+      "message": "a very simple IDE",
+      "installationTime": 1000,
+      "version": "v0.1.0",
+      "iconEmoji": "⌨"
     }
   }
 }
