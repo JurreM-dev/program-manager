@@ -4,10 +4,25 @@
 #include <stdlib.h>
 #include "particle.h"
 
-typedef enum {
+typedef enum
+{
     HLT = 0x00,
     SET = 0x01,
-    OUT = 0x02
+    OUT = 0x02,
+    MOV = 0x03,
+
+    // numeric operations
+    ADD = 0x04,
+    SUB = 0x05,
+    MUL = 0x06,
+    DIV = 0x07,
+    MOD = 0x08,
+
+    // comparisons
+    CMP = 0x09,
+    JMP = 0x0A,
+    JEQ = 0x0B,
+    JNE = 0x0C
 } Opcodes;
 
 typedef enum {
@@ -112,7 +127,6 @@ uint8_t *buildEnergy(
         int third = -1;
         int fourth = -1;
         char *word = words[i++];
-        printOutput(word);
         if(strcmp(word, "HLT") == 0) {
             val = 0x00;
         } else if(strcmp(word, "SET") == 0) {
@@ -175,6 +189,39 @@ uint8_t *buildEnergy(
                 return NULL;
             }
             third = registerFound2;
+        } else if(strcmp(word, "ADD") == 0 || strcmp(word, "SUB") == 0 || strcmp(word, "MUL") == 0 || strcmp(word, "DIV") == 0 || strcmp(word, "MOD") == 0) {
+            if(strcmp(word, "ADD") == 0) {
+                val = 0x04;
+            } else if(strcmp(word, "SUB") == 0) {
+                val = 0x05;
+            } else if(strcmp(word, "MUL") == 0) {
+                val = 0x06;
+            } else if(strcmp(word, "DIV") == 0) {
+                val = 0x07;
+            } else if(strcmp(word, "MOD") == 0) {
+                val = 0x08;
+            }
+
+            if(!checkBounds(wordCount, i, 2)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *locationWord = words[i++];
+            char locationLetter = locationWord[0];
+            uint8_t locationFound = findRegister(locationLetter);
+            if(locationFound > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            sec = locationFound;
+            char *plusWord = words[i++];
+            char plusLetter = plusWord[0];
+            uint8_t plusFound = findRegister(plusLetter);
+            if(plusFound > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            third = plusFound;
         }
 
         if(!pushIn(&byteCode, countPtr, capacityPtr, val)){
