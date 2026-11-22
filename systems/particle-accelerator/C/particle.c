@@ -131,7 +131,7 @@ uint8_t *buildEnergy(
             val = 0x00;
         } else if(strcmp(word, "SET") == 0) {
             val = 0x01;
-            if(!checkBounds(wordCount, i, 2)) {
+            if(!checkBounds(wordCount, i, 3)) {
                 printOutput("ERROR, unexpected end of input");
                 return NULL;
             }
@@ -244,6 +244,32 @@ uint8_t *buildEnergy(
                 return NULL;
             }
             third = registerFound2;
+        } else if(strcmp(word, "JMP") == 0 || strcmp(word, "JNE") == 0 || strcmp(word, "JEQ") == 0) {
+            if(strcmp(word, "JMP") == 0) {
+                val = 0x0A;
+            } else if(strcmp(word, "JEQ") == 0) {
+                val = 0x0B;
+            } else if(strcmp(word, "JMP") == 0) {
+                val = 0x0C;
+            }
+            if(!checkBounds(wordCount, i, 2)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *usedInt = words[i++];
+            int used = atoi(usedInt);
+            if(used > 0xFFFF || used < 0) {
+                printOutput("ERROR, invalid written number");
+                return NULL;
+            }
+            uint8_t topByte = used / 256;
+            uint8_t lowByte = used % 256;
+            sec = topByte;
+            third = lowByte;
+        }
+        else {
+            printOutput("ERROR, unknown opcode entry");
+            return NULL;
         }
 
         if(!pushIn(&byteCode, countPtr, capacityPtr, val)){
