@@ -9,7 +9,7 @@ export class StellaVM {
 
     const instructionBytes = new Uint8Array(instructions);
 
-    this.output("VM loaded!");
+    this.output("VM loaded!\n");
 
     const ptr = this.module._malloc(instructionBytes.length);
 

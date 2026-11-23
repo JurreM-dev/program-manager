@@ -20,11 +20,16 @@ typedef enum
 
     // comparisons
     CMP = 0x09,
+
+    // jumps
     JMP = 0x0A,
     JEQ = 0x0B,
     JNE = 0x0C,
     JGT = 0x0D,
-    JLT = 0x0E
+    JLT = 0x0E,
+
+    // complexer functions
+    OUTC = 0x0F
 } Opcodes;
 
 typedef enum {
@@ -272,7 +277,22 @@ uint8_t *buildEnergy(
             uint8_t lowByte = used % 256;
             sec = topByte;
             third = lowByte;
+        } else if(strcmp(word, "OUTC") == 0) {
+            val = OUTC;
+            if(!checkBounds(wordCount, i, 1)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *regWord = words[i++];
+            char letter = regWord[0];
+            uint8_t registerFound = findRegister(letter); 
+            if(registerFound > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            sec = registerFound;
         }
+        
         else {
             printOutput("ERROR, unknown opcode entry");
             return NULL;
