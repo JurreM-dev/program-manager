@@ -3,6 +3,7 @@
 // CLI commands
 const terminalCommands = {
   println,
+  print,
   newLine,
   clear: clearTerminal,
   refreshTypingIndicator,
@@ -62,6 +63,9 @@ window.addEventListener("load", function () {
 // CLI functions
 function newLine() {
   terminal.value += `\n${typingIndicator}`;
+}
+function print(content) {
+  terminal.value += content;
 }
 
 function println(content) {

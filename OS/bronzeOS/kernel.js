@@ -231,13 +231,17 @@ class BronzeKernel {
       terminal.println("particle accelerator not loaded");
     },
     "stellaVM-start": (args, terminal) => {
+      function charPrint(char) {
+        terminal.print(String.fromCharCode(char));
+      }
       const kernel = this;
       const stellaVMModuleConfig = {
         onRuntimeInitialized: function () {
           kernel.stellaVMVars.ready = true;
           kernel.stellaVMVars.VM = new StellaVM(
             this,
-            terminal.println
+            terminal.println,
+            charPrint
           );
         }
       }

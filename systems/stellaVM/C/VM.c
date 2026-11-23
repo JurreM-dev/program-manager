@@ -47,8 +47,9 @@ bool checkBounds(int length, int pc, int reserved) {
 void stellaVM(
     const uint8_t *instructions,
     int length,
-    void (*output)(uint16_t))
-{
+    void (*output)(uint16_t),
+    void (*outputChar)(uint8_t)
+) {
     // define registers
     uint16_t registers[8] = {0};
 
