@@ -39,12 +39,25 @@ BRONZE COMMANDS
 - `compileBrz <filename>`
 - `registerCLI <filename>` compiles a bronze file on load, also works for GUI
 
+PARTICLE COMMANDS
+
+- `particle-load`
+- `parcticle-accelerate <file name>` 
+
+STELLAVM COMMANDS
+
+- `stellaVM-start`
+-  `stellaVM-run <binary file name>`
+
 TERMINAL COMMANDS
 
 - `clear`
 
 ## the file system
 bronzeOS uses the same file system and installed apps (programs) as normal stellarOS, saved in indexedDB using the localforage library
+
+## host of stellaVM and particle
+bronzeOS is currently the only host of particle and stellaVM
 
 ## custom CLI or GUI using bronze
 using the bronze coding language docs you can create a CLI for bronzeOS. then you save it into the file system and compile it using 

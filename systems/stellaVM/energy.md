@@ -3,7 +3,7 @@
 Energy is the bytecode of stellaVM, which gets executed by stellaVM. The name energy comes from te fact that everything is built on top of energy, and the future of stellaVM will be built on this.
 
 ## what is this guide for?
-this guide is mainly for writing the bytecode by hand instead of using a future assembler.
+this guide is mainly for writing the bytecode by hand instead of using particle.
 
 ## how many registers can you manipulate?
 there are 8 registers. A up to H. The hexadecimal number for A is 0x00 and for H 0x07. 
