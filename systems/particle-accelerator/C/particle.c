@@ -46,7 +46,7 @@ bool pushIn(
     if (index >= *capacityPtr)
     {
         int newCapacity = 2 * *capacityPtr;
-        uint8_t *temporary = (uint8_t *)realloc(*byteCodePtr, sizeof(uint8_t) * (*capacityPtr));
+        uint8_t *temporary = (uint8_t *)realloc(*byteCodePtr, sizeof(uint8_t) * newCapacity);
         if (temporary == NULL)
         {
             return false;
@@ -102,9 +102,9 @@ uint8_t *buildEnergy(
     int counter = 0;
     int *countPtr = &counter;
     int capacity = base;
-    int *capacityPtr = &base;
+    int *capacityPtr = &capacity;
 
-    uint8_t *result = (uint8_t *)malloc(sizeof(uint8_t) * base);
+    uint8_t *result = (uint8_t *)malloc(sizeof(uint8_t) * capacity);
     if (result == NULL)
         return NULL;
 
@@ -131,7 +131,7 @@ uint8_t *buildEnergy(
             val = 0x00;
         } else if(strcmp(word, "SET") == 0) {
             val = 0x01;
-            if(!checkBounds(wordCount, i, 3)) {
+            if(!checkBounds(wordCount, i, 2)) {
                 printOutput("ERROR, unexpected end of input");
                 return NULL;
             }
@@ -249,10 +249,10 @@ uint8_t *buildEnergy(
                 val = 0x0A;
             } else if(strcmp(word, "JEQ") == 0) {
                 val = 0x0B;
-            } else if(strcmp(word, "JMP") == 0) {
+            } else if(strcmp(word, "JNE") == 0) {
                 val = 0x0C;
             }
-            if(!checkBounds(wordCount, i, 2)) {
+            if(!checkBounds(wordCount, i, 1)) {
                 printOutput("ERROR, unexpected end of input");
                 return NULL;
             }
