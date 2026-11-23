@@ -1,8 +1,21 @@
 export class StellaVM {
-  constructor(module, output, charPrint) {
-    this.output = output;
+  charOutput = "";
+  flush() {
+    this.out(this.charOutput);
+    this.charOutput = "";
+  }
+  constructor(module, output) {
+    this.output = (val) => {
+      if (this.charOutput.length > 0) {
+        this.flush();
+      }
+      output(val);
+    };
+    this.out = output;
     this.module = module;
-    this.charPrint = charPrint;
+    this.charAdd = (char) => {
+      this.charOutput += String.fromCharCode(char);
+    };
   }
   run(instructions) {
     let found = false;
@@ -17,25 +30,28 @@ export class StellaVM {
 
     const outputPtr = this.module.addFunction(this.output, "vi");
 
-    const outputCharPtr = this.module.addFunction(this.charPrint, "vi");
+    const outputCharPtr = this.module.addFunction(this.charAdd, "vi");
 
     try {
-        const result = this.module._stellaVM(
-            ptr,
-            instructionBytes.length,
-            outputPtr,
-            outputCharPtr
-        )
-        found = true;
-        this.output("VM finished!");
+      const result = this.module._stellaVM(
+        ptr,
+        instructionBytes.length,
+        outputPtr,
+        outputCharPtr,
+      );
+      found = true;
+      if(this.charOutput.length > 0) {
+        this.flush();
+      }
+      this.output("VM finished!");
     } finally {
-        this.module._free(ptr);
+      this.module._free(ptr);
 
-        this.module.removeFunction(outputPtr);
-
-        return {
-            success: found
-        }
+      this.module.removeFunction(outputPtr);
+      this.module.removeFunction(outputCharPtr);
     }
+    return {
+        success: found,
+    };
   }
 }
