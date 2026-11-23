@@ -22,7 +22,9 @@ typedef enum
     CMP = 0x09,
     JMP = 0x0A,
     JEQ = 0x0B,
-    JNE = 0x0C
+    JNE = 0x0C,
+    JGT = 0x0D,
+    JLT = 0x0E
 } Opcodes;
 
 typedef enum {
@@ -244,13 +246,17 @@ uint8_t *buildEnergy(
                 return NULL;
             }
             third = registerFound2;
-        } else if(strcmp(word, "JMP") == 0 || strcmp(word, "JNE") == 0 || strcmp(word, "JEQ") == 0) {
+        } else if(strcmp(word, "JMP") == 0 || strcmp(word, "JNE") == 0 || strcmp(word, "JEQ") == 0 || strcmp(word, "JGT") == 0 || strcmp(word, "JLT") == 0) {
             if(strcmp(word, "JMP") == 0) {
-                val = 0x0A;
+                val = JMP;
             } else if(strcmp(word, "JEQ") == 0) {
-                val = 0x0B;
+                val = JEQ;
             } else if(strcmp(word, "JNE") == 0) {
-                val = 0x0C;
+                val = JNE;
+            } else if(strcmp(word, "JGT") == 0) {
+                val = JGT;
+            } else if(strcmp(word, "JLT") == 0) {
+                val = JLT;
             }
             if(!checkBounds(wordCount, i, 1)) {
                 printOutput("ERROR, unexpected end of input");
