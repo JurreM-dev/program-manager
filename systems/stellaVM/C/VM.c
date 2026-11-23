@@ -379,7 +379,7 @@ void stellaVM(
                 running = false;
                 break;
             }
-            if(!flags.S) {
+            if(!flags.S && !flags.Z) {
                 i = jumpTo;
             }
             break;
