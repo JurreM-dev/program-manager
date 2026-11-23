@@ -22,7 +22,10 @@ typedef enum
     JEQ = 0x0B,
     JNE = 0x0C,
     JGT = 0x0D,
-    JLT = 0x0E
+    JLT = 0x0E, 
+
+    // new more complex functions
+    OUTC = 0x0F,
 } Opcodes;
 
 // flags
@@ -407,6 +410,24 @@ void stellaVM(
             break;
         }
 
+        // complexer functions
+        case OUTC: {
+            if(!checkBounds(length, i, 1)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t registerIndex = instructions[i++];
+            if(!checkRegister(registerIndex)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            outputChar(registers[registerIndex]);
+            break;
+        }
         default:
         {
             output(1);
