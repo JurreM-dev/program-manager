@@ -20,7 +20,9 @@ typedef enum
     CMP = 0x09,
     JMP = 0x0A,
     JEQ = 0x0B,
-    JNE = 0x0C
+    JNE = 0x0C,
+    JGT = 0x0D,
+    JLT = 0x0E
 } Opcodes;
 
 // flags
@@ -295,7 +297,7 @@ void stellaVM(
             }
 
             flags.Z = registers[reg1] == registers[reg2];
-            flags.S = registers[reg1] > registers[reg2];
+            flags.S = registers[reg1] < registers[reg2];
             break;
         }
 
@@ -357,6 +359,48 @@ void stellaVM(
                 break;
             }
             if(!flags.Z) {
+                i = jumpTo;
+            }
+            break;
+        }
+        case JGT: {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t value1 = instructions[i++];
+            uint8_t value2 = instructions[i++];
+            uint16_t jumpTo = (value1 * 256) + value2;
+            if(jumpTo > length) {
+                output(1);
+                output(i - 3);
+                running = false;
+                break;
+            }
+            if(!flags.S) {
+                i = jumpTo;
+            }
+            break;
+        }
+        case JLT: {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t value1 = instructions[i++];
+            uint8_t value2 = instructions[i++];
+            uint16_t jumpTo = (value1 * 256) + value2;
+            if(jumpTo > length) {
+                output(1);
+                output(i - 3);
+                running = false;
+                break;
+            }
+            if(flags.S && !flags.Z) {
                 i = jumpTo;
             }
             break;
