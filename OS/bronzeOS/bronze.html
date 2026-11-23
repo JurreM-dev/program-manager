@@ -9,8 +9,10 @@
 
     <script type="module">
       import { Bronze } from "../../projects/bronze/compiler.js";
+      import { ParticleAccelerator } from './../../systems/particle-accelerator/JS/particle-accelerator.js'
 
       window.Bronze = Bronze;
+      window.ParticleAccelerator = ParticleAccelerator;
 
       const kernelScript = document.createElement("script");
       kernelScript.src = "kernel.js";
@@ -29,5 +31,7 @@
 
     <script src="../../fileManager.js"></script>
     <script src="../autumnOS/helpers.js"></script>
+    <script src="../../systems/particle-accelerator/C/particle.js"></script>
+    <script src="../../systems/stellaVM/C/vm.js"></script>
   </body>
 </html>

@@ -20,6 +20,7 @@ window.fileManagerReady = (async () => {
 // MAIN SYSTEMS
 function saveRoot() {
   localforage.setItem("rootSave", root);
+  sendRefreshMessage();
 }
 
 function getDirectoryByPath(path) {
@@ -163,7 +164,18 @@ function writeBinary(fileName, binArr, log = console.log) {
 
 function readFile(fileName, log = console.log) {
   let file = currentDirectory.files.find(
-    (f) => f.name === fileName && (f.type === "file" || f.type === "binary"),
+    (f) => f.name === fileName && f.type === "file",
+  );
+  if (file) {
+    return file.content;
+  } else {
+    log("File not found");
+  }
+}
+
+function readBin(fileName, log = console.log) {
+  let file = currentDirectory.files.find(
+    (f) => f.name === fileName && f.type === "binary",
   );
   if (file) {
     return file.content;

@@ -1,27 +1,44 @@
+<script src="./particle.js"></script>
 <script type="module">
-
-  import { ParticleAccelerator } from "./../JS/particle-accelerator.js"
+  import { ParticleAccelerator } from "./../JS/particle-accelerator.js";
 
   function print(output) {
     console.log(output);
   }
 
   const text = `
-    SET A 500
-    OUT A
-    MOV B A
-    OUT B
-    ADD B A
-    OUT B
-    HLT
-  `
+      SET A 500
+      OUT A
+      MOV B A
+      OUT B
+      ADD B A
+      OUT B
+      HLT
+    `;
 
-  Module.onRuntimeInitialized = () => {
-    const assembler = new ParticleAccelerator(Module, print);
+let assembler = null;
+let particleReady = false;
 
-    const states = assembler.assemble(text);
+function buildUp() {
+  const particleModuleConfig = {
+    onRuntimeInitialized: function() {
+      particleReady = true;
+      assembler = new ParticleAccelerator(this, print);
+    },
+  };
 
-    console.log(states);
-  }; 
+  createParticleModule(particleModuleConfig);
+}
+
+function assembleTest() {
+  if (!particleReady) {
+    return null;
+  }
+
+  return assembler.assemble(text);
+}
+
+window.assembleNow = assembleTest;
+
+buildUp();
 </script>
-<script src="./particle.js"></script>

@@ -8,6 +8,11 @@ class BronzeKernel {
 
   #OSfunctions;
 
+  particleVars = {
+    ready: false,
+    assembler: null,
+  };
+
   constructor(terminal, GUI) {
     this.#GUI = GUI;
     this.#terminal = terminal;
@@ -41,8 +46,17 @@ class BronzeKernel {
       typeof this.#commands[command] === "function"
     ) {
       this.#commands[command](args, terminal, GUI);
-    } else if (this.#CLIcommands[command] && typeof this.#CLIcommands[command] === "function") {
-      this.#CLIcommands[command](args, this.exec.bind(this), this.#customVars, terminal, GUI);
+    } else if (
+      this.#CLIcommands[command] &&
+      typeof this.#CLIcommands[command] === "function"
+    ) {
+      this.#CLIcommands[command](
+        args,
+        this.exec.bind(this),
+        this.#customVars,
+        terminal,
+        GUI,
+      );
     }
   }
 
@@ -143,11 +157,13 @@ class BronzeKernel {
         terminal.println,
         "bronzeOS",
         this.#OSfunctions,
-
       );
       const words = args.split(" ");
       const fileName = words[0];
-      const fileContent = readFile(fileName, this.#terminal.println.bind(this.#terminal));
+      const fileContent = readFile(
+        fileName,
+        this.#terminal.println.bind(this.#terminal),
+      );
       if (!fileContent) {
         terminal.println("ERROR, file does not exist");
         return;
@@ -157,7 +173,10 @@ class BronzeKernel {
     registerCLI: (args, terminal) => {
       const words = args.split(" ");
       const fileName = words[0];
-      const fileContent = readFile(fileName, this.#terminal.println.bind(this.#terminal));
+      const fileContent = readFile(
+        fileName,
+        this.#terminal.println.bind(this.#terminal),
+      );
       if (!fileContent) {
         terminal.println("ERROR, file does not exist");
         return;
@@ -165,7 +184,47 @@ class BronzeKernel {
       console.log("registering CLI: " + fileName.replace(/\.brz$/, ""));
       console.log("file content: " + fileContent);
       this.#registerCLI(fileName.replace(/\.brz$/, ""), fileContent);
-    }
+    },
+    "particle-load": (args, terminal) => {
+      const kernel = this;
+      const particleModuleConfig = {
+        onRuntimeInitialized: function () {
+          kernel.particleVars.ready = true;
+          kernel.particleVars.assembler = new ParticleAccelerator(
+            this,
+            terminal.println,
+          );
+        },
+      };
+      createParticleModule(particleModuleConfig);
+    },
+    "particle-accelerate": (args, terminal) => {
+      if (this.particleVars.ready) {
+        const words = args.split(" ");
+        const fileName = words[0];
+        const fileContent = readFile(
+          fileName,
+          this.#terminal.println.bind(this.#terminal),
+        );
+        if (!fileContent) {
+          terminal.println("ERROR, file does not exist");
+          return;
+        }
+
+        const binary = this.particleVars.assembler.assemble(fileContent);
+
+        if(binary.success === false) {
+          terminal.println("ERROR, error in particle assembling");
+          return;
+        }
+
+        writeBinary(fileName.split(".")[0] + ".energy", binary.result, this.#terminal.println.bind(this.#terminal));
+        terminal.println("succesfully accelerated particle into energy!");
+
+        return;
+      }
+      terminal.println("particle accelerator not loaded");
+    },
   };
 
   #innerCommands = {
@@ -227,7 +286,6 @@ class BronzeKernel {
     },
   };
 
-
   // ===============================================
   // CLI system
   // ===============================================
@@ -239,10 +297,9 @@ class BronzeKernel {
   #savedCLIs = {};
 
   #registerCLI(identifier, body) {
-    localforage.getItem("bronzeOS_CLI_register")
-    .then((potential)=>{
-      if(potential) {
-        console.log("has potential")
+    localforage.getItem("bronzeOS_CLI_register").then((potential) => {
+      if (potential) {
+        console.log("has potential");
         this.#savedCLIs = potential;
         console.log(this.#savedCLIs);
       }
@@ -250,35 +307,34 @@ class BronzeKernel {
 
       this.#savedCLIs[identifier] = {
         body: body,
-        name: identifier
+        name: identifier,
       };
 
       console.log(this.#savedCLIs);
 
       localforage.setItem("bronzeOS_CLI_register", this.#savedCLIs);
-    })
+    });
   }
 
   #loadCLIs() {
     const bronze = new Bronze(
-        this.#terminal.println,
-        "bronzeOS",
-        this.#OSfunctions,
-      );
-    localforage.getItem("bronzeOS_CLI_register")
-    .then((potential)=>{
-      if(potential) {
+      this.#terminal.println,
+      "bronzeOS",
+      this.#OSfunctions,
+    );
+    localforage.getItem("bronzeOS_CLI_register").then((potential) => {
+      if (potential) {
         this.#savedCLIs = potential;
       }
 
-      Object.keys(this.#savedCLIs).forEach((key)=>{
+      Object.keys(this.#savedCLIs).forEach((key) => {
         const obj = this.#savedCLIs[key];
         const fileContent = obj.body;
         console.log(fileContent);
         bronze.compileBronze(fileContent);
-      })
+      });
       this.#terminal.newLine();
-    })
+    });
   }
 
   #customVars = {};
@@ -289,23 +345,38 @@ class BronzeKernel {
   // GUI SYSTEM
   // ===============================================
 
-  #addGUI(calls, { moveable = false, multiple = false, resizable = false, selfStyles = "", handleId = null } = {}) {
-    if(!handleId) {
+  #addGUI(
+    calls,
+    {
+      moveable = false,
+      multiple = false,
+      resizable = false,
+      selfStyles = "",
+      handleId = null,
+    } = {},
+  ) {
+    if (!handleId) {
       handleId = null;
-    } 
-    
-    calls.forEach((call)=>{
+    }
+
+    calls.forEach((call) => {
       console.log("adding GUI call: " + call.type);
-      switch(call.type) {
+      switch (call.type) {
         case "WINDOW":
           this.#GUI.changeWindow(call.html, selfStyles);
-          break
+          break;
 
         default:
           this.#terminal.println("IMPLEMENTATION ERROR, type not found");
-          break
-      };
+          break;
+      }
     });
-    this.#GUI.setWindowSettings({draggable: moveable, multiple: multiple, resizable: resizable, selfStyles: selfStyles, handle: handleId});
+    this.#GUI.setWindowSettings({
+      draggable: moveable,
+      multiple: multiple,
+      resizable: resizable,
+      selfStyles: selfStyles,
+      handle: handleId,
+    });
   }
 }
