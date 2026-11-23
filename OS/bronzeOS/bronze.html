@@ -10,9 +10,11 @@
     <script type="module">
       import { Bronze } from "../../projects/bronze/compiler.js";
       import { ParticleAccelerator } from './../../systems/particle-accelerator/JS/particle-accelerator.js'
+      import { StellaVM } from "../../systems/stellaVM/JS/stellaVM.js";
 
       window.Bronze = Bronze;
       window.ParticleAccelerator = ParticleAccelerator;
+      window.StellaVM = StellaVM;
 
       const kernelScript = document.createElement("script");
       kernelScript.src = "kernel.js";

@@ -1,5 +1,5 @@
 export class StellaVM {
-  constructor(output, module) {
+  constructor(module, output) {
     this.output = output;
     this.module = module;
   }

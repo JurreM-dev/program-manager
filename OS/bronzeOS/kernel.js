@@ -13,6 +13,11 @@ class BronzeKernel {
     assembler: null,
   };
 
+  stellaVMVars = {
+    ready: false,
+    VM: null
+  }
+
   constructor(terminal, GUI) {
     this.#GUI = GUI;
     this.#terminal = terminal;
@@ -225,6 +230,36 @@ class BronzeKernel {
       }
       terminal.println("particle accelerator not loaded");
     },
+    "stellaVM-start": (args, terminal) => {
+      const kernel = this;
+      const stellaVMModuleConfig = {
+        onRuntimeInitialized: function () {
+          kernel.stellaVMVars.ready = true;
+          kernel.stellaVMVars.VM = new StellaVM(
+            this,
+            terminal.println
+          );
+        }
+      }
+      createStellaModule(stellaVMModuleConfig);
+    },
+    "stellaVM-run": (args, terminal) => {
+      if(!this.stellaVMVars.ready) {
+        terminal.println("stellaVM is not running yet, start it first");
+        return;
+      }
+      const words = args.split(" ");
+        const fileName = words[0];
+        const fileContent = readBin(
+          fileName,
+          this.#terminal.println.bind(this.#terminal),
+        );
+        if (!fileContent) {
+          terminal.println("ERROR, file does not exist");
+          return;
+        }
+        this.stellaVMVars.VM.run(fileContent);
+    }
   };
 
   #innerCommands = {
