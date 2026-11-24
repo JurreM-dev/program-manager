@@ -37,6 +37,37 @@ fun tokenize(output: JsAny, source: String): itemArray {
                 )
                 println(token)
             }
+            currentChar == quote -> {
+                var string: String = ""
+                var nextIndex = current + 1
+                while(nextIndex < chars.size && chars[nextIndex] != quote) {
+                    string += chars[nextIndex]
+                    current++
+                    nextIndex++ 
+                }
+                val token = mutableMapOf<String, Any?>(
+                    "type" to "STRING",
+                    "value" to string
+                )
+                current++
+                println(token)
+            }
+            currentChar == "(" -> {
+                val token = mutableMapOf<String, Any?>(
+                    "type" to "LPAREN",
+                    "value" to currentChar
+                )
+                println(token)
+                tokens.add(token)
+            }
+            currentChar == ")" -> {
+                val token = mutableMapOf<String, Any?>(
+                    "type" to "RPAREN",
+                    "value" to currentChar
+                )
+                println(token)
+                tokens.add(token)
+            }
             else -> {
                 val token = mutableMapOf<String, Any?>(
                     "type" to "UNKNOWN",
