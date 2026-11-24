@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdlib.h>
 #include "VM.h"
 
 // opcodes
@@ -24,8 +25,10 @@ typedef enum
     JGT = 0x0D,
     JLT = 0x0E, 
 
-    // new more complex functions
+    // new more complex functions and memory operations
     OUTC = 0x0F,
+    STORE = 0x10,
+    LOAD = 0x11
 } Opcodes;
 
 // flags
@@ -55,6 +58,13 @@ void stellaVM(
 ) {
     // define registers
     uint16_t registers[8] = {0};
+
+    // define RAM
+    uint8_t *RAM = calloc(0x10000, sizeof(uint8_t));
+    if(RAM == NULL) {
+        output(1);
+        return;
+    }
 
     // define flags
     Flags flags = {};
@@ -411,7 +421,8 @@ void stellaVM(
         }
 
         // complexer functions
-        case OUTC: {
+        case OUTC: 
+        {
             if(!checkBounds(length, i, 1)) {
                 output(1);
                 output(i - 1);
@@ -428,6 +439,80 @@ void stellaVM(
             outputChar(registers[registerIndex]);
             break;
         }
+        
+        // memory functions
+        case STORE: 
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t dataIndex = instructions[i++];
+            if(!checkRegister(dataIndex)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t adressReg = instructions[i++];
+            if(!checkRegister(adressReg)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint16_t value = registers[dataIndex];
+            uint8_t upperByte = value / 256;
+            uint8_t lowerByte = value % 256;
+            uint16_t addressIndex = registers[adressReg];
+            if(addressIndex >= 0xFFFF) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            RAM[addressIndex] = upperByte;
+            RAM[addressIndex + 1] = lowerByte;
+            break;
+        }
+        case LOAD: 
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t dataIndex = instructions[i++];
+            if(!checkRegister(dataIndex)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t adressReg = instructions[i++];
+            if(!checkRegister(adressReg)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint16_t addressIndex = registers[adressReg];
+            if(addressIndex >= 0xFFFF) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t upperByte = RAM[addressIndex];
+            uint8_t lowerByte = RAM[addressIndex + 1];
+            uint16_t value = (upperByte * 256) + lowerByte;
+            registers[dataIndex] = value; 
+            break;
+        }
+
         default:
         {
             output(1);
@@ -435,4 +520,5 @@ void stellaVM(
         }
         }
     }
+    free(RAM);
 }

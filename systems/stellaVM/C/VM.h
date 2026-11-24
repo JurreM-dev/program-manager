@@ -2,6 +2,7 @@
 #define VM_H
 
 #include <stdint.h>
+#include <stdlib.h>
 
 void stellaVM(
     const uint8_t* instructions,
