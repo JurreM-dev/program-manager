@@ -1,9 +1,12 @@
-fun main() {
-    println("star initialized");
-}
+import kotlin.js.JsAny
+import kotlin.js.JsExport
 
-@OptIn(kotlin.js.ExperimentalJsExport::class)
+import help.call
+
+import lexer.tokenize
+
 @JsExport
-fun test(): String {
+fun star(output: JsAny): String {
+    tokenize(output)
     return "test"
 }

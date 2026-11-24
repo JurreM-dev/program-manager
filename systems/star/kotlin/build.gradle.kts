@@ -18,13 +18,14 @@ kotlin {
     sourceSets {
         val wasmJsMain by getting {
             kotlin.srcDir(".")
-            kotlin.include("*.kt")
+            kotlin.include("*.kt", "lexer/**/*.kt")
+            languageSettings.optIn("kotlin.js.ExperimentalJsExport")
         }
     }
 }
 
 tasks.register<Copy>("copyWasmModule") {
-    dependsOn("compileKotlinWasmJs")
+    dependsOn("wasmJsProductionExecutableCompileSync")
     from(layout.buildDirectory.dir("compileSync/wasmJs/main/productionExecutable/kotlin"))
     into(layout.buildDirectory)
     include("starCompiler.*")
