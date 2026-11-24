@@ -3,6 +3,10 @@
 !*/
 *.wasm
 !.gitignore
+.gradle
+build
+.kotlin
+kotlin-js-store
 
 vm.js
 particle.js
