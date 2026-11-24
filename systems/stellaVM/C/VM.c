@@ -63,7 +63,6 @@ void stellaVM(
     uint8_t *RAM = calloc(0x10000, sizeof(uint8_t));
     if(RAM == NULL) {
         output(1);
-        output(0xFFFF);
         return;
     }
 
@@ -517,8 +516,6 @@ void stellaVM(
         default:
         {
             output(1);
-            output(i - 1);
-            running = false;
             break;
         }
         }
