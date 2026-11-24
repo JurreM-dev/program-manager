@@ -1,4 +1,4 @@
-name: Build stellaVM and deploy to GitHub Pages
+name: Build stellaVM, particle accelerator and star, and deploy to GitHub Pages
 
 on:
   push:
@@ -24,6 +24,17 @@ jobs:
       - name: Set up Emscripten
         uses: mymindstorm/setup-emsdk@v14
 
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "9.4.0"
+
       - name: Build StellaVM
         run: bash build.sh
         working-directory: systems/stellaVM/C
@@ -31,6 +42,10 @@ jobs:
       - name: Build particle accelerator
         run: bash build.sh
         working-directory: systems/particle-accelerator/C
+
+      - name: Build star Kotlin
+        run: bash build.sh
+        working-directory: systems/star/kotlin
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
