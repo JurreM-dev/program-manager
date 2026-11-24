@@ -29,7 +29,11 @@ typedef enum
     JLT = 0x0E,
 
     // complexer functions
-    OUTC = 0x0F
+    OUTC = 0x0F,
+
+    // memory functions
+    STORE = 0x10,
+    LOAD = 0x11
 } Opcodes;
 
 typedef enum {
@@ -291,6 +295,32 @@ uint8_t *buildEnergy(
                 return NULL;
             }
             sec = registerFound;
+        } else if(strcmp(word, "STORE") == 0 || strcmp(word, "LOAD") == 0) {
+            if(strcmp(word, "STORE") == 0) {
+                val = STORE;
+            } else if(strcmp(word, "LOAD") == 0) {
+                val = LOAD;
+            }
+            if(!checkBounds(wordCount, i, 2)) {
+                printOutput("ERROR, unexpected end of input");
+                return NULL;
+            }
+            char *regWord1 = words[i++];
+            char letter1 = regWord1[0];
+            uint8_t registerFound1 = findRegister(letter1); 
+            if(registerFound1 > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            sec = registerFound1;
+            char *regWord2 = words[i++];
+            char letter2 = regWord2[0];
+            uint8_t registerFound2 = findRegister(letter2); 
+            if(registerFound2 > 7) {
+                printOutput("ERROR, register out of bounds");
+                return NULL;
+            }
+            third = registerFound2;
         }
         
         else {
