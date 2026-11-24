@@ -5,8 +5,11 @@ import help.call
 
 import lexer.tokenize
 
+typealias itemArray = MutableList<MutableMap<String, Any?>>
+typealias item = MutableMap<String, Any?>
+
 @JsExport
-fun star(output: JsAny): String {
-    tokenize(output)
+fun star(output: JsAny, source: String): String {
+    tokenize(output, source)
     return "test"
 }
