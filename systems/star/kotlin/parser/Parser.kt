@@ -13,6 +13,7 @@ private class ParseFailure : RuntimeException()
 fun parse(tokens: itemArray): itemArray? {
     var i = 0
     var running = true
+    val AST = mutableListOf<MutableMap<String, Any?>>()
 
     fun eat(expectedType: String): item {
         val token = tokens.getOrNull(i) ?: throw ParseFailure()
@@ -32,13 +33,19 @@ fun parse(tokens: itemArray): itemArray? {
                 val printToken = eat("STRING")
                 eat("RPAREN")
                 val printString = printToken.get("value")
+                val node = mutableMapOf<String, Any?>(
+                    "type" to "print",
+                    "specifier" to "noRefString",
+                    "value" to printString
+                )
+                AST.add(node)
             }
             else -> {
                 i++
             }
             }
         }
-        tokens
+        AST
     } catch (_: ParseFailure) {
         null
     }

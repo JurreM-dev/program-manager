@@ -12,6 +12,7 @@ typealias item = MutableMap<String, Any?>
 @JsExport
 fun star(output: JsAny, source: String): String {
     val contents = tokenize(output, source)
-    parse(contents)
+    val ast = parse(contents)
+    println(ast)
     return "test"
 }
