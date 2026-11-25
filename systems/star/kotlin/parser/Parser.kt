@@ -8,13 +8,13 @@ import help.call
 typealias itemArray = MutableList<MutableMap<String, Any?>>
 typealias item = MutableMap<String, Any?>
 
-private class ParseFailure : RunTimeException()
+private class ParseFailure : RuntimeException()
 
 fun parse(tokens: itemArray): itemArray? {
     var i = 0
     var running = true
 
-    fun eat(expectedType: String): Boolean {
+    fun eat(expectedType: String): item {
         val token = tokens.getOrNull(i) ?: throw ParseFailure()
         if(token?.get("type") != expectedType) throw ParseFailure()
         i++
@@ -27,11 +27,16 @@ fun parse(tokens: itemArray): itemArray? {
         var curType = curToken["type"]
         when {
             curType == "IDENTIFIER" && curVal == "reveal" -> {
-                eat("IDENTIEFIER")
-                println("reveal found")
+                eat("IDENTIFIER")
+                eat("LPAREN")
+                val printToken = eat("STRING")
+                eat("RPAREN")
+                val printString = printToken.get("value")
             }
-        }
-           i++
+            else -> {
+                i++
+            }
+            }
         }
         tokens
     } catch (_: ParseFailure) {
