@@ -5,6 +5,7 @@ import help.call
 
 import lexer.tokenize
 import parser.parse
+import compiler.compile
 
 typealias itemArray = MutableList<MutableMap<String, Any?>>
 typealias item = MutableMap<String, Any?>
@@ -14,5 +15,9 @@ fun star(output: JsAny, source: String): String {
     val contents = tokenize(output, source)
     val ast = parse(contents)
     println(ast)
+    if(ast.isNullOrEmpty()) {
+        return ""
+    }
+    compile(ast)
     return "test"
 }
