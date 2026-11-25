@@ -4,9 +4,11 @@
 <script type="module">
     import { star } from "../kotlin/build/starCompiler.mjs";
 
-    star((outputted) => {
+    const output = star((outputted) => {
         console.log(outputted);
     }, 'reveal("hello world")')
+
+    console.log(output)
 </script>
 </body>
 </html>

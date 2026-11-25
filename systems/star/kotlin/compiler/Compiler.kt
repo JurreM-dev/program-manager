@@ -13,9 +13,18 @@ fun compile(AST: itemArray): MutableList<String> {
     for(node: item in AST) {
         when(node.get("type")) {
             "print" -> {
-                println("found print in compilation")
+                val type = node.get("specifier")
+                if(type == "noRefString") {
+                    for(ch in node.get("value") as String) {
+                        val code = ch.code
+                        val setStr = "SET H $code"
+                        compiledParticle.add(setStr)
+                        compiledParticle.add("OUTC H")
+                    }
+                }
             }
         }
     }
+    compiledParticle.add("HLT")
     return compiledParticle;
 }
