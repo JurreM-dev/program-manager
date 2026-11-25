@@ -18,7 +18,7 @@ kotlin {
     sourceSets {
         val wasmJsMain by getting {
             kotlin.srcDir(".")
-            kotlin.include("*.kt", "lexer/**/*.kt")
+            kotlin.include("*.kt", "lexer/**/*.kt", "parser/**/*.kt")
             languageSettings.optIn("kotlin.js.ExperimentalJsExport")
         }
     }
