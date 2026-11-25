@@ -15,10 +15,14 @@ fun compile(AST: itemArray): MutableList<String> {
             "print" -> {
                 val type = node.get("specifier")
                 if(type == "noRefString") {
+                    var prevCode: Int = -1
                     for(ch in node.get("value") as String) {
                         val code = ch.code
-                        val setStr = "SET H $code"
-                        compiledParticle.add(setStr)
+                        if(code != prevCode) {
+                            prevCode = code
+                            val setStr = "SET H $code"
+                            compiledParticle.add(setStr)
+                        }
                         compiledParticle.add("OUTC H")
                     }
                 }
