@@ -30,15 +30,33 @@ fun parse(tokens: itemArray): itemArray? {
             curType == "IDENTIFIER" && curVal == "reveal" -> {
                 eat("IDENTIFIER")
                 eat("LPAREN")
-                val printToken = eat("STRING")
-                eat("RPAREN")
-                val printString = printToken.get("value")
-                val node = mutableMapOf<String, Any?>(
-                    "type" to "print",
-                    "specifier" to "noRefString",
-                    "value" to printString
-                )
-                AST.add(node)
+                val nextToken = tokens[i]
+                val nextType = nextToken.get("type")
+                when(nextType) {
+                    "STRING" -> {
+                        val printToken = eat("STRING")
+                        eat("RPAREN")
+                        val printString = printToken.get("value")
+                        val node = mutableMapOf<String, Any?>(
+                            "type" to "print",
+                            "specifier" to "noRefString",
+                            "value" to printString
+                        )
+                        AST.add(node)
+                    }
+                    "IDENTIFIER" -> {
+                        val variableToken = eat("IDENTIFIER")
+                        eat("RPAREN")
+                        val printName = variableToken.get("value")
+                        val node = mutableMapOf<String, Any?>(
+                            "type" to "print",
+                            "specifier" to "reference",
+                            "value" to printName
+                        )
+                        AST.add(node)
+                    }
+                }
+                
             }
                 curType == "IDENTIFIER" && curVal == "int" -> {
                     eat("IDENTIFIER")

@@ -16,6 +16,7 @@ fun star(output: JsAny, source: String): String {
     val ast = parse(contents)
     println(ast)
     if(ast.isNullOrEmpty()) {
+        call(output, "ERROR, error in parser")
         return ""
     }
     val particleCode = compile(ast, output)

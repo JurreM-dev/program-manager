@@ -56,6 +56,7 @@ fun compile(AST: itemArray, output: JsAny): MutableList<String> {
                     "size" to 2,
                     "type" to "integer"
                 )
+                println(pointerData)
                 pointerCounter += 2
                 variablePointers.add(pointerData)
             }
