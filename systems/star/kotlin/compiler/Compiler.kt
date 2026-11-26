@@ -36,6 +36,29 @@ fun compile(AST: itemArray, output: JsAny): MutableList<String> {
                         }
                         compiledParticle.add("OUTC H")
                     }
+                } else if(type == "reference") {
+                    val varName = node.get("value")
+                    val keyExists = variablePointers.any { it["name"] == varName }
+                    var varType: String
+                    if(!keyExists) {
+                        call(output, "cannot reveal a variable that does not exist")
+                        continue
+                    }
+                    val pointerData = variablePointers.find { it["name"] == varName }
+                    if (pointerData == null) {
+                        call(output, "cannot reveal a variable that does not exist")
+                        continue
+                    }
+                    val pointerType = pointerData["type"]
+                    if(pointerType == "integer") {
+                        val pointer = pointerData["memoryPointer"]
+                        val setStr = "SET A $pointer"
+                        compiledParticle.add(setStr)
+                        val getStr = "LOAD B A"
+                        val outStr = "OUT B"
+                        compiledParticle.add(getStr)
+                        compiledParticle.add(outStr)
+                    }
                 }
             }
             "intDecleration" -> {
