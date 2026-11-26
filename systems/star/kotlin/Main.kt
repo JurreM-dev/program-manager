@@ -18,7 +18,7 @@ fun star(output: JsAny, source: String): String {
     if(ast.isNullOrEmpty()) {
         return ""
     }
-    val particleCode = compile(ast)
+    val particleCode = compile(ast, output)
     val particleString = particleCode.joinToString("\n")
     return particleString
 }

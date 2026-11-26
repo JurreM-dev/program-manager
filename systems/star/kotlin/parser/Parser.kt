@@ -40,6 +40,23 @@ fun parse(tokens: itemArray): itemArray? {
                 )
                 AST.add(node)
             }
+                curType == "IDENTIFIER" && curVal == "int" -> {
+                    eat("IDENTIFIER")
+                    val nameToken = eat("IDENTIFIER")
+                    eat("EQUALS")
+                    val valueToken = eat("INTEGER")
+                    val integer = valueToken["value"] as? Int ?: throw ParseFailure()
+                    if(integer < 0 || integer > 0xFFFF) {
+                        throw ParseFailure()
+                    }
+                    val name = nameToken.get("value")
+                    val node = mutableMapOf<String, Any?>(
+                        "type" to "intDecleration",
+                        "name" to name,
+                        "value" to integer
+                    )
+                    AST.add(node)
+                }
             else -> {
                 i++
             }

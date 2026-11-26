@@ -10,6 +10,7 @@ typealias item = MutableMap<String, Any?>
 
 var whiteRegex = "\\s".toRegex()
 var letterRegex = "[a-zA-Z]".toRegex()
+val intRegex = "^\\d+$".toRegex()
 val quote = "\""
 
 fun tokenize(output: JsAny, source: String): itemArray {
@@ -34,6 +35,21 @@ fun tokenize(output: JsAny, source: String): itemArray {
                 val token = mutableMapOf<String, Any?>(
                     "type" to "IDENTIFIER",
                     "value" to idString
+                )
+                tokens.add(token)
+            }
+            currentChar.matches(intRegex) -> {
+                var numString = ""
+                numString += currentChar
+                var nextIndex = current + 1
+                while(nextIndex < chars.size && chars[nextIndex].matches(intRegex)) {
+                    numString += chars[nextIndex]
+                    current++
+                    nextIndex++ 
+                }
+                val token = mutableMapOf<String, Any?>(
+                    "type" to "INTEGER",
+                    "value" to numString.toInt()
                 )
                 tokens.add(token)
             }
@@ -63,6 +79,13 @@ fun tokenize(output: JsAny, source: String): itemArray {
                 val token = mutableMapOf<String, Any?>(
                     "type" to "RPAREN",
                     "value" to currentChar
+                )
+                tokens.add(token)
+            }
+            currentChar == "=" -> {
+                val token = mutableMapOf<String, Any?>(
+                    "type" to "EQUALS",
+                    "value" to "="
                 )
                 tokens.add(token)
             }
