@@ -59,6 +59,12 @@ fun compile(AST: itemArray, output: JsAny): MutableList<String> {
                         compiledParticle.add(getStr)
                         compiledParticle.add(outStr)
                     }
+                } else if(type == "noRefInt") {
+                    val printedValue = node.get("value")
+                    val setStr = "SET H $printedValue"
+                    compiledParticle.add(setStr)
+                    val printStr = "OUT H"
+                    compiledParticle.add(printStr)
                 } else {
                     call(output, "unknown reveal type ignored")
                 }
