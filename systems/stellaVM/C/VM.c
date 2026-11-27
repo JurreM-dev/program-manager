@@ -28,7 +28,9 @@ typedef enum
     // new more complex functions and memory operations
     OUTC = 0x0F,
     STORE = 0x10,
-    LOAD = 0x11
+    LOAD = 0x11,
+    STOREB = 0x12,
+    LOADB = 0x13
 } Opcodes;
 
 // flags
@@ -509,6 +511,62 @@ void stellaVM(
             uint8_t upperByte = RAM[addressIndex];
             uint8_t lowerByte = RAM[addressIndex + 1];
             uint16_t value = (upperByte * 256) + lowerByte;
+            registers[dataIndex] = value; 
+            break;
+        }
+        case STOREB: 
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t dataIndex = instructions[i++];
+            if(!checkRegister(dataIndex)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t adressReg = instructions[i++];
+            if(!checkRegister(adressReg)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint16_t value = registers[dataIndex];
+            uint8_t writeValue = value % 256;
+            uint16_t addressIndex = registers[adressReg];
+            RAM[addressIndex] = writeValue;
+            break;
+        }
+        case LOADB: 
+        {
+            if(!checkBounds(length, i, 2)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t dataIndex = instructions[i++];
+            if(!checkRegister(dataIndex)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint8_t adressReg = instructions[i++];
+            if(!checkRegister(adressReg)) {
+                output(1);
+                output(i - 1);
+                running = false;
+                break;
+            }
+            uint16_t addressIndex = registers[adressReg];
+            uint8_t foundByte = RAM[addressIndex];
+            uint16_t value = foundByte;
             registers[dataIndex] = value; 
             break;
         }
