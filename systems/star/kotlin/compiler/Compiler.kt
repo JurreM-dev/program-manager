@@ -59,6 +59,8 @@ fun compile(AST: itemArray, output: JsAny): MutableList<String> {
                         compiledParticle.add(getStr)
                         compiledParticle.add(outStr)
                     }
+                } else {
+                    call(output, "unknown reveal type ignored")
                 }
             }
             "intDecleration" -> {

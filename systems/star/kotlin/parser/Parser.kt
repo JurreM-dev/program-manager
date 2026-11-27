@@ -55,6 +55,20 @@ fun parse(tokens: itemArray): itemArray? {
                         )
                         AST.add(node)
                     }
+                    "INTEGER" -> {
+                        val printToken = eat("INTEGER")
+                        eat("RPAREN")
+                        val printNum = printToken.get("value") as? Int ?: throw ParseFailure()
+                        if(printNum < 0 || printNum > 0xFFFF) {
+                            throw ParseFailure()
+                        }
+                        val node = mutableMapOf<String, Any?>(
+                            "type" to "print",
+                            "specifier" to "noRefInt",
+                            "value" to printNum
+                        )
+                        AST.add(node)
+                    }
                 }
                 
             }
