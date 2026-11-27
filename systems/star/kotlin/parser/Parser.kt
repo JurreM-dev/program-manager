@@ -10,7 +10,7 @@ typealias item = MutableMap<String, Any?>
 
 private class ParseFailure : RuntimeException()
 
-fun parse(tokens: itemArray): itemArray? {
+fun parse(tokens: itemArray, output: JsAny): itemArray? {
     var i = 0
     var running = true
     val AST = mutableListOf<MutableMap<String, Any?>>()
@@ -69,26 +69,45 @@ fun parse(tokens: itemArray): itemArray? {
                         )
                         AST.add(node)
                     }
+                }}
+
+            curType == "IDENTIFIER" && curVal == "int" -> {
+                eat("IDENTIFIER")
+                val nameToken = eat("IDENTIFIER")
+                eat("EQUALS")
+                val valueToken = eat("INTEGER")
+                val integer = valueToken["value"] as? Int ?: throw ParseFailure()
+                if(integer < 0 || integer > 0xFFFF) {
+                    throw ParseFailure()
                 }
-                
+                val name = nameToken.get("value")
+                val node = mutableMapOf<String, Any?>(
+                    "type" to "intDecleration",
+                    "name" to name,
+                    "value" to integer
+                )
+                AST.add(node)
             }
-                curType == "IDENTIFIER" && curVal == "int" -> {
-                    eat("IDENTIFIER")
-                    val nameToken = eat("IDENTIFIER")
-                    eat("EQUALS")
-                    val valueToken = eat("INTEGER")
-                    val integer = valueToken["value"] as? Int ?: throw ParseFailure()
-                    if(integer < 0 || integer > 0xFFFF) {
-                        throw ParseFailure()
-                    }
-                    val name = nameToken.get("value")
-                    val node = mutableMapOf<String, Any?>(
-                        "type" to "intDecleration",
-                        "name" to name,
-                        "value" to integer
-                    )
-                    AST.add(node)
+
+            curType == "IDENTIFIER" && curVal == "char" -> {
+                eat("IDENTIFIER")
+                val nameToken = eat("IDENTIFIER")
+                eat("EQUALS")
+                val valueToken = eat("STRING")
+                val valueUsed = valueToken.get("value") as? String ?: throw ParseFailure()
+                if(valueUsed.length > 1 || valueUsed.length < 1) {
+                    call(output, "unvalid char: too many characters")
+                    throw ParseFailure()
                 }
+                val name = nameToken.get("value")
+                val node = mutableMapOf<String, Any?>(
+                    "type" to "charDecleration",
+                    "name" to name,
+                    "value" to valueUsed
+                )
+                AST.add(node)
+            }
+            
             else -> {
                 i++
             }

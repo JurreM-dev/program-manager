@@ -13,7 +13,7 @@ typealias item = MutableMap<String, Any?>
 @JsExport
 fun star(output: JsAny, source: String): String {
     val contents = tokenize(output, source)
-    val ast = parse(contents)
+    val ast = parse(contents, output)
     println(ast)
     if(ast.isNullOrEmpty()) {
         call(output, "ERROR, error in parser")
