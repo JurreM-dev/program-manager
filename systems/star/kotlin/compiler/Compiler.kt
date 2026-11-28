@@ -91,6 +91,29 @@ fun compile(AST: itemArray, output: JsAny): MutableList<String> {
                 pointerCounter += 2
                 variablePointers.add(pointerData)
             }
+            "charDecleration" -> {
+                val name = node.get("name") as String
+                val value = node.get("value") as String
+                val asciiVal = value.first().code
+                
+                val createStr = "SET B $asciiVal"
+                compiledParticle.add(createStr)
+                val pointer = pointerCounter
+                val pointerStr = "SET A $pointer"
+                compiledParticle.add(pointerStr)
+                val storeStr = "STOREB B A"
+                compiledParticle.add(storeStr)
+
+                val pointerData = mutableMapOf<String, Any>(
+                    "name" to name,
+                    "memoryPointer" to pointerCounter,
+                    "size" to 1,
+                    "type" to "character"
+                )
+                println(pointerData)
+                pointerCounter += 1
+                variablePointers.add(pointerData)
+            }
             else -> {
                 call(output, "unknown ast node")
             }
