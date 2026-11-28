@@ -33,7 +33,9 @@ typedef enum
 
     // memory functions
     STORE = 0x10,
-    LOAD = 0x11
+    LOAD = 0x11,
+    STOREB = 0x12,
+    LOADB = 0x13
 } Opcodes;
 
 typedef enum
@@ -190,6 +192,11 @@ uint8_t *buildEnergy(
         {
             byteOffset += 4;
             p += 2;
+        }
+        else if (strcmp(word, "JMP") == 0 || strcmp(word, "JEQ") == 0 || strcmp(word, "JNE") == 0 || strcmp(word, "JGT") == 0 || strcmp(word, "JLT") == 0)
+        {
+            byteOffset += 3;
+            p += 1;
         }
         else
         {
@@ -435,7 +442,7 @@ uint8_t *buildEnergy(
             }
             sec = registerFound;
         }
-        else if (strcmp(word, "STORE") == 0 || strcmp(word, "LOAD") == 0)
+        else if (strcmp(word, "STORE") == 0 || strcmp(word, "LOAD") == 0 || strcmp(word, "STOREB") == 0 || strcmp(word, "LOADB") == 0)
         {
             if (strcmp(word, "STORE") == 0)
             {
@@ -444,6 +451,12 @@ uint8_t *buildEnergy(
             else if (strcmp(word, "LOAD") == 0)
             {
                 val = LOAD;
+            } else if(strcmp(word, "STOREB") == 0) 
+            {
+                val = STOREB;
+            } else if(strcmp(word, "LOADB") == 0) 
+            {
+                val = LOADB;
             }
             if (!checkBounds(wordCount, i, 2))
             {
