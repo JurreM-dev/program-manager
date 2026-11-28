@@ -58,6 +58,14 @@ fun compile(AST: itemArray, output: JsAny): MutableList<String> {
                         val outStr = "OUT B"
                         compiledParticle.add(getStr)
                         compiledParticle.add(outStr)
+                    } else if(pointerType == "character") {
+                        val pointer = pointerData["memoryPointer"]
+                        val setStr = "SET A $pointer"
+                        compiledParticle.add(setStr)
+                        val getStr = "LOADB B A"
+                        val outStr = "OUTC B"
+                        compiledParticle.add(getStr)
+                        compiledParticle.add(outStr)
                     }
                 } else if(type == "noRefInt") {
                     val printedValue = node.get("value")
